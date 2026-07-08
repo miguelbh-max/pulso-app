@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>PULSO — Entrenamiento</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#14171C">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PULSO">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#14171C;
+  --surface:#1C2028;
+  --surface-2:#232833;
+  --line:#2C323E;
+  --lime:#C8FF3D;
+  --pulse:#FF4B4B;
+  --text:#F2F3F0;
+  --muted:#8A93A3;
+  --muscle-off:#3A4150;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html,body{height:100%;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+.display{font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:0.02em;}
+
+/* ---------- Header ---------- */
+header{
+  position:sticky; top:0; z-index:20;
+  background:linear-gradient(180deg, rgba(20,23,28,0.98), rgba(20,23,28,0.9));
+  backdrop-filter:blur(6px);
+  padding:18px 20px 14px;
+  border-bottom:1px solid var(--line);
+}
+.brand{display:flex; align-items:center; gap:10px;}
+.brand .dot{
+  width:12px; height:12px; border-radius:50%;
+  background:var(--pulse);
+  box-shadow:0 0 0 0 rgba(255,75,75,0.6);
+  animation:beat 1.15s infinite;
+}
+@keyframes beat{
+  0%{box-shadow:0 0 0 0 rgba(255,75,75,0.55);}
+  70%{box-shadow:0 0 0 9px rgba(255,75,75,0);}
+  100%{box-shadow:0 0 0 0 rgba(255,75,75,0);}
+}
+.brand h1{font-size:26px; font-weight:700; letter-spacing:0.06em;}
+.brand h1 span{color:var(--lime);}
+.tagline{color:var(--muted); font-size:12.5px; margin-top:2px; margin-left:22px;}
+
+/* ---------- Category chips ---------- */
+.chips{
+  display:flex; gap:8px; overflow-x:auto; padding:14px 20px 4px;
+  scrollbar-width:none;
+}
+.chips::-webkit-scrollbar{display:none;}
+.chip{
+  flex:0 0 auto;
+  padding:9px 16px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:var(--surface);
+  color:var(--muted);
+  font-size:13px; font-weight:600;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:all .15s ease;
+}
+.chip.active{
+  background:var(--lime);
+  color:#0F1115;
+  border-color:var(--lime);
+}
+
+/* ---------- Grid ---------- */
+main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(150px,1fr));
+  gap:12px;
+  margin-top:8px;
+}
+.card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:14px;
+  cursor:pointer;
+  transition:transform .12s ease, border-color .12s ease;
+}
+.card:active{transform:scale(0.97);}
+.card:hover{border-color:var(--lime);}
+.card .pat-icon{
+  width:36px; height:36px;
+  border-radius:9px;
+  background:var(--surface-2);
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:10px;
+  color:var(--lime);
+  font-size:16px;
+}
+.card h3{font-size:14.5px; font-weight:600; line-height:1.25; margin-bottom:6px;}
+.card .muscle-tag{
+  font-size:11px; color:var(--muted);
+  text-transform:uppercase; letter-spacing:0.04em;
+}
+.card .eq{
+  margin-top:8px; font-size:11px; color:var(--muted);
+  display:flex; align-items:center; gap:5px;
+}
+
+.empty-state{
+  grid-column:1/-1; text-align:center; color:var(--muted);
+  font-size:13px; padding:30px 10px; line-height:1.5;
+}
+
+.level-row{
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px;
+  padding:2px 20px 4px;
+}
+.level-row .chips{padding:6px 0 0; flex:1 1 auto;}
+.level-row .btn-group{display:flex; gap:6px; flex-wrap:wrap;}
+.lvl-chip{
+  flex:0 0 auto;
+  padding:6px 13px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:var(--surface);
+  color:var(--muted);
+  font-size:12px; font-weight:600;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.lvl-chip.active{background:var(--pulse); color:#2A0E0E; border-color:var(--pulse);}
+.guide-btn{
+  flex:0 0 auto;
+  font-size:11.5px; color:var(--lime);
+  background:none; border:1px solid rgba(200,255,61,0.3);
+  border-radius:999px; padding:7px 12px;
+  cursor:pointer; white-space:nowrap;
+}
+.guide-btn i{font-style:normal;}
+
+.guide-body{padding:16px 20px 26px;}
+.guide-level{margin-bottom:20px;}
+.guide-tag{
+  display:inline-block; font-size:11px; font-weight:700;
+  text-transform:uppercase; letter-spacing:0.04em;
+  padding:5px 12px; border-radius:999px; margin-bottom:8px;
+}
+.lv-begin{background:rgba(200,255,61,0.14); color:var(--lime);}
+.lv-mid{background:rgba(255,184,75,0.14); color:#FFB84B;}
+.lv-adv{background:rgba(255,75,75,0.14); color:var(--pulse);}
+.guide-level p{font-size:13.5px; color:#D8DAE0; line-height:1.5; margin-bottom:10px;}
+.crit-title{font-size:12.5px; font-weight:600; color:#B9C0CC; margin-bottom:6px;}
+.guide-crit ul{padding-left:18px; display:flex; flex-direction:column; gap:6px;}
+.guide-crit li{font-size:13px; color:#C7CBD3; line-height:1.45;}
+.guide-crit li::marker{color:var(--lime);}
+.guide-note{
+  margin-top:6px; padding:12px 14px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--line); border-radius:12px;
+  font-size:12px; color:var(--muted); line-height:1.55;
+}
+.routine-btn{color:#FFB84B; border-color:rgba(255,184,75,0.3);}
+.progress-btn{color:#7FD1FF; border-color:rgba(127,209,255,0.3);}
+.routine-day{margin-bottom:12px;}
+.rd-title{font-size:12.5px; font-weight:600; color:#B9C0CC; margin-bottom:6px;}
+.routine-day ul{padding-left:18px; display:flex; flex-direction:column; gap:5px;}
+.routine-day li{font-size:13px; color:#C7CBD3; line-height:1.45;}
+.routine-day li::marker{color:var(--lime);}
+.routine-duration{
+  margin-top:8px; font-size:12px; color:var(--muted);
+  padding:8px 12px; background:rgba(255,255,255,0.03); border-radius:10px;
+}
+
+.progress-body{padding:16px 20px 26px;}
+.progress-stats{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:8px;
+  margin-bottom:20px;
+}
+.pstat{
+  background:var(--surface); border:1px solid var(--line); border-radius:12px;
+  padding:12px 10px; text-align:center;
+}
+.pstat b{display:block; font-size:20px; color:var(--lime); font-weight:700;}
+.pstat span{font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:0.03em;}
+
+.progress-form{
+  background:var(--surface); border:1px solid var(--line); border-radius:14px;
+  padding:14px;
+}
+.webhook-settings{
+  background:rgba(127,209,255,0.05); border:1px solid rgba(127,209,255,0.2);
+  border-radius:14px; padding:14px; margin-bottom:14px;
+}
+.webhook-settings input{
+  width:100%; box-sizing:border-box;
+  background:var(--surface-2); border:1px solid var(--line); border-radius:10px;
+  color:var(--text); font-size:12.5px; padding:9px 11px; margin-bottom:8px;
+  font-family:'Inter',sans-serif;
+}
+#pfSaveWebhook{
+  padding:9px 14px; border-radius:10px; background:none;
+  border:1px solid #7FD1FF; color:#7FD1FF; font-weight:600; font-size:12.5px;
+  cursor:pointer;
+}
+.webhook-status{font-size:11.5px; color:var(--muted); margin-top:8px; line-height:1.5;}
+.pf-title{font-size:13px; font-weight:600; color:#D8DAE0; margin-bottom:10px;}
+.progress-form select, .progress-form input{
+  width:100%; box-sizing:border-box;
+  background:var(--surface-2); border:1px solid var(--line); border-radius:10px;
+  color:var(--text); font-size:13.5px; padding:10px 12px; margin-bottom:8px;
+  font-family:'Inter',sans-serif;
+}
+.pf-row{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;}
+.pf-row input{margin-bottom:0;}
+#pfSave{
+  width:100%; margin-top:2px; padding:11px; border-radius:10px;
+  background:var(--lime); color:#0F1115; font-weight:700; font-size:13.5px;
+  border:none; cursor:pointer;
+}
+#pfSave:active{transform:scale(0.98);}
+
+.plog-day{margin-bottom:14px;}
+.plog-date{font-size:11.5px; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px;}
+.plog-item{
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--surface); border:1px solid var(--line); border-radius:10px;
+  padding:10px 12px; margin-bottom:6px;
+}
+.plog-item .pl-name{font-size:13px; color:#D8DAE0; font-weight:500;}
+.plog-item .pl-detail{font-size:11.5px; color:var(--muted); margin-top:2px;}
+.plog-del{
+  background:none; border:none; color:var(--pulse); font-size:16px;
+  cursor:pointer; padding:4px 6px;
+}
+.progress-empty{color:var(--muted); font-size:13px; text-align:center; padding:20px 0;}
+.storage-warning{
+  font-size:11.5px; color:#FFB84B; background:rgba(255,184,75,0.1);
+  border:1px solid rgba(255,184,75,0.3); border-radius:10px; padding:10px 12px; margin-bottom:14px;
+}
+
+/* ---------- Modal ---------- */
+.overlay{
+  position:fixed; inset:0; background:rgba(10,11,14,0.72);
+  backdrop-filter:blur(3px);
+  z-index:50; display:none; align-items:flex-end;
+  justify-content:center;
+}
+.overlay.open{display:flex;}
+.sheet{
+  background:var(--bg);
+  width:100%; max-width:640px;
+  max-height:92vh; overflow-y:auto;
+  border-radius:22px 22px 0 0;
+  border-top:1px solid var(--line);
+  animation:slideup .22s ease;
+  padding-bottom:30px;
+}
+@keyframes slideup{from{transform:translateY(30px); opacity:0;} to{transform:translateY(0); opacity:1;}}
+.sheet-head{
+  display:flex; justify-content:space-between; align-items:flex-start;
+  padding:18px 20px 0;
+}
+.sheet-head h2{font-size:21px; font-weight:600; max-width:80%; line-height:1.25;}
+.close-btn{
+  width:34px; height:34px; border-radius:50%;
+  background:var(--surface); border:1px solid var(--line);
+  color:var(--muted); font-size:16px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; flex:0 0 auto;
+}
+
+.badges{display:flex; gap:6px; flex-wrap:wrap; padding:10px 20px 0;}
+.badge{
+  font-size:11px; padding:5px 10px; border-radius:999px;
+  background:var(--surface-2); color:var(--muted);
+  text-transform:uppercase; letter-spacing:0.03em;
+}
+.badge.hot{background:rgba(255,75,75,0.14); color:var(--pulse);}
+
+/* animation + body stage */
+.stage{
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:10px; padding:16px 20px 6px;
+}
+.stage-box{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:16px;
+  height:190px;
+  position:relative;
+  overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+}
+.stage-box img{transition:opacity .18s ease;}
+.stage-photo{
+  position:absolute; inset:0;
+  width:100%; height:100%; object-fit:contain;
+  opacity:0;
+}
+.stage-photo.on{opacity:1;}
+.stage-box .cap{
+  position:absolute; top:8px; left:10px;
+  font-size:10px; letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--muted);
+}
+.view-toggle{
+  position:absolute; top:8px; right:8px;
+  display:flex; gap:4px;
+}
+.view-toggle button{
+  font-size:9.5px; padding:3px 7px; border-radius:6px;
+  background:var(--surface-2); border:1px solid var(--line);
+  color:var(--muted); cursor:pointer;
+}
+.view-toggle button.on{color:var(--lime); border-color:var(--lime);}
+
+.instructions{padding:18px 20px 0;}
+.instructions ol{padding-left:18px; display:flex; flex-direction:column; gap:10px;}
+.instructions li{font-size:14px; line-height:1.5; color:#D8DAE0;}
+.instructions li::marker{color:var(--lime); font-weight:700;}
+
+.tip{
+  margin:16px 20px 0; padding:12px 14px;
+  background:rgba(200,255,61,0.06);
+  border:1px solid rgba(200,255,61,0.25);
+  border-radius:12px;
+  font-size:12.5px; color:#CFE9A8; line-height:1.5;
+}
+
+/* ---------- Figure animation (CSS stick figure) ---------- */
+.figure-wrap{width:80px; height:130px; position:relative;}
+.f-head{position:absolute; width:20px; height:20px; border-radius:50%; background:var(--lime); left:30px; top:0;}
+.f-torso{position:absolute; width:6px; height:40px; background:var(--lime); left:37px; top:20px; border-radius:3px;}
+.f-armL,.f-armR,.f-legL,.f-legR{position:absolute; width:6px; height:34px; background:#8FE04A; border-radius:3px; transform-origin:top center;}
+.f-armL{left:22px; top:24px;} .f-armR{left:52px; top:24px;}
+.f-legL{left:32px; top:58px;} .f-legR{left:42px; top:58px;}
+
+
+
+/* ---------- Body diagram ---------- */
+.bodysvg{width:118px; height:194px;}
+.bodysvg .region{fill:var(--muscle-off); transition:fill .25s ease, opacity .25s ease;}
+.bodysvg .region.hit{fill:var(--pulse);}
+.bodysvg .outline{fill:none; stroke:#4A5264; stroke-width:1.4;}
+
+.legend{
+  display:flex; align-items:center; gap:6px;
+  font-size:10.5px; color:var(--muted);
+  position:absolute; bottom:8px; left:10px;
+}
+.legend .sw{width:9px; height:9px; border-radius:3px; background:var(--pulse);}
+
+footer{
+  text-align:center; color:var(--muted); font-size:11.5px;
+  padding:10px 20px 26px; line-height:1.6;
+}
+footer b{color:#B9C0CC;}
+
+@media (max-width:400px){
+  header{padding:14px 14px 12px;}
+  .brand h1{font-size:22px;}
+  main{padding:12px 14px 40px;}
+  .chips{padding:12px 14px 4px;}
+  .grid{grid-template-columns:repeat(auto-fill, minmax(130px,1fr)); gap:9px;}
+  .card{padding:11px;}
+  .stage{grid-template-columns:1fr; padding:14px 14px 4px;}
+  .stage-box{height:170px;}
+  .sheet-head{padding:16px 14px 0;}
+  .sheet-head h2{font-size:18px; max-width:75%;}
+  .badges{padding:8px 14px 0;}
+  .instructions{padding:14px 14px 0;}
+  .tip{margin:14px 14px 0;}
+}
+@media (max-width:340px){
+  .grid{grid-template-columns:repeat(auto-fill, minmax(115px,1fr));}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="dot"></div>
+    <h1 class="display">PULSO<span>.</span></h1>
+  </div>
+  <div class="tagline">Rutinas guiadas · animación + músculo trabajado</div>
+</header>
+
+<div class="chips" id="chips"></div>
+<div class="level-row">
+  <div class="chips" id="levelChips"></div>
+  <div class="btn-group">
+    <button class="guide-btn" id="guideBtn">¿Cómo subir de nivel? <i>ℹ</i></button>
+    <button class="guide-btn routine-btn" id="routineBtn">Rutinas <i>▤</i></button>
+    <button class="guide-btn progress-btn" id="progressBtn">Mi progreso <i>📈</i></button>
+  </div>
+</div>
+
+<main>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>Prototipo local — datos de ejemplo. <b>PULSO</b> funciona sin conexión.<br>Fotos cuando hay internet: free-exercise-db (dominio público, licencia Unlicense).</footer>
+
+<div class="overlay" id="overlay">
+  <div class="sheet" id="sheet"></div>
+</div>
+
+<div class="overlay" id="guideOverlay">
+  <div class="sheet" id="guideSheet">
+    <div class="sheet-head">
+      <h2>¿Cuándo subir de nivel?</h2>
+      <div class="close-btn" id="guideCloseBtn">✕</div>
+    </div>
+    <div class="guide-body">
+      <div class="guide-level">
+        <div class="guide-tag lv-begin">Principiante</div>
+        <p>Estás aquí si estás aprendiendo la técnica de cada ejercicio. El objetivo no es el peso, es el movimiento correcto.</p>
+        <div class="guide-crit">
+          <div class="crit-title">Pasa a Intermedio cuando:</div>
+          <ul>
+            <li>Completas 3 series de 12-15 repeticiones con buena técnica, sin dolor articular.</li>
+            <li>Llevas 4-6 semanas de entrenamiento constante (mínimo 2-3 veces por semana).</li>
+            <li>Puedes controlar el peso en la bajada (fase excéntrica) sin dejarlo caer.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="guide-level">
+        <div class="guide-tag lv-mid">Intermedio</div>
+        <p>Ya dominas la técnica base. Ahora el enfoque es la progresión: más peso, más reps o más control.</p>
+        <div class="guide-crit">
+          <div class="crit-title">Pasa a Avanzado cuando:</div>
+          <ul>
+            <li>Puedes aumentar el peso semana a semana (progresión de carga) sin perder la forma.</li>
+            <li>Llevas 3-6 meses de entrenamiento consistente con esos ejercicios.</li>
+            <li>Tienes buena movilidad articular y ningún dolor persistente al entrenar.</li>
+            <li>Ya usas variantes más difíciles (una mano, tempo lento, rango completo) con control.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="guide-level">
+        <div class="guide-tag lv-adv">Avanzado</div>
+        <p>Entrenamiento con cargas altas, técnicas de intensidad (dropsets, tempo, pausas) y foco en debilidades específicas.</p>
+      </div>
+      <div class="guide-note">💡 Estas son referencias generales, no reglas fijas. Si sientes dolor (no fatiga muscular normal) al subir de nivel, retrocede y consulta a un entrenador o profesional de la salud.</div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="routineOverlay">
+  <div class="sheet" id="routineSheet">
+    <div class="sheet-head">
+      <h2>Rutinas por nivel</h2>
+      <div class="close-btn" id="routineCloseBtn">✕</div>
+    </div>
+    <div class="guide-body">
+
+      <div class="guide-level">
+        <div class="guide-tag lv-begin">Principiante</div>
+        <p>Full body, 3 días por semana (ej. lunes / miércoles / viernes), con al menos 1 día de descanso entre sesiones. Descansa 60-90s entre series.</p>
+        <div class="routine-day">
+          <div class="rd-title">Día A</div>
+          <ul>
+            <li>Sentadilla goblet con mancuerna — 3 x 12</li>
+            <li>Press de banca con mancuernas — 3 x 12</li>
+            <li>Remo con mancuerna a una mano — 3 x 12 por lado</li>
+            <li>Plancha abdominal — 3 x 20-30s</li>
+          </ul>
+        </div>
+        <div class="routine-day">
+          <div class="rd-title">Día B</div>
+          <ul>
+            <li>Zancadas con mancuernas — 3 x 12 por pierna</li>
+            <li>Press militar con mancuernas — 3 x 12</li>
+            <li>Jalón al pecho (polea) — 3 x 12</li>
+            <li>Crunch abdominal — 3 x 15</li>
+          </ul>
+        </div>
+        <div class="routine-duration">⏱ Duración sugerida: 4-6 semanas antes de pasar a Intermedio (ver criterios en "¿Cómo subir de nivel?").</div>
+      </div>
+
+      <div class="guide-level">
+        <div class="guide-tag lv-mid">Intermedio</div>
+        <p>Torso / Pierna, 4 días por semana (ej. lunes, martes, jueves, viernes). Descansa 60-90s entre series.</p>
+        <div class="routine-day">
+          <div class="rd-title">Día 1 — Torso (empuje)</div>
+          <ul>
+            <li>Press de banca con barra — 4 x 10</li>
+            <li>Press militar con mancuernas — 3 x 10</li>
+            <li>Extensión de tríceps en polea — 3 x 12</li>
+          </ul>
+        </div>
+        <div class="routine-day">
+          <div class="rd-title">Día 2 — Pierna</div>
+          <ul>
+            <li>Sentadilla con barra — 4 x 10</li>
+            <li>Peso muerto rumano — 3 x 10</li>
+            <li>Curl femoral acostado — 3 x 12</li>
+          </ul>
+        </div>
+        <div class="routine-day">
+          <div class="rd-title">Día 3 — Torso (jalón)</div>
+          <ul>
+            <li>Remo con barra — 4 x 10</li>
+            <li>Jalón al pecho (polea) — 3 x 12</li>
+            <li>Curl de bíceps con mancuernas — 3 x 12</li>
+          </ul>
+        </div>
+        <div class="routine-day">
+          <div class="rd-title">Día 4 — Pierna / Core</div>
+          <ul>
+            <li>Prensa de piernas — 4 x 10</li>
+            <li>Zancadas caminando — 3 x 12 por pierna</li>
+            <li>Giro ruso con mancuerna — 3 x 15 por lado</li>
+          </ul>
+        </div>
+        <div class="routine-duration">⏱ Duración sugerida: 3-6 meses antes de pasar a Avanzado (progresando el peso cada semana que puedas).</div>
+      </div>
+
+      <div class="guide-level">
+        <div class="guide-tag lv-adv">Avanzado</div>
+        <p>Push / Pull / Legs, 5-6 días por semana. Incluye técnicas de intensidad (series al fallo, tempo lento) y más volumen.</p>
+        <div class="routine-day">
+          <div class="rd-title">Push (empuje)</div>
+          <ul>
+            <li>Press de banca con barra — 4 x 8</li>
+            <li>Press Arnold con mancuernas — 4 x 10</li>
+            <li>Fondos en banco (tríceps) — 3 x al fallo</li>
+          </ul>
+        </div>
+        <div class="routine-day">
+          <div class="rd-title">Pull (jalón)</div>
+          <ul>
+            <li>Remo inclinado bilateral con mancuernas — 4 x 8</li>
+            <li>Jalón al pecho (polea) — 4 x 10</li>
+            <li>Face pull — 3 x 15</li>
+          </ul>
+        </div>
+        <div class="routine-day">
+          <div class="rd-title">Legs (pierna)</div>
+          <ul>
+            <li>Sentadilla con barra — 5 x 6-8</li>
+            <li>Peso muerto rumano — 4 x 8</li>
+            <li>Elevación de piernas colgado — 3 x al fallo</li>
+          </ul>
+        </div>
+        <div class="routine-duration">⏱ En este nivel ya no hay una fecha fija de "siguiente etapa" — el trabajo es variar la rutina cada 8-12 semanas y seguir progresando cargas.</div>
+      </div>
+
+      <div class="guide-note">💡 Estas rutinas son un punto de partida general, no un plan médico personalizado. Ajusta el peso y las repeticiones a tu condición física, y consulta a un profesional si tienes alguna lesión o condición previa.</div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="progressOverlay">
+  <div class="sheet" id="progressSheet">
+    <div class="sheet-head">
+      <h2>Mi progreso</h2>
+      <div class="close-btn" id="progressCloseBtn">✕</div>
+    </div>
+    <div class="progress-body">
+      <div class="progress-stats" id="progressStats"></div>
+
+      <div class="webhook-settings" id="webhookSettings">
+        <div class="pf-title">☁ Sincronizar con Google Sheets (opcional)</div>
+        <input type="text" id="pfWebhook" placeholder="Pega aquí tu URL de webhook de Make">
+        <button id="pfSaveWebhook">Guardar conexión</button>
+        <div class="webhook-status" id="webhookStatus"></div>
+      </div>
+
+      <div class="progress-form">
+        <div class="pf-title">Registrar entrenamiento</div>
+        <select id="pfExercise"></select>
+        <div class="pf-row">
+          <input type="number" id="pfWeight" placeholder="Peso (kg)" min="0" step="0.5">
+          <input type="number" id="pfReps" placeholder="Repeticiones" min="1">
+          <input type="number" id="pfSets" placeholder="Series" min="1">
+        </div>
+        <input type="date" id="pfDate">
+        <button id="pfSave">Guardar registro</button>
+      </div>
+
+      <div class="pf-title" style="margin-top:22px;">Historial</div>
+      <div id="progressList"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------------- DATA ---------------- */
+const CATS = [
+  {id:'pecho', label:'Pecho'},
+  {id:'espalda', label:'Espalda'},
+  {id:'piernas', label:'Piernas'},
+  {id:'hombro', label:'Hombro'},
+  {id:'brazos', label:'Brazos'},
+  {id:'core', label:'Core'},
+  {id:'cardio', label:'Cardio'},
+];
+
+// pattern -> css class for the css-figure animation
+// regions -> ids highlighted on the body svg, view -> 'front' | 'back'
+const EX = [
+  {id:'e1', cat:'pecho', en:'barbell bench press', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Bench_Press_-_Medium_Grip/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Bench_Press_-_Medium_Grip/1.jpg'], name:'Press de banca con barra', muscle:'Pectoral mayor', equipment:'Barra + banco', level:'Intermedio', pattern:'push', view:'front', regions:['chest','shoulderF'],
+    steps:['Recuéstate en el banco con los pies firmes en el piso.','Toma la barra un poco más ancho que los hombros.','Baja la barra controlada hasta rozar el pecho.','Empuja hacia arriba sin bloquear los codos de golpe.'],
+    tip:'Mantén los omóplatos retraídos durante todo el movimiento para proteger el hombro.'},
+  {id:'e2', cat:'pecho', en:'dumbbell flyes', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Flyes/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Flyes/1.jpg'], name:'Aperturas con mancuerna', muscle:'Pectoral (fibras externas)', equipment:'Mancuernas', level:'Principiante', pattern:'pull', view:'front', regions:['chest'],
+    steps:['Acuéstate con una mancuerna en cada mano, brazos extendidos arriba.','Baja los brazos en arco manteniendo un ligero doblez en el codo.','Siente el estiramiento del pecho al final del recorrido.','Regresa apretando el pecho, sin juntar las mancuernas de golpe.'],
+    tip:'El movimiento es de arco, no de bisagra en el codo — evita convertirlo en un press.'},
+  {id:'e3', cat:'pecho', en:'push up', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/1.jpg'], name:'Flexiones de pecho', muscle:'Pectoral / tríceps', equipment:'Peso corporal', level:'Principiante', pattern:'push', view:'front', regions:['chest','tricepsF'],
+    steps:['Manos ligeramente más anchas que los hombros.','Cuerpo en línea recta de cabeza a talones.','Baja hasta que el pecho casi toque el piso.','Empuja hacia arriba manteniendo el core firme.'],
+    tip:'Si es muy difícil, apóyate en las rodillas manteniendo la misma línea de cadera.'},
+  {id:'e4', cat:'espalda', en:'barbell bent over row', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Barbell_Row/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Barbell_Row/1.jpg'], name:'Remo con barra', muscle:'Dorsal ancho / trapecio medio', equipment:'Barra', level:'Intermedio', pattern:'pull', view:'back', regions:['lats','traps'],
+    steps:['Flexiona la cadera manteniendo la espalda recta, torso a 45°.','Toma la barra con agarre prono, ancho de hombros.','Jala la barra hacia el abdomen apretando los omóplatos.','Baja controlado sin perder la postura de la espalda.'],
+    tip:'Evita usar impulso de cadera — el jalón lo hace la espalda, no la zona lumbar.'},
+  {id:'e5', cat:'espalda', en:'lat pulldown', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wide-Grip_Lat_Pulldown/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wide-Grip_Lat_Pulldown/1.jpg'], name:'Jalón al pecho (polea)', muscle:'Dorsal ancho', equipment:'Polea/máquina', level:'Principiante', pattern:'pull', view:'back', regions:['lats'],
+    steps:['Siéntate con los muslos fijos bajo el soporte.','Toma la barra con agarre amplio.','Jala hacia la parte alta del pecho, codos hacia abajo.','Sube controlando el peso, sin dejar que te levante del asiento.'],
+    tip:'Piensa en "llevar los codos a los bolsillos" para activar mejor el dorsal.'},
+  {id:'e6', cat:'espalda', en:'romanian deadlift', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/1.jpg'], name:'Peso muerto rumano', muscle:'Isquiotibiales / lumbar', equipment:'Barra o mancuernas', level:'Intermedio', pattern:'squat', view:'back', regions:['hamstrings','lowerback'],
+    steps:['De pie, barra frente a los muslos, rodillas semi-flexionadas.','Empuja la cadera hacia atrás manteniendo la barra pegada a las piernas.','Baja hasta sentir el estiramiento de isquiotibiales.','Sube empujando la cadera hacia adelante, sin redondear la espalda.'],
+    tip:'La espalda baja se mantiene neutra siempre — si se curva, reduce el rango.'},
+  {id:'e7', cat:'piernas', en:'barbell squat', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Full_Squat/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Full_Squat/1.jpg'], name:'Sentadilla con barra', muscle:'Cuádriceps / glúteo', equipment:'Barra + rack', level:'Intermedio', pattern:'squat', view:'front', regions:['quads','glutes'],
+    steps:['Barra apoyada en la parte alta de la espalda.','Pies al ancho de hombros, punta ligeramente hacia afuera.','Baja doblando cadera y rodilla a la vez, pecho arriba.','Sube empujando el piso con todo el pie.'],
+    tip:'Las rodillas siguen la dirección de los dedos de los pies — no las dejes colapsar hacia adentro.'},
+  {id:'e8', cat:'piernas', en:'leg press', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/1.jpg'], name:'Prensa de piernas', muscle:'Cuádriceps / glúteo', equipment:'Máquina', level:'Principiante', pattern:'squat', view:'front', regions:['quads','glutes'],
+    steps:['Siéntate en la máquina con la espalda pegada al respaldo.','Pies al ancho de hombros sobre la plataforma.','Baja controlado hasta 90° de rodilla.','Empuja sin extender la rodilla al 100% (evita bloquearla).'],
+    tip:'No dejes que la zona lumbar se despegue del respaldo al bajar.'},
+  {id:'e9', cat:'piernas', en:'walking lunge', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Walking_Lunge/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Walking_Lunge/1.jpg'], name:'Zancadas caminando', muscle:'Cuádriceps / glúteo', equipment:'Peso corporal o mancuernas', level:'Principiante', pattern:'squat', view:'front', regions:['quads','glutes','calvesF'],
+    steps:['Da un paso largo hacia adelante.','Baja hasta que ambas rodillas formen 90°.','Empuja con la pierna delantera para avanzar.','Alterna piernas manteniendo el torso erguido.'],
+    tip:'La rodilla delantera no debe rebasar mucho la punta del pie.'},
+  {id:'e10', cat:'piernas', en:'lying leg curl', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Leg_Curls/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Leg_Curls/1.jpg'], name:'Curl femoral acostado', muscle:'Isquiotibiales', equipment:'Máquina', level:'Principiante', pattern:'curl', view:'back', regions:['hamstrings'],
+    steps:['Acuéstate boca abajo en la máquina, rodillas al borde del cojín.','Flexiona las rodillas llevando el talón hacia el glúteo.','Aprieta al final del recorrido un segundo.','Baja controlado sin soltar el peso de golpe.'],
+    tip:'Evita levantar la cadera del cojín para no perder tensión en el isquiotibial.'},
+  {id:'e11', cat:'hombro', en:'dumbbell shoulder press', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shoulder_Press/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shoulder_Press/1.jpg'], name:'Press militar con mancuernas', muscle:'Deltoides', equipment:'Mancuernas', level:'Intermedio', pattern:'push', view:'front', regions:['shoulderF'],
+    steps:['De pie o sentado, mancuernas a la altura de los hombros.','Empuja hacia arriba hasta extender los brazos.','Baja controlado hasta la altura de la oreja.','Mantén el core apretado para no arquear la espalda baja.'],
+    tip:'Exhala en el empuje, evita usar impulso de piernas si buscas aislar el hombro.'},
+  {id:'e12', cat:'hombro', en:'lateral raise', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/1.jpg'], name:'Elevaciones laterales', muscle:'Deltoides lateral', equipment:'Mancuernas', level:'Principiante', pattern:'pull', view:'front', regions:['shoulderF'],
+    steps:['De pie, mancuernas a los costados, ligero doblez de codo.','Eleva los brazos hasta la altura de los hombros.','Pausa un instante en la parte alta.','Baja lento controlando el peso, sin dejarlo caer.'],
+    tip:'Usa un peso que te permita controlar la bajada — el momentum quita trabajo al deltoides.'},
+  {id:'e13', cat:'hombro', en:'face pull', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/1.jpg'], name:'Face pull', muscle:'Deltoides posterior / trapecio', equipment:'Polea + cuerda', level:'Intermedio', pattern:'pull', view:'back', regions:['traps','tricepsF'],
+    steps:['Toma la cuerda a la altura de la cara en la polea.','Jala separando las manos, codos altos.','Aprieta los omóplatos al final.','Regresa controlado a la posición inicial.'],
+    tip:'Excelente para compensar el trabajo de press y cuidar la salud del hombro.'},
+  {id:'e14', cat:'brazos', en:'barbell curl', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Curl/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Curl/1.jpg'], name:'Curl de bíceps con barra', muscle:'Bíceps braquial', equipment:'Barra Z o recta', level:'Principiante', pattern:'curl', view:'front', regions:['bicepsF'],
+    steps:['De pie, barra con agarre supino al ancho de hombros.','Flexiona los codos llevando la barra hacia el pecho.','Aprieta el bíceps arriba sin balancear el torso.','Baja controlado hasta extender el brazo.'],
+    tip:'Los codos permanecen pegados al torso durante todo el recorrido.'},
+  {id:'e15', cat:'brazos', en:'triceps pushdown', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/1.jpg'], name:'Extensión de tríceps en polea', muscle:'Tríceps', equipment:'Polea', level:'Principiante', pattern:'push', view:'front', regions:['tricepsF'],
+    steps:['De pie frente a la polea alta, codos pegados al torso.','Extiende los antebrazos hacia abajo.','Aprieta el tríceps al final del movimiento.','Regresa controlado sin mover los codos hacia adelante.'],
+    tip:'Solo el antebrazo se mueve — el codo actúa como bisagra fija.'},
+  {id:'e16', cat:'brazos', en:'bench dips', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bench_Dips/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bench_Dips/1.jpg'], name:'Fondos en banco (tríceps)', muscle:'Tríceps', equipment:'Banco', level:'Intermedio', pattern:'push', view:'front', regions:['tricepsF'],
+    steps:['Manos en el borde del banco, piernas extendidas al frente.','Baja el cuerpo flexionando los codos hacia atrás.','Desciende hasta 90° de codo.','Empuja de regreso sin bloquear el codo con fuerza.'],
+    tip:'Mantén la cadera cerca del banco para no sobrecargar el hombro.'},
+  {id:'e17', cat:'core', en:'plank', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/1.jpg'], name:'Plancha abdominal', muscle:'Recto abdominal / transverso', equipment:'Peso corporal', level:'Principiante', pattern:'core', view:'front', regions:['abs'],
+    steps:['Antebrazos y puntas de los pies en el piso.','Cuerpo en línea recta, sin elevar ni hundir la cadera.','Aprieta el abdomen como si te fueran a golpear.','Sostén respirando de forma controlada.'],
+    tip:'Empieza con series de 20-30 segundos y aumenta el tiempo progresivamente.'},
+  {id:'e18', cat:'core', en:'crunches', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Crunches/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Crunches/1.jpg'], name:'Crunch abdominal', muscle:'Recto abdominal', equipment:'Peso corporal', level:'Principiante', pattern:'core', view:'front', regions:['abs'],
+    steps:['Acuéstate boca arriba, rodillas flexionadas, pies en el piso.','Manos detrás de la cabeza sin jalar el cuello.','Eleva los hombros del piso contrayendo el abdomen.','Baja controlado sin apoyar completamente la cabeza.'],
+    tip:'El movimiento es corto — no es necesario sentarse por completo.'},
+  {id:'e19', cat:'core', en:'hanging leg raise', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hanging_Leg_Raise/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hanging_Leg_Raise/1.jpg'], name:'Elevación de piernas colgado', muscle:'Recto abdominal inferior', equipment:'Barra de dominadas', level:'Avanzado', pattern:'core', view:'front', regions:['abs'],
+    steps:['Cuélgate de la barra con agarre firme.','Eleva las piernas rectas o flexionadas hasta la altura de la cadera.','Controla la bajada sin balancear el cuerpo.','Evita usar impulso de espalda para levantar las piernas.'],
+    tip:'Si es muy demandante, empieza flexionando las rodillas al elevar.'},
+  {id:'e20', cat:'cardio', en:'jumping jack', name:'Jumping jacks', muscle:'Cuerpo completo', equipment:'Peso corporal', level:'Principiante', pattern:'cardio', view:'front', regions:['chest','quads','shoulderF'],
+    steps:['De pie, pies juntos y brazos a los costados.','Salta abriendo piernas y elevando los brazos sobre la cabeza.','Salta de regreso a la posición inicial.','Mantén un ritmo constante durante el tiempo indicado.'],
+    tip:'Ideal para calentar antes de la rutina o cerrar con un bloque de cardio corto.'},
+  {id:'e21', cat:'cardio', en:'burpee', name:'Burpees', muscle:'Cuerpo completo', equipment:'Peso corporal', level:'Intermedio', pattern:'cardio', view:'front', regions:['chest','quads','abs'],
+    steps:['De pie, baja a posición de sentadilla y apoya las manos.','Lleva los pies hacia atrás a posición de plancha.','Haz una flexión (opcional) y regresa los pies al frente.','Salta hacia arriba con los brazos extendidos.'],
+    tip:'Reduce la velocidad si la técnica empieza a fallar — la forma es más importante que el ritmo.'},
+  {id:'e22', cat:'cardio', en:'mountain climber', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Mountain_Climbers/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Mountain_Climbers/1.jpg'], name:'Escaladores (mountain climbers)', muscle:'Core / cardio', equipment:'Peso corporal', level:'Principiante', pattern:'cardio', view:'front', regions:['abs','quads'],
+    steps:['Posición de plancha alta, manos bajo los hombros.','Lleva una rodilla hacia el pecho.','Cambia de pierna rápidamente, tipo carrera.','Mantén la cadera baja y estable durante todo el ejercicio.'],
+    tip:'Controla la velocidad — es mejor mantener buena forma que ir muy rápido y perder la postura.'},
+  {id:'e23', cat:'pecho', en:'dumbbell bench press', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bench_Press/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bench_Press/1.jpg'], name:'Press de banca con mancuernas', muscle:'Pectoral mayor', equipment:'Mancuernas', level:'Principiante', pattern:'push', view:'front', regions:['chest','shoulderF'],
+    steps:['Recuéstate en el banco con una mancuerna en cada mano a la altura del pecho.','Empuja ambas mancuernas hacia arriba hasta casi juntar los brazos.','Baja controlado hasta sentir el estiramiento del pecho.','Mantén las muñecas firmes durante todo el recorrido.'],
+    tip:'A diferencia de la barra, las mancuernas permiten mayor rango de movimiento — no fuerces el hombro al bajar.'},
+  {id:'e24', cat:'espalda', en:'one arm dumbbell row', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One-Arm_Dumbbell_Row/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One-Arm_Dumbbell_Row/1.jpg'], name:'Remo con mancuerna a una mano', muscle:'Dorsal ancho', equipment:'Mancuerna + banco', level:'Principiante', pattern:'pull', view:'back', regions:['lats'],
+    steps:['Apoya una rodilla y una mano en el banco, espalda paralela al piso.','Toma la mancuerna con la mano libre, brazo extendido.','Jala la mancuerna hacia la cadera apretando el omóplato.','Baja controlado sin girar el torso.'],
+    tip:'Evita usar impulso del torso — el jalón lo hace la espalda, no el balanceo del cuerpo.'},
+  {id:'e25', cat:'piernas', en:'goblet squat', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Goblet_Squat/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Goblet_Squat/1.jpg'], name:'Sentadilla goblet con mancuerna', muscle:'Cuádriceps / glúteo', equipment:'Mancuerna', level:'Principiante', pattern:'squat', view:'front', regions:['quads','glutes'],
+    steps:['Sostén una mancuerna verticalmente contra el pecho con ambas manos.','Pies al ancho de hombros, punta ligeramente hacia afuera.','Baja en sentadilla manteniendo el pecho arriba y los codos entre las rodillas.','Sube empujando el piso con todo el pie.'],
+    tip:'Excelente para aprender la técnica de sentadilla antes de pasar a barra — el peso al frente ayuda a mantener el torso erguido.'},
+  {id:'e26', cat:'piernas', en:'dumbbell lunges', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Lunges/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Lunges/1.jpg'], name:'Zancadas con mancuernas', muscle:'Cuádriceps / glúteo', equipment:'Mancuernas', level:'Principiante', pattern:'squat', view:'front', regions:['quads','glutes'],
+    steps:['Sostén una mancuerna en cada mano a los costados.','Da un paso largo hacia adelante.','Baja hasta que ambas rodillas formen 90°.','Empuja con la pierna delantera para regresar a la posición inicial.'],
+    tip:'El peso extra de las mancuernas exige más del core para mantener el equilibrio — controla el ritmo.'},
+  {id:'e27', cat:'hombro', en:'arnold dumbbell press', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Arnold_Dumbbell_Press/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Arnold_Dumbbell_Press/1.jpg'], name:'Press Arnold con mancuernas', muscle:'Deltoides (los 3 haces)', equipment:'Mancuernas', level:'Intermedio', pattern:'push', view:'front', regions:['shoulderF'],
+    steps:['Siéntate con las mancuernas frente a los hombros, palmas hacia ti.','Empuja hacia arriba mientras giras las palmas hacia afuera.','Extiende completamente arriba con las palmas al frente.','Regresa invirtiendo el giro hasta la posición inicial.'],
+    tip:'El giro adicional activa más fibras del deltoides que un press tradicional — hazlo despacio y controlado.'},
+  {id:'e28', cat:'brazos', en:'hammer curls', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hammer_Curls/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hammer_Curls/1.jpg'], name:'Curl martillo con mancuernas', muscle:'Bíceps / antebrazo', equipment:'Mancuernas', level:'Principiante', pattern:'curl', view:'front', regions:['bicepsF'],
+    steps:['De pie, mancuernas a los costados con agarre neutro (palmas viéndose).','Flexiona los codos manteniendo la muñeca fija, sin girar la palma.','Aprieta arriba sin balancear el torso.','Baja controlado hasta extender el brazo.'],
+    tip:'El agarre neutro activa también el braquial y el antebrazo, no solo el bíceps.'},
+  {id:'e29', cat:'brazos', en:'tricep dumbbell kickback', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Tricep_Dumbbell_Kickback/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Tricep_Dumbbell_Kickback/1.jpg'], name:'Patada de tríceps con mancuerna', muscle:'Tríceps', equipment:'Mancuerna + banco', level:'Principiante', pattern:'push', view:'front', regions:['tricepsF'],
+    steps:['Apoya una rodilla y una mano en el banco, torso paralelo al piso.','Mantén el brazo superior pegado al torso, codo a 90°.','Extiende el antebrazo hacia atrás hasta estirar el brazo por completo.','Regresa controlado sin mover el codo de su posición.'],
+    tip:'Solo el antebrazo se mueve — si balanceas el hombro, estás perdiendo tensión en el tríceps.'},
+  {id:'e30', cat:'core', en:'russian twist', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Russian_Twist/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Russian_Twist/1.jpg'], name:'Giro ruso con mancuerna', muscle:'Oblicuos / abdomen', equipment:'Mancuerna', level:'Principiante', pattern:'core', view:'front', regions:['abs'],
+    steps:['Siéntate con las rodillas flexionadas, torso inclinado hacia atrás ~45°.','Sostén una mancuerna con ambas manos frente al abdomen.','Gira el torso llevando la mancuerna de un lado al otro.','Mantén el core apretado durante todo el movimiento.'],
+    tip:'Entre más levantes los pies del piso, más difícil se vuelve — empieza con los pies apoyados si eres principiante.'},
+  {id:'e31', cat:'hombro', en:'bent over rear delt raise', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench/1.jpg'], name:'Pájaros (elevaciones posteriores)', muscle:'Deltoides posterior', equipment:'Mancuernas', level:'Principiante', pattern:'pull', view:'back', regions:['traps'],
+    steps:['Inclina el torso hacia adelante 45°, rodillas ligeramente flexionadas.','Mancuernas colgando frente a ti, palmas viéndose.','Eleva los brazos hacia los lados como si abrieras las alas.','Baja controlado sin balancear el torso.'],
+    tip:'Usa un peso ligero — el deltoides posterior es un músculo pequeño y es fácil compensar con la espalda si el peso es excesivo.'},
+  {id:'e32', cat:'espalda', en:'bent over two dumbbell row', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Two-Dumbbell_Row/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Two-Dumbbell_Row/1.jpg'], name:'Remo inclinado bilateral con mancuernas', muscle:'Dorsal ancho / trapecio medio', equipment:'Mancuernas', level:'Intermedio', pattern:'pull', view:'back', regions:['lats','traps'],
+    steps:['De pie, inclina el torso hacia adelante manteniendo la espalda recta.','Mancuernas colgando bajo los hombros, brazos extendidos.','Jala ambas mancuernas hacia el abdomen apretando los omóplatos.','Baja controlado sin perder la posición de la espalda.'],
+    tip:'Mantén el cuello neutro (mirando ligeramente al piso) para no forzar la zona cervical.'},
+  {id:'e33', cat:'espalda', en:'bent arm dumbbell pullover', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent-Arm_Dumbbell_Pullover/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent-Arm_Dumbbell_Pullover/1.jpg'], name:'Pullover con mancuerna', muscle:'Dorsal ancho / pectoral', equipment:'Mancuerna + banco', level:'Intermedio', pattern:'pull', view:'back', regions:['lats'],
+    steps:['Acuéstate perpendicular en un banco, solo los hombros apoyados.','Sujeta una mancuerna con ambas manos sobre el pecho.','Con los brazos casi rectos, lleva la mancuerna hacia atrás de la cabeza.','Regresa controlado sintiendo el estiramiento del dorsal.'],
+    tip:'El movimiento es en arco, no una extensión de brazos — mantén una ligera flexión de codo fija durante todo el recorrido.'},
+  {id:'e34', cat:'brazos', en:'dumbbell bicep curl', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/1.jpg'], name:'Curl de bíceps con mancuernas', muscle:'Bíceps braquial', equipment:'Mancuernas', level:'Principiante', pattern:'curl', view:'front', regions:['bicepsF'],
+    steps:['De pie o sentado, mancuernas a los costados con palmas al frente.','Flexiona los codos llevando las mancuernas hacia los hombros.','Aprieta el bíceps arriba sin mover el brazo superior.','Baja controlado hasta extender el brazo por completo.'],
+    tip:'Puedes hacerlo alterno (un brazo a la vez) o simultáneo — el alterno permite concentrarte mejor en cada lado.'},
+  {id:'e35', cat:'brazos', en:'overhead triceps extension', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Overhead_Triceps/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Overhead_Triceps/1.jpg'], name:'Extensión de tríceps sobre la cabeza (copa)', muscle:'Tríceps (cabeza larga)', equipment:'Mancuerna', level:'Principiante', pattern:'curl', view:'front', regions:['tricepsF'],
+    steps:['Sentado, sujeta una mancuerna con ambas manos por detrás de la cabeza.','Codos apuntando hacia arriba, cerca de las orejas.','Extiende los brazos verticalmente hacia el techo.','Baja controlado doblando solo los codos, sin moverlos hacia adelante.'],
+    tip:'Esta variante enfatiza la cabeza larga del tríceps más que las extensiones con codos pegados al torso.'},
+  {id:'e36', cat:'pecho', en:'dips chest version', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dips_-_Chest_Version/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dips_-_Chest_Version/1.jpg'], name:'Fondos en paralelas (pecho)', muscle:'Pectoral inferior', equipment:'Barras paralelas', level:'Avanzado', pattern:'push', view:'front', regions:['chest','tricepsF'],
+    steps:['Sujétate de las barras paralelas con los brazos extendidos.','Inclina el torso hacia adelante y baja flexionando los codos.','Desciende hasta sentir el estiramiento del pecho.','Empuja hacia arriba sin bloquear los codos de golpe.'],
+    tip:'Inclinar el torso hacia adelante enfatiza el pecho; mantenerlo vertical enfatiza más el tríceps.'},
+  {id:'e37', cat:'espalda', en:'pullups', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pullups/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pullups/1.jpg'], name:'Dominadas', muscle:'Dorsal ancho', equipment:'Barra de dominadas', level:'Avanzado', pattern:'pull', view:'back', regions:['lats'],
+    steps:['Cuélgate de la barra con agarre prono, un poco más ancho que los hombros.','Jala tu cuerpo hacia arriba hasta que la barbilla pase la barra.','Aprieta la espalda arriba sin balancear las piernas.','Baja controlado hasta extender completamente los brazos.'],
+    tip:'Si aún no puedes hacer una completa, usa banda de asistencia o la versión asistida en máquina para progresar.'},
+  {id:'e38', cat:'piernas', en:'pistol squat', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kettlebell_Pistol_Squat/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kettlebell_Pistol_Squat/1.jpg'], name:'Sentadilla pistol (una pierna)', muscle:'Cuádriceps / glúteo / equilibrio', equipment:'Peso corporal o mancuerna', level:'Avanzado', pattern:'squat', view:'front', regions:['quads','glutes'],
+    steps:['De pie sobre una pierna, extiende la otra pierna al frente.','Baja lentamente en sentadilla sobre la pierna de apoyo.','Mantén el pecho arriba y los brazos al frente para el equilibrio.','Empuja con el talón para regresar a la posición inicial.'],
+    tip:'Requiere mucha movilidad de tobillo y equilibrio — practica primero sostenido de algo antes de hacerla libre.'},
+  {id:'e39', cat:'hombro', en:'handstand push ups', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Handstand_Push-Ups/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Handstand_Push-Ups/1.jpg'], name:'Flexiones en parada de manos', muscle:'Deltoides (todos los haces)', equipment:'Peso corporal + pared', level:'Avanzado', pattern:'push', view:'front', regions:['shoulderF'],
+    steps:['Colócate en parada de manos apoyando los pies en la pared.','Baja la cabeza hacia el piso flexionando los codos.','Desciende hasta casi tocar el piso con la cabeza.','Empuja hacia arriba hasta extender los brazos por completo.'],
+    tip:'Domina primero el press militar y el equilibrio en parada de manos antes de intentar esta variante.'},
+  {id:'e40', cat:'brazos', en:'dips triceps version', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dips_-_Triceps_Version/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dips_-_Triceps_Version/1.jpg'], name:'Fondos en paralelas (tríceps)', muscle:'Tríceps', equipment:'Barras paralelas', level:'Avanzado', pattern:'push', view:'front', regions:['tricepsF'],
+    steps:['Sujétate de las barras paralelas con el torso vertical.','Mantén los codos cerca del cuerpo, no abiertos hacia afuera.','Baja hasta 90° de flexión de codo.','Empuja hacia arriba concentrándote en apretar el tríceps.'],
+    tip:'Mantener el torso vertical (en vez de inclinado) es lo que enfatiza el tríceps sobre el pecho.'},
+  {id:'e41', cat:'cardio', en:'wind sprints', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wind_Sprints/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wind_Sprints/1.jpg'], name:'Sprints (carreras cortas explosivas)', muscle:'Cuerpo completo / cardio', equipment:'Peso corporal', level:'Avanzado', pattern:'cardio', view:'front', regions:['quads','abs'],
+    steps:['Marca una distancia corta (20-40 metros).','Corre a máxima velocidad posible durante todo el tramo.','Camina o trota suave de regreso como recuperación.','Repite las series indicadas con descanso completo entre cada una.'],
+    tip:'Requiere buena condición cardiovascular previa — no es el punto de partida si recién empiezas a entrenar.'},
+];
+
+/* ---------------- BODY SVG (front / back) ---------------- */
+function bodySvg(view){
+  if(view==='front'){
+    return `<svg class="bodysvg" viewBox="0 0 140 230">
+      <ellipse class="outline" cx="70" cy="16" rx="14" ry="16"/>
+      <rect class="outline" x="64" y="30" width="12" height="10"/>
+      <path class="outline" d="M40,44 Q70,36 100,44 L108,58 Q70,66 32,58 Z"/>
+      <path class="outline" d="M32,58 Q28,90 34,124 L106,124 Q112,90 108,58 Z"/>
+      <ellipse class="region" id="r-shoulderF" cx="26" cy="56" rx="12" ry="14"/>
+      <ellipse class="region" id="r-shoulderF2" cx="114" cy="56" rx="12" ry="14"/>
+      <rect class="outline" x="14" y="64" width="14" height="30" rx="7"/>
+      <rect class="outline" x="112" y="64" width="14" height="30" rx="7"/>
+      <ellipse class="region" id="r-bicepsF" cx="21" cy="80" rx="8" ry="14"/>
+      <ellipse class="region" id="r-bicepsF2" cx="119" cy="80" rx="8" ry="14"/>
+      <rect class="outline" x="12" y="94" width="12" height="28" rx="6"/>
+      <rect class="outline" x="116" y="94" width="12" height="28" rx="6"/>
+      <path class="region" id="r-chest" d="M40,62 Q70,54 100,62 L96,86 Q70,94 44,86 Z"/>
+      <g id="r-abs" class="region">
+        <rect x="58" y="90" width="24" height="14" rx="3"/>
+        <rect x="58" y="106" width="24" height="14" rx="3"/>
+      </g>
+      <path class="outline" d="M34,124 Q40,140 70,142 Q100,140 106,124 Z"/>
+      <path class="outline" d="M40,142 L34,196 Q34,204 44,204 L58,204 Q64,204 64,196 L62,144 Z"/>
+      <path class="outline" d="M100,142 L106,196 Q106,204 96,204 L82,204 Q76,204 76,196 L78,144 Z"/>
+      <path class="region" id="r-quads" d="M42,146 L37,192 Q37,198 44,198 L56,198 Q61,198 60,192 L58,148 Z"/>
+      <path class="region" id="r-quads2" d="M98,146 L103,192 Q103,198 96,198 L84,198 Q79,198 80,192 L82,148 Z"/>
+      <path class="outline" d="M40,206 L38,226 Q38,230 44,230 L52,230 Q56,230 56,226 L54,206 Z"/>
+      <path class="outline" d="M100,206 L102,226 Q102,230 96,230 L88,230 Q84,230 84,226 L86,206 Z"/>
+      <ellipse class="region" id="r-calvesF" cx="47" cy="216" rx="8" ry="12"/>
+      <ellipse class="region" id="r-calvesF2" cx="93" cy="216" rx="8" ry="12"/>
+    </svg>`;
+  }
+  return `<svg class="bodysvg" viewBox="0 0 140 230">
+      <ellipse class="outline" cx="70" cy="16" rx="14" ry="16"/>
+      <rect class="outline" x="64" y="30" width="12" height="10"/>
+      <path class="outline" d="M40,44 Q70,36 100,44 L108,58 Q70,66 32,58 Z"/>
+      <path class="outline" d="M32,58 Q28,90 34,124 L106,124 Q112,90 108,58 Z"/>
+      <path class="region" id="r-traps" d="M50,44 L70,38 L90,44 L82,68 L70,72 L58,68 Z"/>
+      <path class="region" id="r-lats" d="M40,66 Q70,78 100,66 L96,110 Q70,118 44,110 Z"/>
+      <rect class="region" id="r-lowerback" x="56" y="112" width="28" height="14" rx="4"/>
+      <ellipse class="outline" cx="26" cy="56" rx="12" ry="14"/>
+      <ellipse class="outline" cx="114" cy="56" rx="12" ry="14"/>
+      <rect class="outline" x="14" y="64" width="14" height="30" rx="7"/>
+      <rect class="outline" x="112" y="64" width="14" height="30" rx="7"/>
+      <ellipse class="region" id="r-tricepsF" cx="21" cy="80" rx="8" ry="14"/>
+      <ellipse class="region" id="r-tricepsF2" cx="119" cy="80" rx="8" ry="14"/>
+      <rect class="outline" x="12" y="94" width="12" height="28" rx="6"/>
+      <rect class="outline" x="116" y="94" width="12" height="28" rx="6"/>
+      <path class="outline" d="M34,124 Q40,140 70,142 Q100,140 106,124 Z"/>
+      <path class="region" id="r-glutes" d="M36,126 Q40,138 70,140 Q100,138 104,126 L98,148 Q70,156 42,148 Z"/>
+      <path class="outline" d="M40,142 L34,196 Q34,204 44,204 L58,204 Q64,204 64,196 L62,144 Z"/>
+      <path class="outline" d="M100,142 L106,196 Q106,204 96,204 L82,204 Q76,204 76,196 L78,144 Z"/>
+      <path class="region" id="r-hamstrings" d="M42,150 L37,192 Q37,198 44,198 L56,198 Q61,198 60,192 L58,152 Z"/>
+      <path class="region" id="r-hamstrings2" d="M98,150 L103,192 Q103,198 96,198 L84,198 Q79,198 80,192 L82,152 Z"/>
+      <path class="outline" d="M40,206 L38,226 Q38,230 44,230 L52,230 Q56,230 56,226 L54,206 Z"/>
+      <path class="outline" d="M100,206 L102,226 Q102,230 96,230 L88,230 Q84,230 84,226 L86,206 Z"/>
+      <ellipse class="region" id="r-calvesF" cx="47" cy="216" rx="8" ry="12"/>
+      <ellipse class="region" id="r-calvesF2" cx="93" cy="216" rx="8" ry="12"/>
+  </svg>`;
+}
+// region key -> svg element ids it should light up
+const REGION_MAP = {
+  chest:['r-chest'], shoulderF:['r-shoulderF','r-shoulderF2'], bicepsF:['r-bicepsF','r-bicepsF2'],
+  tricepsF:['r-tricepsF','r-tricepsF2'], abs:['r-abs'], quads:['r-quads','r-quads2'],
+  calvesF:['r-calvesF','r-calvesF2'], traps:['r-traps'], lats:['r-lats'], lowerback:['r-lowerback'],
+  glutes:['r-glutes'], hamstrings:['r-hamstrings','r-hamstrings2'],
+};
+
+const PATTERN_ICON = {push:'⬆', pull:'⬇', squat:'⤓', curl:'↻', core:'▦', cardio:'⚡'};
+
+/* ---------------- Motor de animación por JS (evita depender de CSS @keyframes) ---------------- */
+let rafId = null;
+let photoInterval = null;
+function lerp(a,b,k){ return a + (b-a)*k; }
+function stopFigureAnim(){
+  if(rafId){ cancelAnimationFrame(rafId); rafId = null; }
+  if(photoInterval){ clearInterval(photoInterval); photoInterval = null; }
+}
+const PATTERN_DURATION = {push:900, squat:1200, pull:1000, curl:900, core:1300, cardio:550};
+function applyPattern(pattern, k, els){
+  const {wrap, armL, armR, legL, legR} = els;
+  switch(pattern){
+    case 'push':
+      wrap.style.transform = `translateY(${lerp(0,-9,k)}px)`;
+      armL.style.transform = `rotate(${lerp(85,15,k)}deg)`;
+      armR.style.transform = `rotate(${lerp(-85,-15,k)}deg)`;
+      break;
+    case 'squat':
+      wrap.style.transform = `translateY(${lerp(0,22,k)}px)`;
+      legL.style.transform = `rotate(${lerp(0,22,k)}deg)`;
+      legR.style.transform = `rotate(${lerp(0,-22,k)}deg)`;
+      armL.style.transform = `rotate(${lerp(10,-45,k)}deg)`;
+      armR.style.transform = `rotate(${lerp(-10,45,k)}deg)`;
+      break;
+    case 'pull':
+      wrap.style.transform = `translateX(${lerp(0,-4,k)}px)`;
+      armL.style.transform = `rotate(${lerp(-60,40,k)}deg)`;
+      armR.style.transform = `rotate(${lerp(60,-40,k)}deg)`;
+      break;
+    case 'curl':
+      armL.style.transformOrigin = 'top left';
+      armR.style.transformOrigin = 'top right';
+      armL.style.transform = `rotate(${lerp(20,-110,k)}deg)`;
+      armR.style.transform = `rotate(${lerp(-20,110,k)}deg)`;
+      break;
+    case 'core':
+      wrap.style.transform = `rotate(${lerp(0,-10,k)}deg)`;
+      legL.style.transform = `rotate(${lerp(0,16,k)}deg)`;
+      legR.style.transform = `rotate(${lerp(0,-16,k)}deg)`;
+      break;
+    case 'cardio':
+      wrap.style.transform = `translateY(${lerp(0,-14,k)}px)`;
+      armL.style.transform = `rotate(${lerp(25,-155,k)}deg)`;
+      armR.style.transform = `rotate(${lerp(-25,155,k)}deg)`;
+      legL.style.transform = `rotate(${lerp(8,-26,k)}deg)`;
+      legR.style.transform = `rotate(${lerp(-8,26,k)}deg)`;
+      break;
+  }
+}
+function startFigureAnim(pattern){
+  stopFigureAnim();
+  const els = {
+    wrap: document.getElementById('figureWrap'),
+    armL: document.getElementById('figArmL'),
+    armR: document.getElementById('figArmR'),
+    legL: document.getElementById('figLegL'),
+    legR: document.getElementById('figLegR'),
+  };
+  if(!els.wrap) return;
+  const dur = PATTERN_DURATION[pattern] || 1000;
+  const start = performance.now();
+  function frame(now){
+    const wrap2 = document.getElementById('figureWrap');
+    if(!wrap2){ rafId = null; return; } // el panel se cerró
+    const t = ((now - start) % dur) / dur;
+    const k = (1 - Math.cos(t * 2 * Math.PI)) / 2; // 0 -> 1 -> 0, suave
+    applyPattern(pattern, k, els);
+    const cap = document.getElementById('animCap');
+    if(cap) cap.textContent = 'Animación';
+    rafId = requestAnimationFrame(frame);
+  }
+  rafId = requestAnimationFrame(frame);
+}
+
+/* Las imágenes reales ahora vienen verificadas de antemano en cada ejercicio (campo img),
+   tomadas del dataset de dominio público free-exercise-db (github.com/yuhonas/free-exercise-db),
+   así que no dependemos de un fetch en vivo a un servicio externo inestable. */
+
+/* ---------------- RENDER ---------------- */
+const chipsEl = document.getElementById('chips');
+const gridEl = document.getElementById('grid');
+const levelChipsEl = document.getElementById('levelChips');
+let activeCat = 'pecho';
+let activeLevel = 'todos';
+const LEVELS = ['todos','Principiante','Intermedio','Avanzado'];
+
+function renderLevelChips(){
+  levelChipsEl.innerHTML = LEVELS.map(l=>`<div class="lvl-chip ${l===activeLevel?'active':''}" data-lvl="${l}">${l==='todos'?'Todos':l}</div>`).join('');
+  levelChipsEl.querySelectorAll('.lvl-chip').forEach(el=>{
+    el.addEventListener('click', ()=>{ activeLevel = el.dataset.lvl; renderLevelChips(); renderGrid(); });
+  });
+}
+
+function renderChips(){
+  chipsEl.innerHTML = CATS.map(c=>`<div class="chip ${c.id===activeCat?'active':''}" data-cat="${c.id}">${c.label}</div>`).join('');
+  chipsEl.querySelectorAll('.chip').forEach(el=>{
+    el.addEventListener('click', ()=>{ activeCat = el.dataset.cat; renderChips(); renderGrid(); });
+  });
+}
+
+function renderGrid(){
+  const items = EX.filter(e=>e.cat===activeCat && (activeLevel==='todos' || e.level===activeLevel));
+  if(!items.length){
+    gridEl.innerHTML = `<div class="empty-state">No hay ejercicios de nivel "${activeLevel}" en esta categoría todavía. Prueba con otro nivel.</div>`;
+    return;
+  }
+  gridEl.innerHTML = items.map(e=>`
+    <div class="card" data-id="${e.id}">
+      <div class="pat-icon">${PATTERN_ICON[e.pattern]||'●'}</div>
+      <h3>${e.name}</h3>
+      <div class="muscle-tag">${e.muscle}</div>
+      <div class="eq">🛠 ${e.equipment}</div>
+    </div>
+  `).join('');
+  gridEl.querySelectorAll('.card').forEach(el=>{
+    el.addEventListener('click', ()=> openDetail(el.dataset.id));
+  });
+}
+
+function openDetail(id){
+  const e = EX.find(x=>x.id===id);
+  const sheet = document.getElementById('sheet');
+  sheet.innerHTML = `
+    <div class="sheet-head">
+      <h2>${e.name}</h2>
+      <div class="close-btn" id="closeBtn">✕</div>
+    </div>
+    <div class="badges">
+      <div class="badge hot">${e.muscle}</div>
+      <div class="badge">${e.equipment}</div>
+      <div class="badge">${e.level}</div>
+    </div>
+    <div class="stage">
+      <div class="stage-box p-${e.pattern}" id="animBox">
+        <div class="cap" id="animCap">Animación</div>
+        <div class="figure-wrap" id="figureWrap">
+          <div class="f-head" id="figHead"></div><div class="f-torso" id="figTorso"></div>
+          <div class="f-armL" id="figArmL"></div><div class="f-armR" id="figArmR"></div>
+          <div class="f-legL" id="figLegL"></div><div class="f-legR" id="figLegR"></div>
+        </div>
+        <img id="gifImgA" alt="${e.name}" class="stage-photo" style="display:none;">
+        <img id="gifImgB" alt="${e.name}" class="stage-photo" style="display:none;">
+      </div>
+      <div class="stage-box" id="bodyStage">
+        <div class="cap">Músculo</div>
+        <div class="view-toggle">
+          <button data-v="front" id="btnFront">Frente</button>
+          <button data-v="back" id="btnBack">Espalda</button>
+        </div>
+        <div id="bodyMount"></div>
+        <div class="legend"><div class="sw"></div>Zona trabajada</div>
+      </div>
+    </div>
+    <div class="instructions">
+      <ol>${e.steps.map(s=>`<li>${s}</li>`).join('')}</ol>
+    </div>
+    <div class="tip">💡 ${e.tip}</div>
+  `;
+  document.getElementById('closeBtn').addEventListener('click', closeDetail);
+
+  let currentView = e.view;
+  function paintBody(){
+    document.getElementById('bodyMount').innerHTML = bodySvg(currentView);
+    document.getElementById('btnFront').classList.toggle('on', currentView==='front');
+    document.getElementById('btnBack').classList.toggle('on', currentView==='back');
+    e.regions.forEach(r=>{
+      (REGION_MAP[r]||[]).forEach(elId=>{
+        const el = document.getElementById(elId);
+        if(el) el.classList.add('hit');
+      });
+    });
+  }
+  paintBody();
+  document.getElementById('btnFront').addEventListener('click', ()=>{currentView='front'; paintBody();});
+  document.getElementById('btnBack').addEventListener('click', ()=>{currentView='back'; paintBody();});
+
+  document.getElementById('overlay').classList.add('open');
+
+  if(e.img && e.img.length){
+    // Foto real (dominio público) — precarga ambas fotos y alterna la opacidad (sin volver a pedirlas al servidor, así no parpadea)
+    const imgA = document.getElementById('gifImgA');
+    const imgB = document.getElementById('gifImgB');
+    const wrap = document.getElementById('figureWrap');
+    const cap = document.getElementById('animCap');
+
+    const preA = new Image();
+    const preB = new Image();
+    let loadedCount = 0;
+    let failed = false;
+    function onOneLoaded(){
+      loadedCount++;
+      if(loadedCount === 2 && !failed){
+        imgA.src = preA.src;
+        imgB.src = preB.src;
+        wrap.style.display = 'none';
+        imgA.style.display = 'block';
+        imgB.style.display = 'block';
+        imgA.classList.add('on');
+        if(cap) cap.textContent = 'Foto real · dominio público';
+        let showingA = true;
+        photoInterval = setInterval(()=>{
+          showingA = !showingA;
+          imgA.classList.toggle('on', showingA);
+          imgB.classList.toggle('on', !showingA);
+        }, 1200);
+      }
+    }
+    function onOneFailed(){
+      if(failed) return;
+      failed = true;
+      // si alguna imagen no carga (sin internet, etc.) usamos el muñeco animado como respaldo
+      startFigureAnim(e.pattern);
+    }
+    preA.onload = onOneLoaded; preA.onerror = onOneFailed;
+    preB.onload = onOneLoaded; preB.onerror = onOneFailed;
+    preA.src = e.img[0];
+    preB.src = e.img[1] || e.img[0];
+  } else {
+    startFigureAnim(e.pattern);
+  }
+}
+function closeDetail(){ document.getElementById('overlay').classList.remove('open'); stopFigureAnim(); }
+document.getElementById('overlay').addEventListener('click', (ev)=>{
+  if(ev.target.id==='overlay') closeDetail();
+});
+
+renderChips();
+renderLevelChips();
+renderGrid();
+
+document.getElementById('guideBtn').addEventListener('click', ()=>{
+  document.getElementById('guideOverlay').classList.add('open');
+});
+document.getElementById('guideCloseBtn').addEventListener('click', ()=>{
+  document.getElementById('guideOverlay').classList.remove('open');
+});
+document.getElementById('guideOverlay').addEventListener('click', (ev)=>{
+  if(ev.target.id==='guideOverlay') document.getElementById('guideOverlay').classList.remove('open');
+});
+
+document.getElementById('routineBtn').addEventListener('click', ()=>{
+  document.getElementById('routineOverlay').classList.add('open');
+});
+document.getElementById('routineCloseBtn').addEventListener('click', ()=>{
+  document.getElementById('routineOverlay').classList.remove('open');
+});
+document.getElementById('routineOverlay').addEventListener('click', (ev)=>{
+  if(ev.target.id==='routineOverlay') document.getElementById('routineOverlay').classList.remove('open');
+});
+
+/* ---------------- MI PROGRESO (guardado en el celular con localStorage) ---------------- */
+const PROGRESS_KEY = 'pulso_progress_v1';
+let storageOK = true;
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(PROGRESS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  }catch(err){
+    storageOK = false;
+    return [];
+  }
+}
+function saveProgress(list){
+  try{
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(list));
+  }catch(err){
+    storageOK = false;
+  }
+}
+let progressData = loadProgress();
+
+const WEBHOOK_KEY = 'pulso_webhook_url';
+function getWebhookUrl(){ try{ return localStorage.getItem(WEBHOOK_KEY) || ''; }catch(e){ return ''; } }
+function setWebhookUrl(url){ try{ localStorage.setItem(WEBHOOK_KEY, url); }catch(e){} }
+
+function sendToSheets(entry){
+  const url = getWebhookUrl();
+  if(!url) return;
+  const cat = (EX.find(e=>e.id===entry.exId)||{}).cat || '';
+  fetch(url, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      fecha: entry.date, ejercicio: entry.exName, categoria: cat,
+      peso: entry.weight, reps: entry.reps, series: entry.sets
+    })
+  }).then(()=>{
+    const st = document.getElementById('webhookStatus');
+    if(st) st.textContent = '✓ Último registro enviado a Google Sheets';
+  }).catch(()=>{
+    const st = document.getElementById('webhookStatus');
+    if(st) st.textContent = '⚠ No se pudo enviar a Sheets (revisa tu conexión o la URL).';
+  });
+}
+
+function renderWebhookStatus(){
+  const url = getWebhookUrl();
+  const input = document.getElementById('pfWebhook');
+  const st = document.getElementById('webhookStatus');
+  if(url){
+    input.value = url;
+    st.textContent = '✓ Conectado — cada registro nuevo también se guardará en tu Google Sheet.';
+  } else {
+    st.textContent = 'Sin conectar. Tus registros solo se guardan en este celular por ahora.';
+  }
+}
+
+function fillExerciseSelect(){
+  const sel = document.getElementById('pfExercise');
+  const byCat = {};
+  EX.forEach(e=>{ (byCat[e.cat] = byCat[e.cat]||[]).push(e); });
+  sel.innerHTML = CATS.map(c=>{
+    const opts = (byCat[c.id]||[]).map(e=>`<option value="${e.id}">${e.name}</option>`).join('');
+    return `<optgroup label="${c.label}">${opts}</optgroup>`;
+  }).join('');
+}
+
+function renderProgress(){
+  const total = progressData.length;
+  const distinctDays = new Set(progressData.map(p=>p.date)).size;
+  const distinctEx = new Set(progressData.map(p=>p.exId)).size;
+  document.getElementById('progressStats').innerHTML = `
+    <div class="pstat"><b>${total}</b><span>Registros</span></div>
+    <div class="pstat"><b>${distinctDays}</b><span>Días entrenados</span></div>
+    <div class="pstat"><b>${distinctEx}</b><span>Ejercicios distintos</span></div>
+  `;
+
+  const listEl = document.getElementById('progressList');
+  if(!storageOK){
+    listEl.innerHTML = `<div class="storage-warning">⚠ Tu navegador no permite guardar datos localmente (modo privado/incógnito, por ejemplo). Tus registros de esta sesión se perderán al cerrar la página.</div>`;
+  } else {
+    listEl.innerHTML = '';
+  }
+
+  if(!progressData.length){
+    listEl.innerHTML += `<div class="progress-empty">Todavía no tienes registros. Agrega tu primer entrenamiento arriba.</div>`;
+    return;
+  }
+
+  const byDate = {};
+  progressData.slice().sort((a,b)=> b.date.localeCompare(a.date) || b.ts-a.ts).forEach(p=>{
+    (byDate[p.date] = byDate[p.date]||[]).push(p);
+  });
+  let html = '';
+  Object.keys(byDate).forEach(date=>{
+    const d = new Date(date+'T00:00:00');
+    const label = d.toLocaleDateString('es-MX', {weekday:'long', day:'numeric', month:'long'});
+    html += `<div class="plog-day"><div class="plog-date">${label}</div>`;
+    byDate[date].forEach(p=>{
+      const detailParts = [];
+      if(p.sets) detailParts.push(p.sets+' series');
+      if(p.reps) detailParts.push(p.reps+' reps');
+      if(p.weight) detailParts.push(p.weight+' kg');
+      html += `<div class="plog-item">
+        <div><div class="pl-name">${p.exName}</div><div class="pl-detail">${detailParts.join(' · ')||'Sin detalles'}</div></div>
+        <button class="plog-del" data-id="${p.ts}">✕</button>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+  listEl.innerHTML += html;
+
+  listEl.querySelectorAll('.plog-del').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const ts = Number(btn.dataset.id);
+      progressData = progressData.filter(p=>p.ts !== ts);
+      saveProgress(progressData);
+      renderProgress();
+    });
+  });
+}
+
+document.getElementById('progressBtn').addEventListener('click', ()=>{
+  fillExerciseSelect();
+  const dateInput = document.getElementById('pfDate');
+  if(!dateInput.value) dateInput.value = new Date().toISOString().slice(0,10);
+  renderProgress();
+  renderWebhookStatus();
+  document.getElementById('progressOverlay').classList.add('open');
+});
+document.getElementById('pfSaveWebhook').addEventListener('click', ()=>{
+  const url = document.getElementById('pfWebhook').value.trim();
+  setWebhookUrl(url);
+  renderWebhookStatus();
+});
+document.getElementById('progressCloseBtn').addEventListener('click', ()=>{
+  document.getElementById('progressOverlay').classList.remove('open');
+});
+document.getElementById('progressOverlay').addEventListener('click', (ev)=>{
+  if(ev.target.id==='progressOverlay') document.getElementById('progressOverlay').classList.remove('open');
+});
+document.getElementById('pfSave').addEventListener('click', ()=>{
+  const exSel = document.getElementById('pfExercise');
+  const exId = exSel.value;
+  const ex = EX.find(e=>e.id===exId);
+  const date = document.getElementById('pfDate').value || new Date().toISOString().slice(0,10);
+  const weight = document.getElementById('pfWeight').value;
+  const reps = document.getElementById('pfReps').value;
+  const sets = document.getElementById('pfSets').value;
+  if(!ex) return;
+  progressData.push({
+    ts: Date.now(), date, exId, exName: ex.name,
+    weight: weight?Number(weight):null, reps: reps?Number(reps):null, sets: sets?Number(sets):null
+  });
+  saveProgress(progressData);
+  sendToSheets(progressData[progressData.length-1]);
+  document.getElementById('pfWeight').value = '';
+  document.getElementById('pfReps').value = '';
+  document.getElementById('pfSets').value = '';
+  renderProgress();
+});
+</script>
+</body>
+</html>
