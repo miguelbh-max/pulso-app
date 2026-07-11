@@ -228,6 +228,8 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
 }
 .pf-row{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;}
 .pf-row input{margin-bottom:0;}
+.pf-row2{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
+.pf-row2 select{margin-bottom:8px;}
 #pfSave{
   width:100%; margin-top:2px; padding:11px; border-radius:10px;
   background:var(--lime); color:#0F1115; font-weight:700; font-size:13.5px;
@@ -614,6 +616,10 @@ footer b{color:#B9C0CC;}
       <div class="progress-form">
         <div class="pf-title">Registrar entrenamiento</div>
         <select id="pfExercise"></select>
+        <div class="pf-row2">
+          <select id="pfLevel"></select>
+          <select id="pfDay"></select>
+        </div>
         <div class="pf-row">
           <input type="number" id="pfWeight" placeholder="Peso (kg)" min="0" step="0.5">
           <input type="number" id="pfReps" placeholder="Repeticiones" min="1">
@@ -1136,6 +1142,7 @@ function sendToSheets(entry){
     headers:{'Content-Type':'application/json'},
     body: JSON.stringify({
       fecha: entry.date, ejercicio: entry.exName, categoria: cat,
+      nivel: entry.level, dia: entry.day,
       peso: entry.weight, reps: entry.reps, series: entry.sets
     })
   }).then(()=>{
@@ -1167,6 +1174,23 @@ function fillExerciseSelect(){
     const opts = (byCat[c.id]||[]).map(e=>`<option value="${e.id}">${e.name}</option>`).join('');
     return `<optgroup label="${c.label}">${opts}</optgroup>`;
   }).join('');
+}
+
+const TRAIN_LEVELS = ['Principiante','Intermedio','Avanzado'];
+const DAYS_BY_LEVEL = {
+  'Principiante': ['Día A','Día B'],
+  'Intermedio': ['Día 1 — Torso (empuje)','Día 2 — Pierna','Día 3 — Torso (jalón)','Día 4 — Pierna / Core'],
+  'Avanzado': ['Push','Pull','Legs'],
+};
+function fillLevelSelect(){
+  const sel = document.getElementById('pfLevel');
+  sel.innerHTML = TRAIN_LEVELS.map(l=>`<option value="${l}">${l}</option>`).join('');
+}
+function fillDaySelect(){
+  const level = document.getElementById('pfLevel').value;
+  const sel = document.getElementById('pfDay');
+  const days = DAYS_BY_LEVEL[level] || [];
+  sel.innerHTML = days.map(d=>`<option value="${d}">${d}</option>`).join('');
 }
 
 function renderProgress(){
@@ -1202,6 +1226,8 @@ function renderProgress(){
     html += `<div class="plog-day"><div class="plog-date">${label}</div>`;
     byDate[date].forEach(p=>{
       const detailParts = [];
+      if(p.level) detailParts.push(p.level);
+      if(p.day) detailParts.push(p.day);
       if(p.sets) detailParts.push(p.sets+' series');
       if(p.reps) detailParts.push(p.reps+' reps');
       if(p.weight) detailParts.push(p.weight+' kg');
@@ -1226,12 +1252,15 @@ function renderProgress(){
 
 document.getElementById('progressBtn').addEventListener('click', ()=>{
   fillExerciseSelect();
+  fillLevelSelect();
+  fillDaySelect();
   const dateInput = document.getElementById('pfDate');
   if(!dateInput.value) dateInput.value = new Date().toISOString().slice(0,10);
   renderProgress();
   renderWebhookStatus();
   document.getElementById('progressOverlay').classList.add('open');
 });
+document.getElementById('pfLevel').addEventListener('change', fillDaySelect);
 document.getElementById('pfSaveWebhook').addEventListener('click', ()=>{
   const url = document.getElementById('pfWebhook').value.trim();
   setWebhookUrl(url);
@@ -1247,13 +1276,15 @@ document.getElementById('pfSave').addEventListener('click', ()=>{
   const exSel = document.getElementById('pfExercise');
   const exId = exSel.value;
   const ex = EX.find(e=>e.id===exId);
+  const level = document.getElementById('pfLevel').value;
+  const day = document.getElementById('pfDay').value;
   const date = document.getElementById('pfDate').value || new Date().toISOString().slice(0,10);
   const weight = document.getElementById('pfWeight').value;
   const reps = document.getElementById('pfReps').value;
   const sets = document.getElementById('pfSets').value;
   if(!ex) return;
   progressData.push({
-    ts: Date.now(), date, exId, exName: ex.name,
+    ts: Date.now(), date, exId, exName: ex.name, level, day,
     weight: weight?Number(weight):null, reps: reps?Number(reps):null, sets: sets?Number(sets):null
   });
   saveProgress(progressData);
