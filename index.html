@@ -5,24 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>PULSO — Entrenamiento</title>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#14171C">
+<meta name="theme-color" content="#1B1A18">
 <link rel="apple-touch-icon" href="icon-192.svg">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="PULSO">
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#14171C;
-  --surface:#1C2028;
-  --surface-2:#232833;
-  --line:#2C323E;
-  --lime:#C8FF3D;
-  --pulse:#FF4B4B;
-  --text:#F2F3F0;
-  --muted:#8A93A3;
-  --muscle-off:#3A4150;
+  --bg:#1B1A18;
+  --surface:#221F1B;
+  --surface-2:#2A2620;
+  --line:#35322C;
+  --lime:#C9A66B;
+  --pulse:#B5493A;
+  --text:#EDE7DD;
+  --muted:#8A8378;
+  --muscle-off:#3A362F;
 }
 *{box-sizing:border-box; margin:0; padding:0;}
 html,body{height:100%;}
@@ -33,7 +33,7 @@ body{
   -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
 }
-.display{font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:0.02em;}
+.display{font-family:'Cormorant Garamond',serif; font-weight:500; letter-spacing:0.04em;}
 
 /* ---------- Header ---------- */
 header{
@@ -47,15 +47,15 @@ header{
 .brand .dot{
   width:12px; height:12px; border-radius:50%;
   background:var(--pulse);
-  box-shadow:0 0 0 0 rgba(255,75,75,0.6);
+  box-shadow:0 0 0 0 rgba(181,73,58,0.6);
   animation:beat 1.15s infinite;
 }
 @keyframes beat{
-  0%{box-shadow:0 0 0 0 rgba(255,75,75,0.55);}
-  70%{box-shadow:0 0 0 9px rgba(255,75,75,0);}
-  100%{box-shadow:0 0 0 0 rgba(255,75,75,0);}
+  0%{box-shadow:0 0 0 0 rgba(181,73,58,0.55);}
+  70%{box-shadow:0 0 0 9px rgba(181,73,58,0);}
+  100%{box-shadow:0 0 0 0 rgba(181,73,58,0);}
 }
-.brand h1{font-size:26px; font-weight:700; letter-spacing:0.06em;}
+.brand h1{font-size:30px; font-weight:500; letter-spacing:0.04em;}
 .brand h1 span{color:var(--lime);}
 .tagline{color:var(--muted); font-size:12.5px; margin-top:2px; margin-left:22px;}
 
@@ -68,7 +68,7 @@ header{
 .chip{
   flex:0 0 auto;
   padding:9px 16px;
-  border-radius:999px;
+  border-radius:4px;
   border:1px solid var(--line);
   background:var(--surface);
   color:var(--muted);
@@ -79,7 +79,7 @@ header{
 }
 .chip.active{
   background:var(--lime);
-  color:#0F1115;
+  color:#1B1A18;
   border-color:var(--lime);
 }
 
@@ -94,7 +94,7 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
 .card{
   background:var(--surface);
   border:1px solid var(--line);
-  border-radius:14px;
+  border-radius:8px;
   padding:14px;
   cursor:pointer;
   transition:transform .12s ease, border-color .12s ease;
@@ -134,7 +134,7 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
 .lvl-chip{
   flex:0 0 auto;
   padding:6px 13px;
-  border-radius:999px;
+  border-radius:4px;
   border:1px solid var(--line);
   background:var(--surface);
   color:var(--muted);
@@ -142,12 +142,12 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
   cursor:pointer;
   white-space:nowrap;
 }
-.lvl-chip.active{background:var(--pulse); color:#2A0E0E; border-color:var(--pulse);}
+.lvl-chip.active{background:var(--pulse); color:#3A1E16; border-color:var(--pulse);}
 .guide-btn{
   flex:0 0 auto;
   font-size:11.5px; color:var(--lime);
-  background:none; border:1px solid rgba(200,255,61,0.3);
-  border-radius:999px; padding:7px 12px;
+  background:none; border:1px solid rgba(201,166,107,0.3);
+  border-radius:4px; padding:7px 12px;
   cursor:pointer; white-space:nowrap;
 }
 .guide-btn i{font-style:normal;}
@@ -159,9 +159,9 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
   text-transform:uppercase; letter-spacing:0.04em;
   padding:5px 12px; border-radius:999px; margin-bottom:8px;
 }
-.lv-begin{background:rgba(200,255,61,0.14); color:var(--lime);}
-.lv-mid{background:rgba(255,184,75,0.14); color:#FFB84B;}
-.lv-adv{background:rgba(255,75,75,0.14); color:var(--pulse);}
+.lv-begin{background:rgba(216,203,176,0.14); color:#D8CBB0;}
+.lv-mid{background:rgba(201,166,107,0.14); color:#C9A66B;}
+.lv-adv{background:rgba(181,73,58,0.14); color:var(--pulse);}
 .guide-level p{font-size:13.5px; color:#D8DAE0; line-height:1.5; margin-bottom:10px;}
 .crit-title{font-size:12.5px; font-weight:600; color:#B9C0CC; margin-bottom:6px;}
 .guide-crit ul{padding-left:18px; display:flex; flex-direction:column; gap:6px;}
@@ -173,8 +173,8 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
   border:1px solid var(--line); border-radius:12px;
   font-size:12px; color:var(--muted); line-height:1.55;
 }
-.routine-btn{color:#FFB84B; border-color:rgba(255,184,75,0.3);}
-.progress-btn{color:#7FD1FF; border-color:rgba(127,209,255,0.3);}
+.routine-btn{color:#C9A66B; border-color:rgba(201,166,107,0.3);}
+.progress-btn{color:#C9A66B; border-color:rgba(201,166,107,0.3);}
 .routine-day{margin-bottom:12px;}
 .rd-title{font-size:12.5px; font-weight:600; color:#B9C0CC; margin-bottom:6px;}
 .routine-day ul{padding-left:0; display:flex; flex-direction:column; gap:8px; list-style:none;}
@@ -204,7 +204,7 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
   padding:14px;
 }
 .webhook-settings{
-  background:rgba(127,209,255,0.05); border:1px solid rgba(127,209,255,0.2);
+  background:rgba(201,166,107,0.05); border:1px solid rgba(201,166,107,0.2);
   border-radius:14px; padding:14px; margin-bottom:14px;
 }
 .webhook-settings input{
@@ -215,7 +215,7 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
 }
 #pfSaveWebhook{
   padding:9px 14px; border-radius:10px; background:none;
-  border:1px solid #7FD1FF; color:#7FD1FF; font-weight:600; font-size:12.5px;
+  border:1px solid #C9A66B; color:#C9A66B; font-weight:600; font-size:12.5px;
   cursor:pointer;
 }
 .webhook-status{font-size:11.5px; color:var(--muted); margin-top:8px; line-height:1.5;}
@@ -232,7 +232,7 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
 .pf-row2 select{margin-bottom:8px;}
 #pfSave{
   width:100%; margin-top:2px; padding:11px; border-radius:10px;
-  background:var(--lime); color:#0F1115; font-weight:700; font-size:13.5px;
+  background:var(--lime); color:#1B1A18; font-weight:700; font-size:13.5px;
   border:none; cursor:pointer;
 }
 #pfSave:active{transform:scale(0.98);}
@@ -251,9 +251,19 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
   cursor:pointer; padding:4px 6px;
 }
 .progress-empty{color:var(--muted); font-size:13px; text-align:center; padding:20px 0;}
+.hist-head{display:flex; align-items:center; justify-content:space-between; margin-top:22px;}
+.clear-btn{
+  background:none; border:1px solid rgba(181,73,58,0.35); color:var(--pulse);
+  font-size:11.5px; font-weight:600; padding:6px 12px; border-radius:4px; cursor:pointer;
+}
+.hist-filter{
+  width:100%; box-sizing:border-box; margin-top:10px; margin-bottom:8px;
+  background:var(--surface-2); border:1px solid var(--line); border-radius:10px;
+  color:var(--text); font-size:12.5px; padding:9px 11px; font-family:'Inter',sans-serif;
+}
 .storage-warning{
-  font-size:11.5px; color:#FFB84B; background:rgba(255,184,75,0.1);
-  border:1px solid rgba(255,184,75,0.3); border-radius:10px; padding:10px 12px; margin-bottom:14px;
+  font-size:11.5px; color:#C9A66B; background:rgba(201,166,107,0.1);
+  border:1px solid rgba(201,166,107,0.3); border-radius:10px; padding:10px 12px; margin-bottom:14px;
 }
 
 /* ---------- Modal ---------- */
@@ -268,7 +278,7 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
   background:var(--bg);
   width:100%; max-width:640px;
   max-height:92vh; overflow-y:auto;
-  border-radius:22px 22px 0 0;
+  border-radius:12px 12px 0 0;
   border-top:1px solid var(--line);
   animation:slideup .22s ease;
   padding-bottom:30px;
@@ -293,7 +303,7 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
   background:var(--surface-2); color:var(--muted);
   text-transform:uppercase; letter-spacing:0.03em;
 }
-.badge.hot{background:rgba(255,75,75,0.14); color:var(--pulse);}
+.badge.hot{background:rgba(181,73,58,0.14); color:var(--pulse);}
 
 /* animation + body stage */
 .stage{
@@ -339,8 +349,8 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
 
 .tip{
   margin:16px 20px 0; padding:12px 14px;
-  background:rgba(200,255,61,0.06);
-  border:1px solid rgba(200,255,61,0.25);
+  background:rgba(201,166,107,0.06);
+  border:1px solid rgba(201,166,107,0.25);
   border-radius:12px;
   font-size:12.5px; color:#CFE9A8; line-height:1.5;
 }
@@ -349,7 +359,7 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
 .figure-wrap{width:80px; height:130px; position:relative;}
 .f-head{position:absolute; width:20px; height:20px; border-radius:50%; background:var(--lime); left:30px; top:0;}
 .f-torso{position:absolute; width:6px; height:40px; background:var(--lime); left:37px; top:20px; border-radius:3px;}
-.f-armL,.f-armR,.f-legL,.f-legR{position:absolute; width:6px; height:34px; background:#8FE04A; border-radius:3px; transform-origin:top center;}
+.f-armL,.f-armR,.f-legL,.f-legR{position:absolute; width:6px; height:34px; background:#B89A6B; border-radius:3px; transform-origin:top center;}
 .f-armL{left:22px; top:24px;} .f-armR{left:52px; top:24px;}
 .f-legL{left:32px; top:58px;} .f-legR{left:42px; top:58px;}
 
@@ -619,7 +629,6 @@ footer b{color:#B9C0CC;}
           <select id="pfLevel"></select>
           <select id="pfDay"></select>
         </div>
-        <select id="pfExercise"></select>
         <div class="pf-row">
           <input type="number" id="pfWeight" placeholder="Peso (kg)" min="0" step="0.5">
           <input type="number" id="pfReps" placeholder="Repeticiones" min="1">
@@ -629,7 +638,11 @@ footer b{color:#B9C0CC;}
         <button id="pfSave">Guardar registro</button>
       </div>
 
-      <div class="pf-title" style="margin-top:22px;">Historial</div>
+      <div class="hist-head">
+        <div class="pf-title" style="margin-top:22px; margin-bottom:0;">Historial</div>
+        <button class="clear-btn" id="clearHistBtn">Limpiar todo</button>
+      </div>
+      <select id="histFilter" class="hist-filter"></select>
       <div id="progressList"></div>
     </div>
   </div>
@@ -1136,12 +1149,11 @@ function setWebhookUrl(url){ try{ localStorage.setItem(WEBHOOK_KEY, url); }catch
 function sendToSheets(entry){
   const url = getWebhookUrl();
   if(!url) return;
-  const cat = (EX.find(e=>e.id===entry.exId)||{}).cat || '';
   fetch(url, {
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body: JSON.stringify({
-      fecha: entry.date, ejercicio: entry.exName, categoria: cat,
+      fecha: entry.date,
       nivel: entry.level, dia: entry.day,
       peso: entry.weight, reps: entry.reps, series: entry.sets
     })
@@ -1166,30 +1178,11 @@ function renderWebhookStatus(){
   }
 }
 
-function fillExerciseSelect(){ updateExerciseOptions(); }
-
 const TRAIN_LEVELS = ['Principiante','Intermedio','Avanzado'];
 const DAYS_BY_LEVEL = {
   'Principiante': ['Día A','Día B'],
   'Intermedio': ['Día 1 — Torso (empuje)','Día 2 — Pierna','Día 3 — Torso (jalón)','Día 4 — Pierna / Core'],
   'Avanzado': ['Push','Pull','Legs'],
-};
-const ROUTINE_EXERCISES = {
-  'Principiante': {
-    'Día A': ['e42','e23','e24','e17'],
-    'Día B': ['e43','e11','e5','e44','e18'],
-  },
-  'Intermedio': {
-    'Día 1 — Torso (empuje)': ['e1','e11','e15'],
-    'Día 2 — Pierna': ['e42','e6','e10'],
-    'Día 3 — Torso (jalón)': ['e4','e5','e34'],
-    'Día 4 — Pierna / Core': ['e43','e44','e30'],
-  },
-  'Avanzado': {
-    'Push': ['e1','e27','e16'],
-    'Pull': ['e32','e5','e13'],
-    'Legs': ['e42','e6','e19'],
-  },
 };
 function fillLevelSelect(){
   const sel = document.getElementById('pfLevel');
@@ -1200,45 +1193,24 @@ function fillDaySelect(){
   const sel = document.getElementById('pfDay');
   const days = DAYS_BY_LEVEL[level] || [];
   sel.innerHTML = days.map(d=>`<option value="${d}">${d}</option>`).join('');
-  updateExerciseOptions();
 }
-function updateExerciseOptions(){
-  const level = document.getElementById('pfLevel').value;
-  const day = document.getElementById('pfDay').value;
-  const sel = document.getElementById('pfExercise');
-  const prevValue = sel.value;
-  const routineIds = (ROUTINE_EXERCISES[level] && ROUTINE_EXERCISES[level][day]) || [];
-  const routineExs = routineIds.map(id=>EX.find(e=>e.id===id)).filter(Boolean);
 
-  const byCat = {};
-  EX.forEach(e=>{ (byCat[e.cat] = byCat[e.cat]||[]).push(e); });
-  const fullList = CATS.map(c=>{
-    const opts = (byCat[c.id]||[]).map(e=>`<option value="${e.id}">${e.name}</option>`).join('');
-    return `<optgroup label="${c.label}">${opts}</optgroup>`;
-  }).join('');
-
-  let html = '';
-  if(routineExs.length){
-    html += `<optgroup label="🎯 De tu rutina (${day})">${routineExs.map(e=>`<option value="${e.id}">${e.name}</option>`).join('')}</optgroup>`;
-  }
-  sel.innerHTML = html + fullList;
-
-  // mantener selección previa si sigue existiendo, si no, preseleccionar el primero de la rutina
-  if(prevValue && EX.find(e=>e.id===prevValue)){
-    sel.value = prevValue;
-  } else if(routineExs.length){
-    sel.value = routineExs[0].id;
-  }
+let histFilterLevel = 'todos';
+function fillHistFilter(){
+  const sel = document.getElementById('histFilter');
+  sel.innerHTML = `<option value="todos">Todos los niveles</option>` +
+    TRAIN_LEVELS.map(l=>`<option value="${l}">${l}</option>`).join('');
+  sel.value = histFilterLevel;
 }
 
 function renderProgress(){
   const total = progressData.length;
   const distinctDays = new Set(progressData.map(p=>p.date)).size;
-  const distinctEx = new Set(progressData.map(p=>p.exId)).size;
+  const distinctRoutineDays = new Set(progressData.map(p=>p.level+'|'+p.day)).size;
   document.getElementById('progressStats').innerHTML = `
     <div class="pstat"><b>${total}</b><span>Registros</span></div>
     <div class="pstat"><b>${distinctDays}</b><span>Días entrenados</span></div>
-    <div class="pstat"><b>${distinctEx}</b><span>Ejercicios distintos</span></div>
+    <div class="pstat"><b>${distinctRoutineDays}</b><span>Rutinas distintas</span></div>
   `;
 
   const listEl = document.getElementById('progressList');
@@ -1253,8 +1225,14 @@ function renderProgress(){
     return;
   }
 
+  const filtered = histFilterLevel==='todos' ? progressData : progressData.filter(p=>p.level===histFilterLevel);
+  if(!filtered.length){
+    listEl.innerHTML += `<div class="progress-empty">No hay registros de nivel "${histFilterLevel}".</div>`;
+    return;
+  }
+
   const byDate = {};
-  progressData.slice().sort((a,b)=> b.date.localeCompare(a.date) || b.ts-a.ts).forEach(p=>{
+  filtered.slice().sort((a,b)=> b.date.localeCompare(a.date) || b.ts-a.ts).forEach(p=>{
     (byDate[p.date] = byDate[p.date]||[]).push(p);
   });
   let html = '';
@@ -1264,13 +1242,11 @@ function renderProgress(){
     html += `<div class="plog-day"><div class="plog-date">${label}</div>`;
     byDate[date].forEach(p=>{
       const detailParts = [];
-      if(p.level) detailParts.push(p.level);
-      if(p.day) detailParts.push(p.day);
       if(p.sets) detailParts.push(p.sets+' series');
       if(p.reps) detailParts.push(p.reps+' reps');
       if(p.weight) detailParts.push(p.weight+' kg');
       html += `<div class="plog-item">
-        <div><div class="pl-name">${p.exName}</div><div class="pl-detail">${detailParts.join(' · ')||'Sin detalles'}</div></div>
+        <div><div class="pl-name">${p.level} · ${p.day}</div><div class="pl-detail">${detailParts.join(' · ')||'Sin detalles'}</div></div>
         <button class="plog-del" data-id="${p.ts}">✕</button>
       </div>`;
     });
@@ -1291,14 +1267,26 @@ function renderProgress(){
 document.getElementById('progressBtn').addEventListener('click', ()=>{
   fillLevelSelect();
   fillDaySelect();
+  fillHistFilter();
   const dateInput = document.getElementById('pfDate');
   if(!dateInput.value) dateInput.value = new Date().toISOString().slice(0,10);
   renderProgress();
   renderWebhookStatus();
   document.getElementById('progressOverlay').classList.add('open');
 });
+document.getElementById('histFilter').addEventListener('change', (ev)=>{
+  histFilterLevel = ev.target.value;
+  renderProgress();
+});
+document.getElementById('clearHistBtn').addEventListener('click', ()=>{
+  if(!progressData.length){ return; }
+  const ok = confirm('¿Borrar todos tus registros guardados en este celular? Esta acción no se puede deshacer.');
+  if(!ok) return;
+  progressData = [];
+  saveProgress(progressData);
+  renderProgress();
+});
 document.getElementById('pfLevel').addEventListener('change', fillDaySelect);
-document.getElementById('pfDay').addEventListener('change', updateExerciseOptions);
 document.getElementById('pfSaveWebhook').addEventListener('click', ()=>{
   const url = document.getElementById('pfWebhook').value.trim();
   setWebhookUrl(url);
@@ -1311,18 +1299,15 @@ document.getElementById('progressOverlay').addEventListener('click', (ev)=>{
   if(ev.target.id==='progressOverlay') document.getElementById('progressOverlay').classList.remove('open');
 });
 document.getElementById('pfSave').addEventListener('click', ()=>{
-  const exSel = document.getElementById('pfExercise');
-  const exId = exSel.value;
-  const ex = EX.find(e=>e.id===exId);
   const level = document.getElementById('pfLevel').value;
   const day = document.getElementById('pfDay').value;
   const date = document.getElementById('pfDate').value || new Date().toISOString().slice(0,10);
   const weight = document.getElementById('pfWeight').value;
   const reps = document.getElementById('pfReps').value;
   const sets = document.getElementById('pfSets').value;
-  if(!ex) return;
+  if(!level || !day) return;
   progressData.push({
-    ts: Date.now(), date, exId, exName: ex.name, level, day,
+    ts: Date.now(), date, level, day,
     weight: weight?Number(weight):null, reps: reps?Number(reps):null, sets: sets?Number(sets):null
   });
   saveProgress(progressData);
