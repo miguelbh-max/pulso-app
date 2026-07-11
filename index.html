@@ -615,11 +615,11 @@ footer b{color:#B9C0CC;}
 
       <div class="progress-form">
         <div class="pf-title">Registrar entrenamiento</div>
-        <select id="pfExercise"></select>
         <div class="pf-row2">
           <select id="pfLevel"></select>
           <select id="pfDay"></select>
         </div>
+        <select id="pfExercise"></select>
         <div class="pf-row">
           <input type="number" id="pfWeight" placeholder="Peso (kg)" min="0" step="0.5">
           <input type="number" id="pfReps" placeholder="Repeticiones" min="1">
@@ -1166,21 +1166,30 @@ function renderWebhookStatus(){
   }
 }
 
-function fillExerciseSelect(){
-  const sel = document.getElementById('pfExercise');
-  const byCat = {};
-  EX.forEach(e=>{ (byCat[e.cat] = byCat[e.cat]||[]).push(e); });
-  sel.innerHTML = CATS.map(c=>{
-    const opts = (byCat[c.id]||[]).map(e=>`<option value="${e.id}">${e.name}</option>`).join('');
-    return `<optgroup label="${c.label}">${opts}</optgroup>`;
-  }).join('');
-}
+function fillExerciseSelect(){ updateExerciseOptions(); }
 
 const TRAIN_LEVELS = ['Principiante','Intermedio','Avanzado'];
 const DAYS_BY_LEVEL = {
   'Principiante': ['Día A','Día B'],
   'Intermedio': ['Día 1 — Torso (empuje)','Día 2 — Pierna','Día 3 — Torso (jalón)','Día 4 — Pierna / Core'],
   'Avanzado': ['Push','Pull','Legs'],
+};
+const ROUTINE_EXERCISES = {
+  'Principiante': {
+    'Día A': ['e42','e23','e24','e17'],
+    'Día B': ['e43','e11','e5','e44','e18'],
+  },
+  'Intermedio': {
+    'Día 1 — Torso (empuje)': ['e1','e11','e15'],
+    'Día 2 — Pierna': ['e42','e6','e10'],
+    'Día 3 — Torso (jalón)': ['e4','e5','e34'],
+    'Día 4 — Pierna / Core': ['e43','e44','e30'],
+  },
+  'Avanzado': {
+    'Push': ['e1','e27','e16'],
+    'Pull': ['e32','e5','e13'],
+    'Legs': ['e42','e6','e19'],
+  },
 };
 function fillLevelSelect(){
   const sel = document.getElementById('pfLevel');
@@ -1191,6 +1200,35 @@ function fillDaySelect(){
   const sel = document.getElementById('pfDay');
   const days = DAYS_BY_LEVEL[level] || [];
   sel.innerHTML = days.map(d=>`<option value="${d}">${d}</option>`).join('');
+  updateExerciseOptions();
+}
+function updateExerciseOptions(){
+  const level = document.getElementById('pfLevel').value;
+  const day = document.getElementById('pfDay').value;
+  const sel = document.getElementById('pfExercise');
+  const prevValue = sel.value;
+  const routineIds = (ROUTINE_EXERCISES[level] && ROUTINE_EXERCISES[level][day]) || [];
+  const routineExs = routineIds.map(id=>EX.find(e=>e.id===id)).filter(Boolean);
+
+  const byCat = {};
+  EX.forEach(e=>{ (byCat[e.cat] = byCat[e.cat]||[]).push(e); });
+  const fullList = CATS.map(c=>{
+    const opts = (byCat[c.id]||[]).map(e=>`<option value="${e.id}">${e.name}</option>`).join('');
+    return `<optgroup label="${c.label}">${opts}</optgroup>`;
+  }).join('');
+
+  let html = '';
+  if(routineExs.length){
+    html += `<optgroup label="🎯 De tu rutina (${day})">${routineExs.map(e=>`<option value="${e.id}">${e.name}</option>`).join('')}</optgroup>`;
+  }
+  sel.innerHTML = html + fullList;
+
+  // mantener selección previa si sigue existiendo, si no, preseleccionar el primero de la rutina
+  if(prevValue && EX.find(e=>e.id===prevValue)){
+    sel.value = prevValue;
+  } else if(routineExs.length){
+    sel.value = routineExs[0].id;
+  }
 }
 
 function renderProgress(){
@@ -1251,7 +1289,6 @@ function renderProgress(){
 }
 
 document.getElementById('progressBtn').addEventListener('click', ()=>{
-  fillExerciseSelect();
   fillLevelSelect();
   fillDaySelect();
   const dateInput = document.getElementById('pfDate');
@@ -1261,6 +1298,7 @@ document.getElementById('progressBtn').addEventListener('click', ()=>{
   document.getElementById('progressOverlay').classList.add('open');
 });
 document.getElementById('pfLevel').addEventListener('change', fillDaySelect);
+document.getElementById('pfDay').addEventListener('change', updateExerciseOptions);
 document.getElementById('pfSaveWebhook').addEventListener('click', ()=>{
   const url = document.getElementById('pfWebhook').value.trim();
   setWebhookUrl(url);
