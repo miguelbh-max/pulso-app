@@ -279,6 +279,7 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
   justify-content:center;
 }
 .overlay.open{display:flex;}
+#overlay{z-index:60;}
 .sheet{
   background:var(--bg);
   width:100%; max-width:640px;
@@ -1098,7 +1099,6 @@ function openDetail(id){
 }
 function closeDetail(){ document.getElementById('overlay').classList.remove('open'); stopFigureAnim(); }
 function openRoutineExercise(id){
-  document.getElementById('routineOverlay').classList.remove('open');
   openDetail(id);
 }
 document.getElementById('overlay').addEventListener('click', (ev)=>{
