@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>PULSO — Entrenamiento</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0A0B0A">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PULSO">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0B0A;
+  --surface:#141613;
+  --surface-2:#1B1F1B;
+  --line:#262B26;
+  --lime:#00E68C;
+  --pulse:#FF5252;
+  --text:#F2F5F3;
+  --muted:#8B948F;
+  --muscle-off:#262B26;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html,body{height:100%;}
+body{
+  background:
+    linear-gradient(180deg, rgba(10,11,10,0.22), rgba(10,11,10,0.35) 30%, rgba(10,11,10,0.68) 62%, rgba(10,11,10,0.92) 100%),
+    url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAkGBwgHBgkIBwgKCg==') no-repeat center top;
+  background-size: cover;
+  background-attachment: fixed;
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+.display{font-family:'Inter',sans-serif; font-weight:800; letter-spacing:-0.02em;}
+</style>
+</head>
+<body>PLACEHOLDER_DO_NOT_USE</body>
+</html>
