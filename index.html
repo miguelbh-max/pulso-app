@@ -201,6 +201,24 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
   padding:10px 12px; background:rgba(0,230,140,0.07);
   border:1px solid rgba(0,230,140,0.2); border-radius:10px;
 }
+.warmup-table{
+  width:100%; border-collapse:collapse; margin-top:10px; margin-bottom:4px;
+  font-size:12px;
+}
+.warmup-table th{
+  text-align:left; color:var(--lime); font-weight:700; font-size:10.5px;
+  text-transform:uppercase; letter-spacing:0.03em;
+  padding:6px 8px; border-bottom:1px solid rgba(0,230,140,0.3);
+}
+.warmup-table td{
+  padding:7px 8px; color:#E4E8E6; border-bottom:1px solid var(--line);
+}
+.warmup-table tr:last-child td{
+  color:var(--lime); font-weight:700; border-bottom:none;
+}
+.warmup-caption{
+  font-size:11.5px; color:var(--muted); margin-top:10px; margin-bottom:2px;
+}
 
 .progress-body{padding:16px 20px 26px;}
 .progress-stats{
@@ -527,53 +545,48 @@ footer b{color:#9AA6A0;}
 
       <div class="guide-level">
         <div class="guide-tag lv-begin">Principiante</div>
-        <p>Superior / Inferior, 4 días por semana con descanso intercalado. Descansa 60-90s entre series.</p>
+        <p>5 días de entrenamiento (Lunes a Viernes) cubriendo empuje, jalón, pierna baja en impacto y abdomen, con un día dedicado a aprender la técnica del peso muerto. Descansa 60-90s entre series.</p>
         <div class="routine-day">
-          <div class="rd-title">Lunes — Tren Superior</div>
+          <div class="rd-title">Lunes — Empuje (pecho / hombro / tríceps)</div>
           <ul>
             <li onclick="openRoutineExercise('e23')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bench_Press/0.jpg">Press de banca con mancuernas — 3 x 12</li>
-            <li onclick="openRoutineExercise('e24')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One-Arm_Dumbbell_Row/0.jpg">Remo con mancuerna a una mano — 3 x 12 por lado</li>
             <li onclick="openRoutineExercise('e12')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg">Elevaciones laterales — 3 x 12</li>
-            <li onclick="openRoutineExercise('e34')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/0.jpg">Curl de bíceps con mancuernas — 3 x 12</li>
             <li onclick="openRoutineExercise('e35')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Overhead_Triceps/0.jpg">Extensión de tríceps sobre la cabeza — 3 x 12</li>
           </ul>
         </div>
         <div class="routine-day">
-          <div class="rd-title">Martes — Tren Inferior (bajo impacto en rodilla)</div>
+          <div class="rd-title">Martes — Pierna (bajo impacto en rodilla) + Abdomen</div>
           <ul>
             <li onclick="openRoutineExercise('e42')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/0.jpg">Hip thrust con barra — 3 x 12</li>
+            <li onclick="openRoutineExercise('e6')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/0.jpg">Peso muerto rumano — 3 x 10</li>
             <li onclick="openRoutineExercise('e43')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/0.jpg">Curl femoral sentado — 3 x 12</li>
-            <li onclick="openRoutineExercise('e44')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg">Elevación de talones de pie — 3 x 15</li>
-            <li onclick="openRoutineExercise('e8')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg">Prensa de piernas — 3 x 12</li>
+            <li onclick="openRoutineExercise('e44')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg">Elevación de talones — 3 x 15</li>
             <li onclick="openRoutineExercise('e17')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/0.jpg">Plancha abdominal — 3 x 20-30s</li>
           </ul>
         </div>
         <div class="routine-day">
-          <div class="rd-title">Miércoles — Cardio ligero (descanso activo)</div>
+          <div class="rd-title">Miércoles — Jalón (espalda / bíceps)</div>
           <ul>
-            <li onclick="openRoutineExercise('e45')">🚴 Bicicleta fija — 20-30 min, ritmo moderado</li>
-            <li onclick="openRoutineExercise('e46')">🚶 Caminadora (cinta) — 20-30 min, paso firme</li>
-          </ul>
-        </div>
-        <div class="cardio-note">😴 Día de descanso de pesas — el cardio es opcional y de baja intensidad, solo para mover el cuerpo sin fatigar lo que trabajaste.</div>
-        <div class="routine-day">
-          <div class="rd-title">Jueves — Tren Superior</div>
-          <ul>
-            <li onclick="openRoutineExercise('e23')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bench_Press/0.jpg">Press de banca con mancuernas — 3 x 12</li>
             <li onclick="openRoutineExercise('e24')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One-Arm_Dumbbell_Row/0.jpg">Remo con mancuerna a una mano — 3 x 12 por lado</li>
-            <li onclick="openRoutineExercise('e12')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg">Elevaciones laterales — 3 x 12</li>
+            <li onclick="openRoutineExercise('e5')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wide-Grip_Lat_Pulldown/0.jpg">Jalón al pecho (polea) — 3 x 12</li>
             <li onclick="openRoutineExercise('e34')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/0.jpg">Curl de bíceps con mancuernas — 3 x 12</li>
-            <li onclick="openRoutineExercise('e35')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Overhead_Triceps/0.jpg">Extensión de tríceps sobre la cabeza — 3 x 12</li>
           </ul>
         </div>
         <div class="routine-day">
-          <div class="rd-title">Viernes — Tren Inferior (bajo impacto en rodilla)</div>
+          <div class="rd-title">Jueves — Peso muerto (técnica)</div>
           <ul>
+            <li onclick="openRoutineExercise('e47')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg">1️⃣ Peso muerto convencional con barra — 4 x 6, peso ligero enfocado en técnica</li>
             <li onclick="openRoutineExercise('e42')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/0.jpg">Hip thrust con barra — 3 x 12</li>
-            <li onclick="openRoutineExercise('e43')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/0.jpg">Curl femoral sentado — 3 x 12</li>
-            <li onclick="openRoutineExercise('e44')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg">Elevación de talones de pie — 3 x 15</li>
+          </ul>
+        </div>
+        <div class="cardio-note">🎯 Día dedicado solo a aprender el patrón de movimiento del peso muerto. La prioridad total es la técnica, no el peso — ver la rutina especial de peso muerto más abajo.</div>
+        <div class="routine-day">
+          <div class="rd-title">Viernes — Pierna (bajo impacto) + Hombro + Abdomen</div>
+          <ul>
             <li onclick="openRoutineExercise('e8')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg">Prensa de piernas — 3 x 12</li>
-            <li onclick="openRoutineExercise('e17')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/0.jpg">Plancha abdominal — 3 x 20-30s</li>
+            <li onclick="openRoutineExercise('e44')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg">Elevación de talones — 3 x 15</li>
+            <li onclick="openRoutineExercise('e12')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg">Elevaciones laterales — 3 x 12</li>
+            <li onclick="openRoutineExercise('e30')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Russian_Twist/0.jpg">Giro ruso con mancuerna — 3 x 15 por lado</li>
           </ul>
         </div>
         <div class="routine-day">
@@ -583,61 +596,54 @@ footer b{color:#9AA6A0;}
             <li onclick="openRoutineExercise('e46')">🚶 Caminadora (cinta) — 20-30 min, paso firme</li>
           </ul>
         </div>
-        <div class="cardio-note">😴 Igual que el miércoles, es opcional y de baja intensidad. Domingo: descanso completo, sin cardio ni pesas.</div>
-        <div class="routine-duration">⏱ Duración sugerida: 4-6 semanas antes de pasar a Intermedio (ver criterios en "¿Cómo subir de nivel?").</div>
+        <div class="cardio-note">😴 Domingo: descanso completo, sin cardio ni pesas.</div>
+        <div class="routine-duration">⏱ Duración sugerida: 4-6 semanas antes de pasar a Intermedio.</div>
       </div>
 
       <div class="guide-level">
         <div class="guide-tag lv-mid">Intermedio</div>
-        <p>Superior / Inferior, 4 días por semana con descanso intercalado. Descansa 60-90s entre series.</p>
+        <p>5 días de entrenamiento (Lunes a Viernes), mismo enfoque que Principiante pero con más carga y volumen, y el jueves ya trabajando peso de forma progresiva en el peso muerto (no solo técnica).</p>
         <div class="routine-day">
-          <div class="rd-title">Lunes — Tren Superior</div>
+          <div class="rd-title">Lunes — Empuje (pecho / hombro / tríceps)</div>
           <ul>
             <li onclick="openRoutineExercise('e1')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Bench_Press_-_Medium_Grip/0.jpg">Press de banca con barra — 4 x 10</li>
-            <li onclick="openRoutineExercise('e4')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Barbell_Row/0.jpg">Remo con barra — 4 x 10</li>
             <li onclick="openRoutineExercise('e11')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shoulder_Press/0.jpg">Press militar con mancuernas — 3 x 10</li>
-            <li onclick="openRoutineExercise('e5')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wide-Grip_Lat_Pulldown/0.jpg">Jalón al pecho (polea) — 3 x 10</li>
-            <li onclick="openRoutineExercise('e34')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/0.jpg">Curl de bíceps con mancuernas — 3 x 12</li>
             <li onclick="openRoutineExercise('e15')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg">Extensión de tríceps en polea — 3 x 12</li>
           </ul>
         </div>
         <div class="routine-day">
-          <div class="rd-title">Martes — Tren Inferior (bajo impacto en rodilla)</div>
+          <div class="rd-title">Martes — Pierna (bajo impacto en rodilla) + Abdomen</div>
           <ul>
             <li onclick="openRoutineExercise('e42')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/0.jpg">Hip thrust con barra — 4 x 10</li>
             <li onclick="openRoutineExercise('e6')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/0.jpg">Peso muerto rumano — 3 x 10</li>
             <li onclick="openRoutineExercise('e43')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/0.jpg">Curl femoral sentado — 3 x 12</li>
-            <li onclick="openRoutineExercise('e44')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg">Elevación de talones de pie — 3 x 15</li>
+            <li onclick="openRoutineExercise('e44')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg">Elevación de talones — 3 x 15</li>
             <li onclick="openRoutineExercise('e30')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Russian_Twist/0.jpg">Giro ruso con mancuerna — 3 x 15 por lado</li>
           </ul>
         </div>
         <div class="routine-day">
-          <div class="rd-title">Miércoles — Cardio ligero (descanso activo)</div>
+          <div class="rd-title">Miércoles — Jalón (espalda / bíceps)</div>
           <ul>
-            <li onclick="openRoutineExercise('e45')">🚴 Bicicleta fija — 20-30 min, ritmo moderado</li>
-            <li onclick="openRoutineExercise('e46')">🚶 Caminadora (cinta) — 20-30 min, paso firme</li>
-          </ul>
-        </div>
-        <div class="cardio-note">😴 Día de descanso de pesas — el cardio es opcional y de baja intensidad, solo para mover el cuerpo sin fatigar lo que trabajaste.</div>
-        <div class="routine-day">
-          <div class="rd-title">Jueves — Tren Superior</div>
-          <ul>
-            <li onclick="openRoutineExercise('e1')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Bench_Press_-_Medium_Grip/0.jpg">Press de banca con barra — 4 x 10</li>
             <li onclick="openRoutineExercise('e4')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Barbell_Row/0.jpg">Remo con barra — 4 x 10</li>
-            <li onclick="openRoutineExercise('e11')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shoulder_Press/0.jpg">Press militar con mancuernas — 3 x 10</li>
             <li onclick="openRoutineExercise('e5')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wide-Grip_Lat_Pulldown/0.jpg">Jalón al pecho (polea) — 3 x 10</li>
-            <li onclick="openRoutineExercise('e34')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/0.jpg">Curl de bíceps con mancuernas — 3 x 12</li>
-            <li onclick="openRoutineExercise('e15')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg">Extensión de tríceps en polea — 3 x 12</li>
+            <li onclick="openRoutineExercise('e14')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Curl/0.jpg">Curl de bíceps con barra — 3 x 12</li>
           </ul>
         </div>
         <div class="routine-day">
-          <div class="rd-title">Viernes — Tren Inferior (bajo impacto en rodilla)</div>
+          <div class="rd-title">Jueves — Peso muerto (progresión)</div>
           <ul>
-            <li onclick="openRoutineExercise('e42')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/0.jpg">Hip thrust con barra — 4 x 10</li>
-            <li onclick="openRoutineExercise('e6')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/0.jpg">Peso muerto rumano — 3 x 10</li>
-            <li onclick="openRoutineExercise('e43')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/0.jpg">Curl femoral sentado — 3 x 12</li>
-            <li onclick="openRoutineExercise('e44')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg">Elevación de talones de pie — 3 x 15</li>
-            <li onclick="openRoutineExercise('e30')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Russian_Twist/0.jpg">Giro ruso con mancuerna — 3 x 15 por lado</li>
+            <li onclick="openRoutineExercise('e47')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg">1️⃣ Peso muerto convencional con barra — trabajo progresivo (ver rutina especial abajo)</li>
+            <li onclick="openRoutineExercise('e6')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/0.jpg">2️⃣ Peso muerto rumano — 3 x 10 (accesorio, después del pesado)</li>
+          </ul>
+        </div>
+        <div class="cardio-note">🎯 Ver la rutina especial de peso muerto más abajo para la progresión semanal completa.</div>
+        <div class="routine-day">
+          <div class="rd-title">Viernes — Pierna (bajo impacto) + Hombro + Abdomen</div>
+          <ul>
+            <li onclick="openRoutineExercise('e8')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg">Prensa de piernas — 4 x 10</li>
+            <li onclick="openRoutineExercise('e44')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg">Elevación de talones — 3 x 15</li>
+            <li onclick="openRoutineExercise('e13')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/0.jpg">Face pull — 3 x 12</li>
+            <li onclick="openRoutineExercise('e17')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/0.jpg">Plancha abdominal — 3 x 30-40s</li>
           </ul>
         </div>
         <div class="routine-day">
@@ -647,61 +653,55 @@ footer b{color:#9AA6A0;}
             <li onclick="openRoutineExercise('e46')">🚶 Caminadora (cinta) — 20-30 min, paso firme</li>
           </ul>
         </div>
-        <div class="cardio-note">😴 Igual que el miércoles, es opcional y de baja intensidad. Domingo: descanso completo, sin cardio ni pesas.</div>
-        <div class="routine-duration">⏱ Duración sugerida: 3-6 meses antes de pasar a Avanzado (progresando el peso cada semana que puedas).</div>
+        <div class="cardio-note">😴 Domingo: descanso completo, sin cardio ni pesas.</div>
+        <div class="routine-duration">⏱ Duración sugerida: 3-6 meses antes de pasar a Avanzado.</div>
       </div>
 
       <div class="guide-level">
         <div class="guide-tag lv-adv">Avanzado</div>
-        <p>Superior / Inferior, 4 días por semana con descanso intercalado. Incluye técnicas de intensidad (series al fallo) y más volumen.</p>
+        <p>5 días de entrenamiento (Lunes a Viernes), mayor intensidad y técnicas de fallo, con el jueves como día fuerte de peso muerto siguiendo la progresión especial para romper el estancamiento en 130 kg.</p>
         <div class="routine-day">
-          <div class="rd-title">Lunes — Tren Superior</div>
+          <div class="rd-title">Lunes — Empuje (pecho / hombro / tríceps)</div>
           <ul>
             <li onclick="openRoutineExercise('e1')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Bench_Press_-_Medium_Grip/0.jpg">Press de banca con barra — 4 x 6-8</li>
-            <li onclick="openRoutineExercise('e37')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pullups/0.jpg">Dominadas — 4 x al fallo</li>
             <li onclick="openRoutineExercise('e27')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Arnold_Dumbbell_Press/0.jpg">Press Arnold con mancuernas — 3 x 10</li>
-            <li onclick="openRoutineExercise('e32')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Two-Dumbbell_Row/0.jpg">Remo inclinado bilateral con mancuernas — 4 x 8</li>
             <li onclick="openRoutineExercise('e40')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dips_-_Triceps_Version/0.jpg">Fondos en paralelas (tríceps) — 3 x al fallo</li>
-            <li onclick="openRoutineExercise('e28')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hammer_Curls/0.jpg">Curl martillo con mancuernas — 3 x 12</li>
           </ul>
         </div>
         <div class="routine-day">
-          <div class="rd-title">Martes — Tren Inferior (bajo impacto en rodilla)</div>
+          <div class="rd-title">Martes — Pierna (bajo impacto en rodilla) + Abdomen</div>
           <ul>
             <li onclick="openRoutineExercise('e42')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/0.jpg">Hip thrust con barra — 5 x 8</li>
             <li onclick="openRoutineExercise('e6')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/0.jpg">Peso muerto rumano — 4 x 8</li>
             <li onclick="openRoutineExercise('e43')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/0.jpg">Curl femoral sentado — 4 x 10</li>
-            <li onclick="openRoutineExercise('e44')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg">Elevación de talones de pie — 4 x 15</li>
+            <li onclick="openRoutineExercise('e44')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg">Elevación de talones — 4 x 15</li>
             <li onclick="openRoutineExercise('e19')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hanging_Leg_Raise/0.jpg">Elevación de piernas colgado — 3 x al fallo</li>
           </ul>
         </div>
         <div class="routine-day">
-          <div class="rd-title">Miércoles — Cardio ligero (descanso activo)</div>
+          <div class="rd-title">Miércoles — Jalón (espalda / bíceps)</div>
           <ul>
-            <li onclick="openRoutineExercise('e45')">🚴 Bicicleta fija — 20-30 min, ritmo moderado</li>
-            <li onclick="openRoutineExercise('e46')">🚶 Caminadora (cinta) — 20-30 min, paso firme</li>
-          </ul>
-        </div>
-        <div class="cardio-note">😴 Día de descanso de pesas — el cardio es opcional y de baja intensidad, solo para mover el cuerpo sin fatigar lo que trabajaste.</div>
-        <div class="routine-day">
-          <div class="rd-title">Jueves — Tren Superior</div>
-          <ul>
-            <li onclick="openRoutineExercise('e1')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Bench_Press_-_Medium_Grip/0.jpg">Press de banca con barra — 4 x 6-8</li>
             <li onclick="openRoutineExercise('e37')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pullups/0.jpg">Dominadas — 4 x al fallo</li>
-            <li onclick="openRoutineExercise('e27')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Arnold_Dumbbell_Press/0.jpg">Press Arnold con mancuernas — 3 x 10</li>
             <li onclick="openRoutineExercise('e32')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Two-Dumbbell_Row/0.jpg">Remo inclinado bilateral con mancuernas — 4 x 8</li>
-            <li onclick="openRoutineExercise('e40')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dips_-_Triceps_Version/0.jpg">Fondos en paralelas (tríceps) — 3 x al fallo</li>
             <li onclick="openRoutineExercise('e28')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hammer_Curls/0.jpg">Curl martillo con mancuernas — 3 x 12</li>
           </ul>
         </div>
         <div class="routine-day">
-          <div class="rd-title">Viernes — Tren Inferior (bajo impacto en rodilla)</div>
+          <div class="rd-title">Jueves — Peso muerto (fuerza máxima)</div>
           <ul>
-            <li onclick="openRoutineExercise('e42')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/0.jpg">Hip thrust con barra — 5 x 8</li>
-            <li onclick="openRoutineExercise('e6')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/0.jpg">Peso muerto rumano — 4 x 8</li>
-            <li onclick="openRoutineExercise('e43')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/0.jpg">Curl femoral sentado — 4 x 10</li>
-            <li onclick="openRoutineExercise('e44')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg">Elevación de talones de pie — 4 x 15</li>
-            <li onclick="openRoutineExercise('e19')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hanging_Leg_Raise/0.jpg">Elevación de piernas colgado — 3 x al fallo</li>
+            <li onclick="openRoutineExercise('e47')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg">1️⃣ Peso muerto convencional con barra — trabajo pesado (ver rutina especial abajo)</li>
+            <li onclick="openRoutineExercise('e6')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/0.jpg">2️⃣ Peso muerto rumano — 4 x 8 (accesorio, después del pesado)</li>
+            <li onclick="openRoutineExercise('e4')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Barbell_Row/0.jpg">3️⃣ Remo con barra — 3 x 8 (accesorio de espalda)</li>
+          </ul>
+        </div>
+        <div class="cardio-note">🎯 Este es el día para la progresión especial contra el estancamiento en 130 kg — ver el bloque completo más abajo.</div>
+        <div class="routine-day">
+          <div class="rd-title">Viernes — Pierna (bajo impacto) + Hombro + Abdomen</div>
+          <ul>
+            <li onclick="openRoutineExercise('e8')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg">Prensa de piernas — 4 x 10</li>
+            <li onclick="openRoutineExercise('e44')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg">Elevación de talones — 4 x 15</li>
+            <li onclick="openRoutineExercise('e13')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/0.jpg">Face pull — 3 x 15</li>
+            <li onclick="openRoutineExercise('e30')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Russian_Twist/0.jpg">Giro ruso con mancuerna — 4 x 15 por lado</li>
           </ul>
         </div>
         <div class="routine-day">
@@ -711,12 +711,60 @@ footer b{color:#9AA6A0;}
             <li onclick="openRoutineExercise('e46')">🚶 Caminadora (cinta) — 20-30 min, paso firme</li>
           </ul>
         </div>
-        <div class="cardio-note">😴 Igual que el miércoles, es opcional y de baja intensidad. Domingo: descanso completo, sin cardio ni pesas.</div>
-        <div class="routine-duration">⏱ En este nivel ya no hay una fecha fija de "siguiente etapa" — el trabajo es variar la rutina cada 8-12 semanas y seguir progresando cargas.</div>
+        <div class="cardio-note">😴 Domingo: descanso completo, sin cardio ni pesas.</div>
+        <div class="routine-duration">⏱ En este nivel el trabajo es variar la rutina cada 8-12 semanas y seguir progresando cargas.</div>
       </div>
 
-      <div class="guide-note">💡 Estas rutinas son un punto de partida general, no un plan médico personalizado. Ajusta el peso y las repeticiones a tu condición física, y consulta a un profesional si tienes alguna lesión o condición previa.</div>
-    </div>
+      <div class="guide-level">
+        <div class="guide-tag lv-adv" style="background:rgba(255,82,82,0.14); color:var(--pulse);">🏋️ Rutina especial — Romper el estancamiento de peso muerto</div>
+        <p>Llevar meses en el mismo peso levantando 1 vez por semana es una señal clásica de que el cuerpo ya se adaptó al estímulo — no es falta de fuerza, es falta de variación. Esta progresión de 4 semanas rota la intensidad en vez de intentar forzar más peso cada semana.</p>
+        <div class="webhook-settings" style="margin-bottom:16px;">
+          <div class="pf-title">🎯 Tu peso muerto a vencer</div>
+          <input type="number" id="dl1rm" placeholder="Ej. 130" step="0.5" min="1">
+          <button id="dl1rmSave">Actualizar cálculos</button>
+          <div class="webhook-status" id="dl1rmStatus">Todos los pesos de abajo se calculan solos a partir de este número.</div>
+        </div>
+        <div class="routine-day">
+          <div class="rd-title">Semana 1 — Fuerza pesada</div>
+          <ul>
+            <li onclick="openRoutineExercise('e47')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg">Peso muerto — 5 x 3 al 85-90% (<span id="dlW1">117-130 kg</span>), descanso 3 min</li>
+          </ul>
+        </div>
+        <div class="routine-day">
+          <div class="rd-title">Semana 2 — Volumen</div>
+          <ul>
+            <li onclick="openRoutineExercise('e47')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg">Peso muerto — 5 x 5 al 75-80% (<span id="dlW2">97-104 kg</span>), descanso 2 min</li>
+          </ul>
+        </div>
+        <div class="routine-day">
+          <div class="rd-title">Semana 3 — Técnica y velocidad</div>
+          <ul>
+            <li onclick="openRoutineExercise('e47')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg">Peso muerto — 6 x 2 al 60-65% (<span id="dlW3">78-84 kg</span>), lo más explosivo posible, pausa completa entre reps</li>
+          </ul>
+        </div>
+        <div class="routine-day">
+          <div class="rd-title">Semana 4 — Intento de récord</div>
+          <ul>
+            <li onclick="openRoutineExercise('e47')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg">Calienta progresivo hasta <span id="dlTarget">130 kg</span>, luego intenta <span id="dlAttempt">132.5-135 kg</span> a 1 repetición</li>
+          </ul>
+          <div class="warmup-caption">📋 Progresión de calentamiento sugerida:</div>
+          <table class="warmup-table">
+            <tr><th>Serie</th><th>Peso aprox.</th><th>Reps</th><th>Descanso después</th></tr>
+            <tr><td>1</td><td>Barra vacía / <span id="dlRow1">40 kg</span></td><td>8-10</td><td>1 min</td></tr>
+            <tr><td>2</td><td><span id="dlRow2">60 kg</span></td><td>5</td><td>1-2 min</td></tr>
+            <tr><td>3</td><td><span id="dlRow3">80 kg</span></td><td>3</td><td>2 min</td></tr>
+            <tr><td>4</td><td><span id="dlRow4">100 kg</span></td><td>2</td><td>2-3 min</td></tr>
+            <tr><td>5</td><td><span id="dlRow5">115 kg</span></td><td>1</td><td>3 min</td></tr>
+            <tr><td>6</td><td><span id="dlRow6">130 kg</span></td><td>1</td><td>3-4 min</td></tr>
+            <tr><td>Intento final</td><td><span id="dlRowFinal">132.5-135 kg</span></td><td>1</td><td>—</td></tr>
+          </table>
+          <div class="cardio-note" style="margin-top:8px;" id="dlAdviceNote">💡 Si el levantamiento a 130 kg salió rápido y con buena técnica, ve por 135 kg. Si se sintió pesado o la técnica se vio comprometida, ve por 132.5 kg. Máximo 2 intentos al peso nuevo — si fallas, guárdalo para el siguiente ciclo.</div>
+        </div>
+        <div class="cardio-note">💪 Repite el ciclo completo (4 semanas) 2-3 veces. Si logras el nuevo récord en la Semana 4, actualiza el número de arriba con tu nuevo peso — todos los cálculos se ajustan solos para el siguiente ciclo.<br>✅ Los ejercicios de apoyo (peso muerto rumano, hip thrust, remo) ya están integrados directo en tus días de martes y miércoles — no necesitas agregarlos aparte.</div>
+        <div class="guide-note">💡 Puntos clave para superar el plateau: (1) revisa la técnica en video — a menudo el estancamiento es por la barra alejándose del cuerpo, no por falta de fuerza; (2) el peso muerto es de los ejercicios que menos toleran la fatiga acumulada — si entrenas piernas pesado el día anterior, el peso muerto del jueves sufre; (3) no lo hagas siempre al fallo — un peso muerto fallado es una señal de alarma para la zona lumbar, no una serie más.</div>
+      </div>
+
+      <div class="guide-note">💡 Estas rutinas son un punto de partida general, no un plan médico personalizado. Ajusta el peso y las repeticiones a tu condición física, y consulta a un profesional si tienes alguna lesión o condición previa.</div>    </div>
   </div>
 </div>
 
@@ -914,6 +962,9 @@ const EX = [
   {id:'e46', cat:'cardio', en:'treadmill walking', name:'Caminadora (cinta)', muscle:'Cardio / pierna completa (bajo impacto)', equipment:'Caminadora / cinta de correr', level:'Principiante', pattern:'cardio', view:'front', regions:['quads','calvesF'],
     steps:['Empieza caminando a paso lento para calentar 2-3 minutos.','Sube gradualmente a un paso firme donde sientas el esfuerzo pero puedas mantener conversación.','Mantén una postura erguida, sin apoyarte de las barras laterales.','Sostén el ritmo entre 20-30 minutos, y baja la velocidad los últimos 2-3 minutos para enfriar.'],
     tip:'Evita correr o trotar si buscas cuidar la rodilla — caminar a paso firme ya genera buen beneficio cardiovascular con mucho menor impacto articular.'},
+  {id:'e47', cat:'piernas', en:'barbell deadlift', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/1.jpg'], name:'Peso muerto convencional con barra', muscle:'Cadena posterior completa (glúteo, isquios, espalda)', equipment:'Barra + discos', level:'Avanzado', pattern:'squat', view:'back', regions:['hamstrings','glutes','lowerback'],
+    steps:['Pies al ancho de cadera, barra sobre la mitad del pie.','Flexiona cadera y rodilla para tomar la barra con agarre firme, brazos rectos.','Antes de jalar, "activa" la espalda (pecho arriba, core apretado) y quita la holgura de la barra.','Empuja el piso con las piernas mientras la cadera y los hombros suben a la vez — la barra sube pegada a las piernas.','Termina de pie, cadera totalmente extendida, sin hiperextender la espalda baja.','Baja controlado: cadera hacia atrás primero, luego dobla rodillas cuando la barra pasa las rodillas.'],
+    tip:'La técnica manda sobre el peso, sobre todo pasado cierto punto — un fallo pequeño en la posición de espalda se magnifica mucho a 100kg+. Si llevas tiempo estancado en el mismo peso, casi siempre es una señal para trabajar accesorios y técnica, no para forzar más carga.'},
 ];
 
 /* ---------------- BODY SVG (front / back) ---------------- */
@@ -1231,12 +1282,61 @@ document.getElementById('guideOverlay').addEventListener('click', (ev)=>{
 
 document.getElementById('routineBtn').addEventListener('click', ()=>{
   document.getElementById('routineOverlay').classList.add('open');
+  renderDeadliftPlan();
 });
 document.getElementById('routineCloseBtn').addEventListener('click', ()=>{
   document.getElementById('routineOverlay').classList.remove('open');
 });
 document.getElementById('routineOverlay').addEventListener('click', (ev)=>{
   if(ev.target.id==='routineOverlay') document.getElementById('routineOverlay').classList.remove('open');
+});
+
+/* ---------------- Cálculo dinámico de la rutina especial de peso muerto ---------------- */
+const DL_1RM_KEY = 'pulso_deadlift_1rm';
+function getDl1RM(){
+  try{
+    const v = parseFloat(localStorage.getItem(DL_1RM_KEY));
+    return (v && v > 0) ? v : 130;
+  }catch(e){ return 130; }
+}
+function setDl1RM(v){ try{ localStorage.setItem(DL_1RM_KEY, v); }catch(e){} }
+function roundTo25(n){ return Math.round(n / 2.5) * 2.5; }
+function fmtKg(n){ return (n % 1 === 0 ? n.toFixed(0) : n.toFixed(1)) + ' kg'; }
+function renderDeadliftPlan(){
+  const oneRM = getDl1RM();
+  const input = document.getElementById('dl1rm');
+  if(input && !input.value) input.value = oneRM;
+
+  const w1lo = roundTo25(oneRM*0.85), w1hi = roundTo25(oneRM*0.90);
+  const w2lo = roundTo25(oneRM*0.75), w2hi = roundTo25(oneRM*0.80);
+  const w3lo = roundTo25(oneRM*0.60), w3hi = roundTo25(oneRM*0.65);
+  const attemptLo = roundTo25(oneRM*1.019), attemptHi = roundTo25(oneRM*1.038);
+
+  const set = (id, txt) => { const el = document.getElementById(id); if(el) el.textContent = txt; };
+  set('dlW1', `${w1lo}-${w1hi} kg`);
+  set('dlW2', `${w2lo}-${w2hi} kg`);
+  set('dlW3', `${w3lo}-${w3hi} kg`);
+  set('dlTarget', `${oneRM} kg`);
+  set('dlAttempt', `${attemptLo}-${attemptHi} kg`);
+
+  set('dlRow1', `~${roundTo25(oneRM*0.30)} kg`);
+  set('dlRow2', `${roundTo25(oneRM*0.45)} kg`);
+  set('dlRow3', `${roundTo25(oneRM*0.60)} kg`);
+  set('dlRow4', `${roundTo25(oneRM*0.75)} kg`);
+  set('dlRow5', `${roundTo25(oneRM*0.88)} kg`);
+  set('dlRow6', `${oneRM} kg`);
+  set('dlRowFinal', `${attemptLo}-${attemptHi} kg`);
+
+  const note = document.getElementById('dlAdviceNote');
+  if(note) note.innerHTML = `💡 Si el levantamiento a ${oneRM} kg salió rápido y con buena técnica, ve por ${attemptHi} kg. Si se sintió pesado o la técnica se vio comprometida, ve por ${attemptLo} kg. Máximo 2 intentos al peso nuevo — si fallas, guárdalo para el siguiente ciclo.`;
+}
+document.getElementById('dl1rmSave').addEventListener('click', ()=>{
+  const v = parseFloat(document.getElementById('dl1rm').value);
+  if(!v || v <= 0) return;
+  setDl1RM(v);
+  renderDeadliftPlan();
+  const st = document.getElementById('dl1rmStatus');
+  if(st) st.textContent = `✓ Actualizado a ${v} kg — todos los pesos de arriba ya se recalcularon.`;
 });
 
 /* ---------------- MI PROGRESO (guardado en el celular con localStorage) ---------------- */
@@ -1298,9 +1398,9 @@ function renderWebhookStatus(){
 
 const TRAIN_LEVELS = ['Principiante','Intermedio','Avanzado'];
 const DAYS_BY_LEVEL = {
-  'Principiante': ['Lunes — Superior','Martes — Inferior','Jueves — Superior','Viernes — Inferior'],
-  'Intermedio': ['Lunes — Superior','Martes — Inferior','Jueves — Superior','Viernes — Inferior'],
-  'Avanzado': ['Lunes — Superior','Martes — Inferior','Jueves — Superior','Viernes — Inferior'],
+  'Principiante': ['Lunes — Empuje','Martes — Pierna/Abdomen','Miércoles — Jalón','Jueves — Peso muerto','Viernes — Pierna/Hombro/Abdomen'],
+  'Intermedio': ['Lunes — Empuje','Martes — Pierna/Abdomen','Miércoles — Jalón','Jueves — Peso muerto','Viernes — Pierna/Hombro/Abdomen'],
+  'Avanzado': ['Lunes — Empuje','Martes — Pierna/Abdomen','Miércoles — Jalón','Jueves — Peso muerto','Viernes — Pierna/Hombro/Abdomen'],
 };
 function fillLevelSelect(){
   const sel = document.getElementById('pfLevel');
