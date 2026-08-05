@@ -246,10 +246,10 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
   color:var(--text); font-size:12.5px; padding:9px 11px; margin-bottom:8px;
   font-family:'Inter',sans-serif;
 }
-#pfSaveWebhook{
+#pfSaveWebhook, #dl1rmSave{
   padding:9px 14px; border-radius:10px; background:none;
   border:1px solid #00E68C; color:#00E68C; font-weight:600; font-size:12.5px;
-  cursor:pointer;
+  cursor:pointer; font-family:'Inter',sans-serif;
 }
 .webhook-status{font-size:11.5px; color:var(--muted); margin-top:8px; line-height:1.5;}
 .pf-title{font-size:13px; font-weight:600; color:#E4E8E6; margin-bottom:10px;}
@@ -444,6 +444,8 @@ footer b{color:#9AA6A0;}
   .guide-level p{font-size:13px;}
   .guide-crit li, .routine-day li{font-size:12.5px;}
   .routine-day .rd-title{font-size:13.5px;}
+  .warmup-table{font-size:10.5px;}
+  .warmup-table th, .warmup-table td{padding:5px 4px;}
 
   .progress-stats{gap:6px;}
   .pstat{padding:10px 6px;}
@@ -727,36 +729,36 @@ footer b{color:#9AA6A0;}
         <div class="routine-day">
           <div class="rd-title">Semana 1 — Fuerza pesada</div>
           <ul>
-            <li onclick="openRoutineExercise('e47')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg">Peso muerto — 5 x 3 al 85-90% (<span id="dlW1">117-130 kg</span>), descanso 3 min</li>
+            <li onclick="openRoutineExercise('e47')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg">Peso muerto — 5 x 3 al <span style="white-space:nowrap">85-90%</span> (<span id="dlW1" style="white-space:nowrap">117-130 kg</span>), descanso 3 min</li>
           </ul>
         </div>
         <div class="routine-day">
           <div class="rd-title">Semana 2 — Volumen</div>
           <ul>
-            <li onclick="openRoutineExercise('e47')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg">Peso muerto — 5 x 5 al 75-80% (<span id="dlW2">97-104 kg</span>), descanso 2 min</li>
+            <li onclick="openRoutineExercise('e47')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg">Peso muerto — 5 x 5 al <span style="white-space:nowrap">75-80%</span> (<span id="dlW2" style="white-space:nowrap">97-104 kg</span>), descanso 2 min</li>
           </ul>
         </div>
         <div class="routine-day">
           <div class="rd-title">Semana 3 — Técnica y velocidad</div>
           <ul>
-            <li onclick="openRoutineExercise('e47')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg">Peso muerto — 6 x 2 al 60-65% (<span id="dlW3">78-84 kg</span>), lo más explosivo posible, pausa completa entre reps</li>
+            <li onclick="openRoutineExercise('e47')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg">Peso muerto — 6 x 2 al <span style="white-space:nowrap">60-65%</span> (<span id="dlW3" style="white-space:nowrap">78-84 kg</span>), lo más explosivo posible, pausa completa entre reps</li>
           </ul>
         </div>
         <div class="routine-day">
           <div class="rd-title">Semana 4 — Intento de récord</div>
           <ul>
-            <li onclick="openRoutineExercise('e47')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg">Calienta progresivo hasta <span id="dlTarget">130 kg</span>, luego intenta <span id="dlAttempt">132.5-135 kg</span> a 1 repetición</li>
+            <li onclick="openRoutineExercise('e47')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg">Calienta progresivo hasta <span id="dlTarget" style="white-space:nowrap">130 kg</span>, luego intenta <span id="dlAttempt" style="white-space:nowrap">132.5-135 kg</span> a 1 repetición</li>
           </ul>
           <div class="warmup-caption">📋 Progresión de calentamiento sugerida:</div>
           <table class="warmup-table">
             <tr><th>Serie</th><th>Peso aprox.</th><th>Reps</th><th>Descanso después</th></tr>
-            <tr><td>1</td><td>Barra vacía / <span id="dlRow1">40 kg</span></td><td>8-10</td><td>1 min</td></tr>
-            <tr><td>2</td><td><span id="dlRow2">60 kg</span></td><td>5</td><td>1-2 min</td></tr>
-            <tr><td>3</td><td><span id="dlRow3">80 kg</span></td><td>3</td><td>2 min</td></tr>
-            <tr><td>4</td><td><span id="dlRow4">100 kg</span></td><td>2</td><td>2-3 min</td></tr>
-            <tr><td>5</td><td><span id="dlRow5">115 kg</span></td><td>1</td><td>3 min</td></tr>
-            <tr><td>6</td><td><span id="dlRow6">130 kg</span></td><td>1</td><td>3-4 min</td></tr>
-            <tr><td>Intento final</td><td><span id="dlRowFinal">132.5-135 kg</span></td><td>1</td><td>—</td></tr>
+            <tr><td>1</td><td style="white-space:nowrap">Barra vacía / <span id="dlRow1">40 kg</span></td><td>8-10</td><td>1 min</td></tr>
+            <tr><td>2</td><td style="white-space:nowrap"><span id="dlRow2">60 kg</span></td><td>5</td><td>1-2 min</td></tr>
+            <tr><td>3</td><td style="white-space:nowrap"><span id="dlRow3">80 kg</span></td><td>3</td><td>2 min</td></tr>
+            <tr><td>4</td><td style="white-space:nowrap"><span id="dlRow4">100 kg</span></td><td>2</td><td>2-3 min</td></tr>
+            <tr><td>5</td><td style="white-space:nowrap"><span id="dlRow5">115 kg</span></td><td>1</td><td>3 min</td></tr>
+            <tr><td>6</td><td style="white-space:nowrap"><span id="dlRow6">130 kg</span></td><td>1</td><td>3-4 min</td></tr>
+            <tr><td>Intento final</td><td style="white-space:nowrap"><span id="dlRowFinal">132.5-135 kg</span></td><td>1</td><td>—</td></tr>
           </table>
           <div class="cardio-note" style="margin-top:8px;" id="dlAdviceNote">💡 Si el levantamiento a 130 kg salió rápido y con buena técnica, ve por 135 kg. Si se sintió pesado o la técnica se vio comprometida, ve por 132.5 kg. Máximo 2 intentos al peso nuevo — si fallas, guárdalo para el siguiente ciclo.</div>
         </div>
