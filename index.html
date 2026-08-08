@@ -313,6 +313,33 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
 }
 .overlay.open{display:flex;}
 #overlay{z-index:60;}
+
+.lightbox-overlay{
+  position:fixed; inset:0; background:rgba(4,5,4,0.94);
+  z-index:80; display:none; align-items:center; justify-content:center;
+  padding:20px;
+}
+.lightbox-overlay.open{display:flex;}
+.lightbox-stage{
+  position:relative; width:100%; height:90vh;
+  display:flex; align-items:center; justify-content:center;
+}
+.lightbox-photo{
+  position:absolute; max-width:100%; max-height:90vh; object-fit:contain;
+  border-radius:12px; opacity:0; transition:opacity .18s ease;
+  animation:slideup .18s ease;
+}
+.lightbox-photo.on{opacity:1;}
+.lightbox-close{
+  position:absolute; top:18px; right:18px;
+  background:rgba(20,22,19,0.85);
+}
+.stage-box.zoomable{cursor:zoom-in;}
+.stage-box .zoom-hint{
+  position:absolute; bottom:8px; right:10px;
+  font-size:9.5px; color:var(--muted);
+  background:rgba(0,0,0,0.4); padding:3px 7px; border-radius:6px;
+}
 .sheet{
   background:var(--bg);
   width:100%; max-width:640px;
@@ -499,6 +526,14 @@ footer b{color:#9AA6A0;}
 
 <div class="overlay" id="overlay">
   <div class="sheet" id="sheet"></div>
+</div>
+
+<div class="lightbox-overlay" id="photoLightbox">
+  <div class="close-btn lightbox-close" id="lightboxCloseBtn">✕</div>
+  <div class="lightbox-stage">
+    <img id="lightboxImgA" class="lightbox-img lightbox-photo" alt="Foto ampliada del ejercicio">
+    <img id="lightboxImgB" class="lightbox-img lightbox-photo" alt="Foto ampliada del ejercicio">
+  </div>
 </div>
 
 <div class="overlay" id="guideOverlay">
@@ -1172,6 +1207,7 @@ function openDetail(id){
         </div>
         <img id="gifImgA" alt="${e.name}" class="stage-photo" style="display:none;">
         <img id="gifImgB" alt="${e.name}" class="stage-photo" style="display:none;">
+        <div class="zoom-hint" id="zoomHint" style="display:none;">🔍 Toca para ampliar</div>
       </div>
       <div class="stage-box" id="bodyStage">
         <div class="cap">Músculo</div>
@@ -1235,6 +1271,10 @@ function openDetail(id){
           imgA.classList.toggle('on', showingA);
           imgB.classList.toggle('on', !showingA);
         }, 1200);
+        const box = document.getElementById('animBox');
+        const hint = document.getElementById('zoomHint');
+        if(box){ box.classList.add('zoomable'); box.addEventListener('click', ()=> openLightbox(preA.src, preB.src)); }
+        if(hint) hint.style.display = 'block';
       }
     }
     function onOneFailed(){
@@ -1251,7 +1291,34 @@ function openDetail(id){
     startFigureAnim(e.pattern);
   }
 }
-function closeDetail(){ document.getElementById('overlay').classList.remove('open'); stopFigureAnim(); }
+function closeDetail(){ document.getElementById('overlay').classList.remove('open'); stopFigureAnim(); closeLightbox(); }
+let lightboxInterval = null;
+function openLightbox(srcA, srcB){
+  const imgA = document.getElementById('lightboxImgA');
+  const imgB = document.getElementById('lightboxImgB');
+  imgA.src = srcA;
+  imgB.src = srcB || srcA;
+  imgA.classList.add('on');
+  imgB.classList.remove('on');
+  document.getElementById('photoLightbox').classList.add('open');
+  if(lightboxInterval) clearInterval(lightboxInterval);
+  if(srcB && srcB !== srcA){
+    let showingA = true;
+    lightboxInterval = setInterval(()=>{
+      showingA = !showingA;
+      imgA.classList.toggle('on', showingA);
+      imgB.classList.toggle('on', !showingA);
+    }, 1200);
+  }
+}
+function closeLightbox(){
+  document.getElementById('photoLightbox').classList.remove('open');
+  if(lightboxInterval){ clearInterval(lightboxInterval); lightboxInterval = null; }
+}
+document.getElementById('lightboxCloseBtn').addEventListener('click', closeLightbox);
+document.getElementById('photoLightbox').addEventListener('click', (ev)=>{
+  if(ev.target.id==='photoLightbox') closeLightbox();
+});
 function openRoutineExercise(id){
   openDetail(id);
 }
