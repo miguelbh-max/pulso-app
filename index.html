@@ -322,17 +322,17 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
 .lightbox-overlay.open{display:flex;}
 .lightbox-stage{
   position:relative; width:100%; height:90vh;
-  display:flex; align-items:center; justify-content:center;
 }
 .lightbox-photo{
-  position:absolute; max-width:100%; max-height:90vh; object-fit:contain;
+  position:absolute; inset:0; width:100%; height:100%; object-fit:contain;
   border-radius:12px; opacity:0; transition:opacity .18s ease;
-  animation:slideup .18s ease;
+  z-index:1;
 }
 .lightbox-photo.on{opacity:1;}
 .lightbox-close{
   position:absolute; top:18px; right:18px;
   background:rgba(20,22,19,0.85);
+  z-index:5;
 }
 .stage-box.zoomable{cursor:zoom-in;}
 .stage-box .zoom-hint{
