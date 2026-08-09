@@ -435,6 +435,33 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
   border-radius:12px;
   font-size:12.5px; color:#B8FFDD; line-height:1.5;
 }
+.rest-timer{
+  margin:14px 20px 24px; padding:14px;
+  background:var(--surface); border:1px solid var(--line);
+  border-radius:14px; text-align:center;
+}
+.rest-timer.ringing{border-color:var(--pulse); animation:ringPulse 0.6s infinite;}
+@keyframes ringPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(255,82,82,0.4);}
+  50%{box-shadow:0 0 0 8px rgba(255,82,82,0);}
+}
+.rt-title{font-size:12.5px; font-weight:600; color:#E4E8E6; margin-bottom:8px;}
+.rt-display{
+  font-size:34px; font-weight:800; color:var(--lime); letter-spacing:0.02em;
+  margin-bottom:10px; font-variant-numeric:tabular-nums;
+}
+.rt-presets{display:flex; gap:6px; justify-content:center; flex-wrap:wrap; margin-bottom:10px;}
+.rt-preset{
+  padding:6px 12px; border-radius:999px; border:1px solid var(--line);
+  background:none; color:var(--muted); font-size:11.5px; font-weight:600; cursor:pointer;
+}
+.rt-preset.active{border-color:var(--lime); color:var(--lime); background:rgba(0,230,140,0.1);}
+.rt-controls{display:flex; gap:8px; justify-content:center;}
+.rt-controls button{
+  padding:9px 18px; border-radius:10px; font-size:13px; font-weight:700; cursor:pointer;
+}
+#rtStart{background:var(--lime); color:#0A0B0A; border:none;}
+#rtReset{background:none; color:var(--muted); border:1px solid var(--line);}
 
 /* ---------- Figure animation (CSS stick figure) ---------- */
 .figure-wrap{width:80px; height:130px; position:relative;}
@@ -1244,8 +1271,23 @@ function openDetail(id){
       <ol>${e.steps.map(s=>`<li>${s}</li>`).join('')}</ol>
     </div>
     <div class="tip">💡 ${e.tip}</div>
+    <div class="rest-timer">
+      <div class="rt-title">⏱ Temporizador de descanso</div>
+      <div class="rt-display" id="rtDisplay">00:00</div>
+      <div class="rt-presets">
+        <button class="rt-preset" data-sec="60">1 min</button>
+        <button class="rt-preset" data-sec="90">1:30</button>
+        <button class="rt-preset" data-sec="120">2 min</button>
+        <button class="rt-preset" data-sec="180">3 min</button>
+      </div>
+      <div class="rt-controls">
+        <button id="rtStart">▶ Iniciar</button>
+        <button id="rtReset">↺ Reiniciar</button>
+      </div>
+    </div>
   `;
   document.getElementById('closeBtn').addEventListener('click', closeDetail);
+  setupRestTimer();
 
   let currentView = e.view;
   function paintBody(){
@@ -1312,7 +1354,89 @@ function openDetail(id){
     startFigureAnim(e.pattern);
   }
 }
-function closeDetail(){ document.getElementById('overlay').classList.remove('open'); stopFigureAnim(); closeLightbox(); }
+function closeDetail(){ document.getElementById('overlay').classList.remove('open'); stopFigureAnim(); closeLightbox(); resetRestTimer(); }
+
+/* ---------------- Temporizador de descanso ---------------- */
+let restInterval = null;
+let restSeconds = 0;
+function fmtTime(sec){
+  const m = Math.floor(sec/60), s = sec%60;
+  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+function updateRestDisplay(){
+  const d = document.getElementById('rtDisplay');
+  if(d) d.textContent = fmtTime(restSeconds);
+}
+function playRestAlarm(){
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const beep = (t, dur, freq) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(0.35, t+0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(t); osc.stop(t+dur+0.05);
+    };
+    const now = ctx.currentTime;
+    beep(now, 0.35, 880);
+    beep(now+0.55, 0.35, 880);
+    beep(now+1.10, 0.9, 1046);
+  }catch(err){}
+  if(navigator.vibrate) navigator.vibrate([250,120,250,120,500]);
+}
+function startRestTimer(){
+  if(restInterval || restSeconds<=0) return;
+  const startBtn = document.getElementById('rtStart');
+  if(startBtn) startBtn.textContent = '⏸ Pausar';
+  restInterval = setInterval(()=>{
+    restSeconds--;
+    updateRestDisplay();
+    if(restSeconds<=0){
+      clearInterval(restInterval); restInterval = null;
+      if(startBtn) startBtn.textContent = '▶ Iniciar';
+      const box = document.querySelector('.rest-timer');
+      if(box){ box.classList.add('ringing'); setTimeout(()=> box.classList.remove('ringing'), 3200); }
+      playRestAlarm();
+    }
+  }, 1000);
+}
+function pauseRestTimer(){
+  if(restInterval){ clearInterval(restInterval); restInterval = null; }
+  const startBtn = document.getElementById('rtStart');
+  if(startBtn) startBtn.textContent = '▶ Iniciar';
+}
+function resetRestTimer(){
+  pauseRestTimer();
+  restSeconds = 0;
+  updateRestDisplay();
+  document.querySelectorAll('.rt-preset').forEach(b=> b.classList.remove('active'));
+  const box = document.querySelector('.rest-timer');
+  if(box) box.classList.remove('ringing');
+}
+function setupRestTimer(){
+  restSeconds = 0;
+  updateRestDisplay();
+  document.querySelectorAll('.rt-preset').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      pauseRestTimer();
+      restSeconds = parseInt(btn.dataset.sec, 10);
+      updateRestDisplay();
+      document.querySelectorAll('.rt-preset').forEach(b=> b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+  const startBtn = document.getElementById('rtStart');
+  if(startBtn) startBtn.addEventListener('click', ()=>{
+    if(restInterval) pauseRestTimer();
+    else startRestTimer();
+  });
+  const resetBtn = document.getElementById('rtReset');
+  if(resetBtn) resetBtn.addEventListener('click', resetRestTimer);
+}
 let lightboxInterval = null;
 function openLightbox(srcA, srcB){
   const imgA = document.getElementById('lightboxImgA');
