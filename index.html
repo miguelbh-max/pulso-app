@@ -1585,13 +1585,21 @@ document.getElementById('routineBtn').addEventListener('click', ()=>{
   renderDeadliftPlan();
 });
 document.getElementById('routineCloseBtn').addEventListener('click', ()=>{
-  document.getElementById('routineOverlay').classList.remove('open');
-  showRoutineMenu();
+  const panelOpen = document.querySelector('.routine-panel.open');
+  if(panelOpen){
+    showRoutineMenu();
+  } else {
+    document.getElementById('routineOverlay').classList.remove('open');
+  }
 });
 document.getElementById('routineOverlay').addEventListener('click', (ev)=>{
   if(ev.target.id==='routineOverlay'){
-    document.getElementById('routineOverlay').classList.remove('open');
-    showRoutineMenu();
+    const panelOpen = document.querySelector('.routine-panel.open');
+    if(panelOpen){
+      showRoutineMenu();
+    } else {
+      document.getElementById('routineOverlay').classList.remove('open');
+    }
   }
 });
 
