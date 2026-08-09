@@ -179,6 +179,33 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
   font-size:12px; color:var(--muted); line-height:1.55;
 }
 .routine-btn{color:#00E68C; border-color:rgba(0,230,140,0.3);}
+.lv-special{background:rgba(255,82,82,0.14); color:var(--pulse);}
+.routine-menu{padding:16px 20px 26px; display:flex; flex-direction:column; gap:10px;}
+.routine-menu-item{
+  display:flex; align-items:center; gap:12px;
+  width:100%; text-align:left;
+  background:var(--surface); border:1px solid var(--line); border-radius:14px;
+  padding:14px 14px; cursor:pointer;
+  font-family:'Inter',sans-serif;
+}
+.routine-menu-item:active{background:var(--surface-2);}
+.routine-menu-item .rm-text{display:flex; flex-direction:column; gap:5px; flex:1 1 auto; min-width:0;}
+.routine-menu-item .rm-tag{
+  display:inline-block; align-self:flex-start; font-size:11px; font-weight:700;
+  text-transform:uppercase; letter-spacing:0.04em;
+  padding:5px 12px; border-radius:999px;
+}
+.routine-menu-item .rm-desc{font-size:12.5px; color:var(--muted); line-height:1.4;}
+.routine-menu-item .rm-arrow{font-size:20px; color:var(--muted); flex:0 0 auto;}
+.routine-panel{display:none;}
+.routine-panel.open{display:block;}
+.routine-back{
+  display:inline-flex; align-items:center; gap:4px;
+  background:none; border:1px solid var(--line); color:var(--muted);
+  font-size:12px; font-weight:600; padding:7px 13px; border-radius:999px;
+  cursor:pointer; margin-bottom:16px; font-family:'Inter',sans-serif;
+}
+.routine-back:active{color:var(--lime); border-color:rgba(0,230,140,0.3);}
 .progress-btn{color:#00E68C; border-color:rgba(0,230,140,0.3);}
 .routine-day{margin-bottom:12px;}
 .rd-title{
@@ -624,11 +651,43 @@ footer b{color:#9AA6A0;}
 <div class="overlay" id="routineOverlay">
   <div class="sheet" id="routineSheet">
     <div class="sheet-head">
-      <h2>Rutinas por nivel</h2>
+      <h2 id="routineTitle">Rutinas</h2>
       <div class="close-btn" id="routineCloseBtn">✕</div>
     </div>
-    <div class="guide-body">
 
+    <div class="routine-menu" id="routineMenu">
+      <button class="routine-menu-item" data-target="principiante">
+        <div class="rm-text">
+          <span class="rm-tag lv-begin">Principiante</span>
+          <span class="rm-desc">5 días · técnica base y aprendizaje del peso muerto</span>
+        </div>
+        <span class="rm-arrow">›</span>
+      </button>
+      <button class="routine-menu-item" data-target="intermedio">
+        <div class="rm-text">
+          <span class="rm-tag lv-mid">Intermedio</span>
+          <span class="rm-desc">5 días · más carga, volumen y progresión de peso</span>
+        </div>
+        <span class="rm-arrow">›</span>
+      </button>
+      <button class="routine-menu-item" data-target="avanzado">
+        <div class="rm-text">
+          <span class="rm-tag lv-adv">Avanzado</span>
+          <span class="rm-desc">5 días · alta intensidad y fuerza máxima</span>
+        </div>
+        <span class="rm-arrow">›</span>
+      </button>
+      <button class="routine-menu-item" data-target="especial">
+        <div class="rm-text">
+          <span class="rm-tag lv-special">🏋️ Rutina especial</span>
+          <span class="rm-desc">Romper el estancamiento del peso muerto</span>
+        </div>
+        <span class="rm-arrow">›</span>
+      </button>
+    </div>
+
+    <div class="guide-body routine-panel" id="routinePanel-principiante">
+      <button class="routine-back" data-back>‹ Volver a niveles</button>
       <div class="guide-level">
         <div class="guide-tag lv-begin">Principiante</div>
         <p>5 días de entrenamiento (Lunes a Viernes) cubriendo empuje, jalón, pierna baja en impacto y abdomen, con un día dedicado a aprender la técnica del peso muerto. Descansa 60-90s entre series.</p>
@@ -685,7 +744,11 @@ footer b{color:#9AA6A0;}
         <div class="cardio-note">😴 Domingo: descanso completo, sin cardio ni pesas.</div>
         <div class="routine-duration">⏱ Duración sugerida: 4-6 semanas antes de pasar a Intermedio.</div>
       </div>
+      <div class="guide-note">💡 Estas rutinas son un punto de partida general, no un plan médico personalizado. Ajusta el peso y las repeticiones a tu condición física, y consulta a un profesional si tienes alguna lesión o condición previa.</div>
+    </div>
 
+    <div class="guide-body routine-panel" id="routinePanel-intermedio">
+      <button class="routine-back" data-back>‹ Volver a niveles</button>
       <div class="guide-level">
         <div class="guide-tag lv-mid">Intermedio</div>
         <p>5 días de entrenamiento (Lunes a Viernes), mismo enfoque que Principiante pero con más carga y volumen, y el jueves ya trabajando peso de forma progresiva en el peso muerto (no solo técnica).</p>
@@ -742,7 +805,11 @@ footer b{color:#9AA6A0;}
         <div class="cardio-note">😴 Domingo: descanso completo, sin cardio ni pesas.</div>
         <div class="routine-duration">⏱ Duración sugerida: 3-6 meses antes de pasar a Avanzado.</div>
       </div>
+      <div class="guide-note">💡 Estas rutinas son un punto de partida general, no un plan médico personalizado. Ajusta el peso y las repeticiones a tu condición física, y consulta a un profesional si tienes alguna lesión o condición previa.</div>
+    </div>
 
+    <div class="guide-body routine-panel" id="routinePanel-avanzado">
+      <button class="routine-back" data-back>‹ Volver a niveles</button>
       <div class="guide-level">
         <div class="guide-tag lv-adv">Avanzado</div>
         <p>5 días de entrenamiento (Lunes a Viernes), mayor intensidad y técnicas de fallo, con el jueves como día fuerte de peso muerto siguiendo la progresión especial para romper el estancamiento en 130 kg.</p>
@@ -800,7 +867,11 @@ footer b{color:#9AA6A0;}
         <div class="cardio-note">😴 Domingo: descanso completo, sin cardio ni pesas.</div>
         <div class="routine-duration">⏱ En este nivel el trabajo es variar la rutina cada 8-12 semanas y seguir progresando cargas.</div>
       </div>
+      <div class="guide-note">💡 Estas rutinas son un punto de partida general, no un plan médico personalizado. Ajusta el peso y las repeticiones a tu condición física, y consulta a un profesional si tienes alguna lesión o condición previa.</div>
+    </div>
 
+    <div class="guide-body routine-panel" id="routinePanel-especial">
+      <button class="routine-back" data-back>‹ Volver a niveles</button>
       <div class="guide-level">
         <div class="guide-tag lv-adv" style="background:rgba(255,82,82,0.14); color:var(--pulse);">🏋️ Rutina especial — Romper el estancamiento de peso muerto</div>
         <p>Llevar meses en el mismo peso levantando 1 vez por semana es una señal clásica de que el cuerpo ya se adaptó al estímulo — no es falta de fuerza, es falta de variación. Esta progresión de 4 semanas rota la intensidad en vez de intentar forzar más peso cada semana.</p>
@@ -839,8 +910,9 @@ footer b{color:#9AA6A0;}
         <div class="cardio-note">💪 Repite el ciclo completo (4 semanas) 2-3 veces. Si logras el nuevo récord en la Semana 4, actualiza el número de arriba con tu nuevo peso — todos los cálculos se ajustan solos para el siguiente ciclo.<br>✅ Los ejercicios de apoyo (peso muerto rumano, hip thrust, remo) ya están integrados directo en tus días de martes y miércoles — no necesitas agregarlos aparte.</div>
         <div class="guide-note">💡 Puntos clave para superar el plateau: (1) revisa la técnica en video — a menudo el estancamiento es por la barra alejándose del cuerpo, no por falta de fuerza; (2) el peso muerto es de los ejercicios que menos toleran la fatiga acumulada — si entrenas piernas pesado el día anterior, el peso muerto del jueves sufre; (3) no lo hagas siempre al fallo — un peso muerto fallado es una señal de alarma para la zona lumbar, no una serie más.</div>
       </div>
+      <div class="guide-note">💡 Estas rutinas son un punto de partida general, no un plan médico personalizado. Ajusta el peso y las repeticiones a tu condición física, y consulta a un profesional si tienes alguna lesión o condición previa.</div>
+    </div>
 
-      <div class="guide-note">💡 Estas rutinas son un punto de partida general, no un plan médico personalizado. Ajusta el peso y las repeticiones a tu condición física, y consulta a un profesional si tienes alguna lesión o condición previa.</div>    </div>
   </div>
 </div>
 
@@ -1485,15 +1557,42 @@ document.getElementById('guideOverlay').addEventListener('click', (ev)=>{
   if(ev.target.id==='guideOverlay') document.getElementById('guideOverlay').classList.remove('open');
 });
 
+function showRoutineMenu(){
+  document.getElementById('routineMenu').style.display = 'flex';
+  document.querySelectorAll('.routine-panel').forEach(p=>p.classList.remove('open'));
+  document.getElementById('routineTitle').textContent = 'Rutinas';
+}
+function showRoutinePanel(target){
+  document.getElementById('routineMenu').style.display = 'none';
+  document.querySelectorAll('.routine-panel').forEach(p=>p.classList.remove('open'));
+  const panel = document.getElementById('routinePanel-'+target);
+  if(panel){
+    panel.classList.add('open');
+    const label = {principiante:'Principiante', intermedio:'Intermedio', avanzado:'Avanzado', especial:'Rutina especial'}[target] || 'Rutinas';
+    document.getElementById('routineTitle').textContent = label;
+    document.getElementById('routineSheet').scrollTop = 0;
+  }
+}
+document.querySelectorAll('.routine-menu-item').forEach(btn=>{
+  btn.addEventListener('click', ()=> showRoutinePanel(btn.dataset.target));
+});
+document.querySelectorAll('.routine-back').forEach(btn=>{
+  btn.addEventListener('click', showRoutineMenu);
+});
 document.getElementById('routineBtn').addEventListener('click', ()=>{
+  showRoutineMenu();
   document.getElementById('routineOverlay').classList.add('open');
   renderDeadliftPlan();
 });
 document.getElementById('routineCloseBtn').addEventListener('click', ()=>{
   document.getElementById('routineOverlay').classList.remove('open');
+  showRoutineMenu();
 });
 document.getElementById('routineOverlay').addEventListener('click', (ev)=>{
-  if(ev.target.id==='routineOverlay') document.getElementById('routineOverlay').classList.remove('open');
+  if(ev.target.id==='routineOverlay'){
+    document.getElementById('routineOverlay').classList.remove('open');
+    showRoutineMenu();
+  }
 });
 
 /* ---------------- Cálculo dinámico de la rutina especial de peso muerto ---------------- */
