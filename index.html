@@ -222,6 +222,20 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
   color:var(--lime); font-weight:700; border-bottom:none;
 }
 .warmup-table small{color:var(--muted); font-size:0.82em; font-weight:400;}
+.plate-calc{
+  cursor:pointer; border-bottom:1px dotted rgba(0,230,140,0.5);
+}
+.plate-calc:active{color:var(--lime);}
+.plate-toast{
+  position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px);
+  background:var(--surface); border:1px solid rgba(0,230,140,0.4); color:var(--text);
+  padding:12px 16px; border-radius:12px; font-size:13px; line-height:1.5;
+  box-shadow:0 8px 24px rgba(0,0,0,0.5); z-index:90;
+  opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease;
+  max-width:88vw; text-align:center;
+}
+.plate-toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+.plate-toast b{color:var(--lime);}
 .warmup-caption{
   font-size:11.5px; color:var(--muted); margin-top:10px; margin-bottom:2px;
 }
@@ -537,6 +551,8 @@ footer b{color:#9AA6A0;}
   </div>
 </div>
 
+<div class="plate-toast" id="plateToast"></div>
+
 <div class="overlay" id="guideOverlay">
   <div class="sheet" id="guideSheet">
     <div class="sheet-head">
@@ -771,22 +787,22 @@ footer b{color:#9AA6A0;}
           <div class="rd-title">Progresión de 4 semanas</div>
           <table class="warmup-table">
             <tr><th>Semana</th><th>%1RM</th><th>Peso</th><th>Series</th></tr>
-            <tr onclick="openRoutineExercise('e47')" style="cursor:pointer"><td>1 · Fuerza</td><td>85-90%</td><td><span id="dlW1">117-130 kg</span></td><td>5x3, desc. 3 min</td></tr>
-            <tr onclick="openRoutineExercise('e47')" style="cursor:pointer"><td>2 · Volumen</td><td>75-80%</td><td><span id="dlW2">97-104 kg</span></td><td>5x5, desc. 2 min</td></tr>
-            <tr onclick="openRoutineExercise('e47')" style="cursor:pointer"><td>3 · Técnica</td><td>60-65%</td><td><span id="dlW3">78-84 kg</span></td><td>6x2 explosivo</td></tr>
-            <tr onclick="openRoutineExercise('e47')" style="cursor:pointer"><td>4 · Récord</td><td>~100%+</td><td><span id="dlAttempt">132.5-135 kg</span></td><td>1 rep, calienta hasta <span id="dlTarget">130 kg</span></td></tr>
+            <tr onclick="openRoutineExercise('e47')" style="cursor:pointer"><td>1 · Fuerza</td><td>85-90%</td><td><span id="dlW1" class="plate-calc">117-130 kg</span></td><td>5x3, desc. 3 min</td></tr>
+            <tr onclick="openRoutineExercise('e47')" style="cursor:pointer"><td>2 · Volumen</td><td>75-80%</td><td><span id="dlW2" class="plate-calc">97-104 kg</span></td><td>5x5, desc. 2 min</td></tr>
+            <tr onclick="openRoutineExercise('e47')" style="cursor:pointer"><td>3 · Técnica</td><td>60-65%</td><td><span id="dlW3" class="plate-calc">78-84 kg</span></td><td>6x2 explosivo</td></tr>
+            <tr onclick="openRoutineExercise('e47')" style="cursor:pointer"><td>4 · Récord</td><td>~100%+</td><td><span id="dlAttempt" class="plate-calc">132.5-135 kg</span></td><td>1 rep, calienta hasta <span id="dlTarget" class="plate-calc">130 kg</span></td></tr>
           </table>
           <div class="warmup-caption">📋 Calentamiento sugerido antes de la serie de trabajo (aplica cada jueves, se ajusta al peso de esa semana):</div>
           <div class="table-scroll">
           <table class="warmup-table">
             <tr><th>Serie</th><th>Reps</th><th>Sem. 1</th><th>Sem. 2</th><th>Sem. 3</th><th>Sem. 4</th></tr>
             <tr><td>Barra vacía</td><td>8-10</td><td colspan="4" style="text-align:center"><span id="dlBar">~40 kg</span></td></tr>
-            <tr><td>~45%</td><td>5</td><td><span id="dlW1u45">50 kg</span></td><td><span id="dlW2u45">45 kg</span></td><td><span id="dlW3u45">37.5 kg</span></td><td><span id="dlRow2">60 kg</span></td></tr>
-            <tr><td>~60%</td><td>3</td><td><span id="dlW1u60">67.5 kg</span></td><td><span id="dlW2u60">60 kg</span></td><td><span id="dlW3u60">50 kg</span></td><td><span id="dlRow3">80 kg</span></td></tr>
-            <tr><td>~75%</td><td>2</td><td><span id="dlW1u75">85 kg</span></td><td><span id="dlW2u75">75 kg</span></td><td><span id="dlW3u75">62.5 kg</span></td><td><span id="dlRow4">100 kg</span></td></tr>
-            <tr><td>~88%</td><td>1</td><td><span id="dlW1u88">100 kg</span></td><td><span id="dlW2u88">87.5 kg</span></td><td><span id="dlW3u88">72.5 kg</span></td><td><span id="dlRow5">115 kg</span></td></tr>
-            <tr><td>Trabajo</td><td>Ver abajo ↓</td><td><span id="dlW1work">117.5 kg</span><br><small>5x3</small></td><td><span id="dlW2work">104 kg</span><br><small>5x5</small></td><td><span id="dlW3work">84 kg</span><br><small>6x2</small></td><td><span id="dlRow6">130 kg</span><br><small>calentamiento</small></td></tr>
-            <tr><td>Intento final</td><td>1</td><td>—</td><td>—</td><td>—</td><td><span id="dlRowFinal">132.5-135 kg</span></td></tr>
+            <tr><td>~45%</td><td>5</td><td><span id="dlW1u45" class="plate-calc">50 kg</span></td><td><span id="dlW2u45" class="plate-calc">45 kg</span></td><td><span id="dlW3u45" class="plate-calc">37.5 kg</span></td><td><span id="dlRow2" class="plate-calc">60 kg</span></td></tr>
+            <tr><td>~60%</td><td>3</td><td><span id="dlW1u60" class="plate-calc">67.5 kg</span></td><td><span id="dlW2u60" class="plate-calc">60 kg</span></td><td><span id="dlW3u60" class="plate-calc">50 kg</span></td><td><span id="dlRow3" class="plate-calc">80 kg</span></td></tr>
+            <tr><td>~75%</td><td>2</td><td><span id="dlW1u75" class="plate-calc">85 kg</span></td><td><span id="dlW2u75" class="plate-calc">75 kg</span></td><td><span id="dlW3u75" class="plate-calc">62.5 kg</span></td><td><span id="dlRow4" class="plate-calc">100 kg</span></td></tr>
+            <tr><td>~88%</td><td>1</td><td><span id="dlW1u88" class="plate-calc">100 kg</span></td><td><span id="dlW2u88" class="plate-calc">87.5 kg</span></td><td><span id="dlW3u88" class="plate-calc">72.5 kg</span></td><td><span id="dlRow5" class="plate-calc">115 kg</span></td></tr>
+            <tr><td>Trabajo</td><td>Ver abajo ↓</td><td><span id="dlW1work" class="plate-calc">117.5 kg</span><br><small>5x3</small></td><td><span id="dlW2work" class="plate-calc">104 kg</span><br><small>5x5</small></td><td><span id="dlW3work" class="plate-calc">84 kg</span><br><small>6x2</small></td><td><span id="dlRow6" class="plate-calc">130 kg</span><br><small>calentamiento</small></td></tr>
+            <tr><td>Intento final</td><td>1</td><td>—</td><td>—</td><td>—</td><td><span id="dlRowFinal" class="plate-calc">132.5-135 kg</span></td></tr>
           </table>
           </div>
           <div class="cardio-note" style="margin-top:8px;">📌 La fila "Trabajo" es tu serie real de esa semana — las series x reps completas (5x3, 5x5, etc.) están en la tabla de arriba ("Progresión de 4 semanas"). El peso de "Trabajo" en la Semana 4 es solo el último escalón de calentamiento antes del intento final.</div>
@@ -1418,6 +1434,32 @@ document.getElementById('dl1rmSave').addEventListener('click', ()=>{
   const st = document.getElementById('dl1rmStatus');
   if(st) st.textContent = `✓ Actualizado a ${v} kg — todos los pesos de arriba ya se recalcularon.`;
 });
+
+/* ---------------- Cálculo de discos por lado (barra de 20 kg) ---------------- */
+const BAR_WEIGHT_KG = 20;
+let plateToastTimer = null;
+function showPlateToast(html){
+  const toast = document.getElementById('plateToast');
+  if(!toast) return;
+  toast.innerHTML = html;
+  toast.classList.add('show');
+  if(plateToastTimer) clearTimeout(plateToastTimer);
+  plateToastTimer = setTimeout(()=> toast.classList.remove('show'), 4000);
+}
+document.addEventListener('click', (ev)=>{
+  const el = ev.target.closest('.plate-calc');
+  if(!el) return;
+  ev.stopPropagation();
+  const nums = el.textContent.match(/\d+(\.\d+)?/g);
+  if(!nums || !nums.length) return;
+  const lines = nums.map(n=>{
+    const total = parseFloat(n);
+    const perSide = (total - BAR_WEIGHT_KG) / 2;
+    if(perSide < 0) return `${total} kg — menos que tu barra (${BAR_WEIGHT_KG} kg), no necesitas discos`;
+    return `<b>${total} kg</b> = barra (${BAR_WEIGHT_KG} kg) + <b>${perSide} kg</b> por lado`;
+  });
+  showPlateToast(lines.join('<br>'));
+}, true);
 
 /* ---------------- MI PROGRESO (guardado en el celular con localStorage) ---------------- */
 const PROGRESS_KEY = 'pulso_progress_v1';
