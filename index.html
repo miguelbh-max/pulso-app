@@ -207,6 +207,66 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
 }
 .routine-back:active{color:var(--lime); border-color:rgba(0,230,140,0.3);}
 .progress-btn{color:#00E68C; border-color:rgba(0,230,140,0.3);}
+.diet-btn{color:#00E68C; border-color:rgba(0,230,140,0.3);}
+.diet-target-box{
+  background:rgba(0,230,140,0.05); border:1px solid rgba(0,230,140,0.2);
+  border-radius:14px; padding:14px; margin-bottom:18px;
+}
+.diet-macro-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:12px;}
+.dmacro{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:10px 6px; text-align:center;}
+.dmacro b{display:block; font-size:16px; color:var(--lime); font-weight:700;}
+.dmacro span{font-size:9.5px; color:var(--muted); text-transform:uppercase; letter-spacing:0.02em;}
+.diet-day{margin-bottom:14px;}
+.diet-meal{margin-bottom:10px;}
+.diet-meal-label{
+  font-size:11.5px; font-weight:700; color:#9CFFDD; text-transform:uppercase;
+  letter-spacing:0.03em; margin-bottom:5px;
+}
+.diet-meal ul{padding-left:0; list-style:none; display:flex; flex-direction:column; gap:5px;}
+.diet-meal li{
+  font-size:13px; color:#AEB6B1; line-height:1.4;
+  display:flex; justify-content:space-between; align-items:baseline; gap:10px;
+}
+.diet-meal li b{color:var(--text); font-weight:600; white-space:nowrap;}
+
+.diet-weigh-tip{
+  font-size:12px; color:#AEB6B1; line-height:1.5; background:rgba(0,230,140,0.06);
+  border:1px solid rgba(0,230,140,0.18); border-radius:10px; padding:9px 10px; margin:10px 0;
+}
+#dwlList{display:flex; flex-direction:column; gap:6px; margin-top:8px; max-height:220px; overflow-y:auto;}
+.dwl-item{
+  display:flex; justify-content:space-between; align-items:center; gap:8px;
+  background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:8px 10px;
+  font-size:13px; color:var(--text);
+}
+.dwl-item .dwl-delta{font-size:11px; font-weight:700;}
+.dwl-item .dwl-delta.down{color:var(--lime);}
+.dwl-item .dwl-delta.up{color:var(--pulse);}
+.dwl-item .dwl-delta.flat{color:var(--muted);}
+.dwl-del{background:none; border:none; color:var(--muted); font-size:14px; cursor:pointer; padding:2px 4px;}
+.dwl-empty{font-size:12.5px; color:var(--muted); padding:6px 2px;}
+
+.diet-table-wrap{
+  overflow-x:auto; -webkit-overflow-scrolling:touch; border:1px solid var(--line);
+  border-radius:14px; margin-bottom:16px;
+}
+.diet-table{border-collapse:collapse; width:100%; min-width:760px; font-size:12px;}
+.diet-table thead th{
+  background:rgba(0,230,140,0.08); color:#9CFFDD; text-transform:uppercase; letter-spacing:0.02em;
+  font-size:10.5px; padding:9px 8px; text-align:left; border-bottom:1px solid var(--line); white-space:nowrap;
+}
+.diet-table tbody td{
+  padding:9px 8px; border-bottom:1px solid var(--line); vertical-align:top; color:#AEB6B1; line-height:1.5;
+}
+.diet-table tbody td b{color:var(--text); font-weight:600;}
+.diet-table tbody tr:last-child td{border-bottom:none;}
+.diet-table .dt-day{
+  font-weight:700; color:var(--lime); white-space:nowrap; background:rgba(0,230,140,0.04);
+}
+.diet-table .dt-time{font-size:9.5px; color:var(--muted); text-transform:uppercase; margin-bottom:3px;}
+.diet-table .dt-free{
+  text-align:center; color:#9CFFDD; font-style:italic; padding:12px 10px; background:rgba(0,230,140,0.03);
+}
 .routine-day{margin-bottom:12px;}
 .rd-title{
   font-size:15px; font-weight:800; color:var(--lime); margin-bottom:8px;
@@ -293,7 +353,7 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
   color:var(--text); font-size:12.5px; padding:9px 11px; margin-bottom:8px;
   font-family:'Inter',sans-serif;
 }
-#pfSaveWebhook, #dl1rmSave{
+#pfSaveWebhook, #dl1rmSave, #dietSaveBtn{
   padding:9px 14px; border-radius:10px; background:none;
   border:1px solid #00E68C; color:#00E68C; font-weight:600; font-size:12.5px;
   cursor:pointer; font-family:'Inter',sans-serif;
@@ -584,6 +644,7 @@ footer b{color:#9AA6A0;}
     <button class="guide-btn" id="guideBtn">¿Cómo subir de nivel? <i>ℹ</i></button>
     <button class="guide-btn routine-btn" id="routineBtn">Rutinas <i>▤</i></button>
     <button class="guide-btn progress-btn" id="progressBtn">Mi progreso <i>📈</i></button>
+    <button class="guide-btn diet-btn" id="dietBtn">Alimentación <i>🥗</i></button>
   </div>
 </div>
 
@@ -953,6 +1014,81 @@ footer b{color:#9AA6A0;}
       </div>
       <select id="histFilter" class="hist-filter"></select>
       <div id="progressList"></div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="dietOverlay">
+  <div class="sheet" id="dietSheet">
+    <div class="sheet-head">
+      <h2>Alimentación</h2>
+      <div class="close-btn" id="dietCloseBtn">✕</div>
+    </div>
+    <div class="guide-body">
+      <p style="font-size:13.5px; color:#E4E8E6; line-height:1.5; margin-bottom:14px;">Plan de recomposición corporal (bajar grasa / ganar músculo) sin azúcar añadida. Sin pollo, pavo, pato ni mariscos con caparazón (camarón, langosta, cangrejo).</p>
+
+      <div class="webhook-settings" id="dietInputs">
+        <div class="pf-title">📏 Tus datos actuales</div>
+        <div class="pf-row">
+          <input type="number" id="dietWeight" placeholder="Peso (kg)" min="0" step="0.1">
+          <input type="number" id="dietHeight" placeholder="Estatura (cm)" min="0" step="1">
+          <input type="number" id="dietAge" placeholder="Edad (años)" min="0" step="1">
+        </div>
+        <button id="dietSaveBtn">Actualizar mi plan</button>
+        <div class="webhook-status" id="dietStatus"></div>
+      </div>
+
+      <div class="webhook-settings" id="dietWeightLogBox">
+        <div class="pf-title">⚖️ Control de peso corporal</div>
+        <div class="pf-row">
+          <input type="date" id="dwlDate">
+          <input type="number" id="dwlWeight" placeholder="Peso (kg)" min="0" step="0.1">
+        </div>
+        <button id="dwlSaveBtn">Registrar peso</button>
+        <div class="webhook-status" id="dwlStatus"></div>
+        <div class="diet-weigh-tip">📅 Recomendación: pésate <b>1 vez por semana</b>, siempre el mismo día (ej. lunes en la mañana), en ayunas, recién levantado y con ropa ligera. Pesarte a diario solo genera ruido por retención de líquidos — lo que importa es la tendencia semanal, no el número de un solo día.</div>
+        <div id="dwlStats" class="diet-macro-grid" style="grid-template-columns:repeat(3,1fr);"></div>
+        <div id="dwlList"></div>
+      </div>
+
+      <div class="diet-target-box">
+        <div class="pf-title" style="margin-bottom:0;">🎯 Tu meta diaria</div>
+        <div class="diet-macro-grid" id="dietMacroGrid"></div>
+      </div>
+
+      <div id="dietDaysContainer"></div>
+
+      <div class="diet-day">
+        <div class="rd-title" style="background:rgba(255,82,82,0.14); color:var(--pulse); border-color:rgba(255,82,82,0.3);">🔄 Sustitutos libres</div>
+        <div class="diet-meal">
+          <div class="diet-meal-label">Queso Oaxaca</div>
+          <ul>
+            <li>Puede reemplazar al queso panela en cualquier comida. <b>30-40 g</b></li>
+            <li>Regla: es fuente de grasa — si lo usas, quita el aguacate de esa misma comida (una fuente de grasa por comida).</li>
+          </ul>
+        </div>
+        <div class="diet-meal">
+          <div class="diet-meal-label">Quesadilla (tortilla de maíz + queso Oaxaca)</div>
+          <ul>
+            <li>Sustituto válido del desayuno de huevo + tortilla. <b>2 tortillas + 30-40g queso</b></li>
+            <li>Cocinar en comal/plancha, no frita en aceite.</li>
+            <li>Agrega 2-3 claras de huevo aparte para subir proteína — la quesadilla sola aporta poca.</li>
+            <li>No combinar con aguacate en la misma comida.</li>
+          </ul>
+        </div>
+        <div class="diet-meal">
+          <div class="diet-meal-label">Chorizo</div>
+          <ul>
+            <li>Uso ocasional, máximo 1-2 veces por semana. <b>50 g</b></li>
+            <li>Combinar con claras de huevo (no huevo entero) para subir proteína sin sumar más grasa.</li>
+            <li>Ejemplo: 50g chorizo + 3 claras + 2 tortillas de maíz ≈ 400 kcal, 24g proteína.</li>
+            <li>Ese día no agregues aguacate, queso ni almendras en ninguna otra comida — ya usaste tu cupo de grasa fuerte.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="guide-note">💡 Horario ajustado a tu rutina: desayuno 6:00am, dos colaciones antes de tu comida fuerte de las 5:00pm (la de la 1:00pm es solo fruta, práctica entre clases), y cena ligera 8:00-8:30pm con opciones intercambiables. La porción de proteína de la comida de las 5pm se subió un poco para compensar la proteína que ya no viene de la colación de la 1pm.</div>
+      <div class="guide-note">💡 Las porciones de proteína, grasa y carbohidrato de cada comida se recalculan automáticamente según tu peso, estatura y edad actuales — actualízalos conforme avances en la dieta. Las frutas de colación se mantienen fijas. Estos cálculos son estimaciones generales (fórmula Mifflin-St Jeor), no un plan médico personalizado. Con tu peso actual se recomienda supervisión médica al iniciar, y consultar a un nutriólogo para seguimiento individualizado.</div>
     </div>
   </div>
 </div>
@@ -1887,6 +2023,363 @@ document.getElementById('pfSave').addEventListener('click', ()=>{
   document.getElementById('pfReps').value = '';
   document.getElementById('pfSets').value = '';
   renderProgress();
+});
+
+/* ---------------- ALIMENTACIÓN — plan dinámico según peso/estatura/edad ---------------- */
+const DIET_KEY = 'pulso_diet_profile';
+const DIET_BASELINE = {weight:134, height:182, age:48}; // perfil de referencia con el que se diseñaron las porciones base
+
+function getDietProfile(){
+  try{
+    const raw = localStorage.getItem(DIET_KEY);
+    if(raw){
+      const p = JSON.parse(raw);
+      if(p && p.weight>0 && p.height>0 && p.age>0) return p;
+    }
+  }catch(err){}
+  return {...DIET_BASELINE};
+}
+function setDietProfile(p){
+  try{ localStorage.setItem(DIET_KEY, JSON.stringify(p)); }catch(err){}
+}
+
+// Fórmula Mifflin-St Jeor (hombre) + factor de actividad moderado-alto (entrena 4-5x/semana) + déficit para recomposición corporal
+function calcDietTargets(weight, height, age){
+  const bmr = 10*weight + 6.25*height - 5*age + 5;
+  const tdee = bmr * 1.45;
+  let kcal = tdee - 650;
+  const minKcal = Math.max(1500, bmr * 1.15);
+  if(kcal < minKcal) kcal = minKcal;
+  const protein = weight * 1.45;
+  const fat = weight * 0.52;
+  let carbs = (kcal - protein*4 - fat*9) / 4;
+  if(carbs < 80) carbs = 80;
+  return {kcal: Math.round(kcal), protein: Math.round(protein), fat: Math.round(fat), carbs: Math.round(carbs)};
+}
+
+const DIET_BASE_TARGETS = calcDietTargets(DIET_BASELINE.weight, DIET_BASELINE.height, DIET_BASELINE.age);
+
+function roundG(x){ return Math.max(0, Math.round(x/5)*5); }
+function roundPZ(x){ return Math.max(1, Math.round(x)); }
+function roundTaza(x){ return Math.max(0.25, Math.round(x*4)/4); }
+
+function fmtTaza(v){
+  if(v===0.25) return '¼ taza';
+  if(v===0.5) return '½ taza';
+  if(v===0.75) return '¾ taza';
+  return v + ' taza' + (v!==1?'s':'');
+}
+function fmtPZ(v, singular, plural){
+  return v + ' ' + (v===1 ? singular : (plural||singular+'s'));
+}
+
+// type: 'p' proteína, 'c' carbohidrato, 'f' grasa — escalan con la meta del usuario
+// unit: 'g' gramos, 'pz' piezas, 'taza' tazas
+// fixed:true -> se muestra tal cual (colaciones de fruta, verduras libres, condimentos)
+const CENA_ALT = {name:'Alternativas ligeras (elige la que tengas más a mano)', text:'yogur griego natural sin azúcar (1 taza) · quesadilla chica de 1 tortilla + 20g queso Oaxaca · o la opción de la lista de arriba', fixed:true};
+
+const DIET_PLAN = [
+{day:'LUNES', meals:[
+  {label:'Desayuno', time:'6:00 am', items:[
+    {name:'Huevo entero', base:3, unit:'pz', type:'p'},
+    {name:'Aguacate', base:70, unit:'g', type:'f'},
+    {name:'Tortilla de maíz', base:2, unit:'pz', type:'c'}]},
+  {label:'Colación 1', time:'9:30-10:00 am', items:[
+    {name:'Manzana', text:'1 mediana', fixed:true},
+    {name:'Almendras', base:15, unit:'pz', type:'f'}]},
+  {label:'Colación 2', time:'1:00 pm — solo fruta, práctica entre clases', items:[
+    {name:'Fresas', text:'1 taza', fixed:true}]},
+  {label:'Comida', time:'5:00 pm', items:[
+    {name:'Salmón a la plancha', base:220, unit:'g', type:'p'},
+    {name:'Arroz integral cocido', base:1, unit:'taza', type:'c'},
+    {name:'Ensalada verde', text:'libre', fixed:true}]},
+  {label:'Cena', time:'8:00-8:30 pm — ligera', items:[
+    {name:'Carne molida de res (90% magra)', base:180, unit:'g', type:'p'},
+    {name:'Pico de gallo', text:'libre', fixed:true},
+    CENA_ALT]},
+]},
+{day:'MARTES', meals:[
+  {label:'Desayuno', time:'6:00 am', items:[
+    {name:'Avena (seca)', base:0.5, unit:'taza', type:'c'},
+    {name:'Proteína en polvo', base:1, unit:'pz', type:'p'},
+    {name:'Plátano', text:'1 mediano', fixed:true},
+    {name:'Canela', text:'al gusto', fixed:true}]},
+  {label:'Colación 1', time:'9:30-10:00 am', items:[
+    {name:'Naranja', text:'1 mediana', fixed:true}]},
+  {label:'Colación 2', time:'1:00 pm — solo fruta, práctica entre clases', items:[
+    {name:'Duraznos', text:'1 pieza', fixed:true}]},
+  {label:'Comida', time:'5:00 pm', items:[
+    {name:'Bistec de res magro', base:220, unit:'g', type:'p'},
+    {name:'Camote', base:1, unit:'pz', type:'c'},
+    {name:'Brócoli al vapor', text:'1 taza', fixed:true}]},
+  {label:'Cena', time:'8:00-8:30 pm — ligera', items:[
+    {name:'Claras de huevo', base:6, unit:'pz', type:'p'},
+    {name:'Espinaca y champiñones', text:'libre', fixed:true},
+    CENA_ALT]},
+]},
+{day:'MIÉRCOLES', meals:[
+  {label:'Desayuno', time:'6:00 am', items:[
+    {name:'Huevo entero', base:2, unit:'pz', type:'p'},
+    {name:'Frijoles cocidos', base:0.5, unit:'taza', type:'c'},
+    {name:'Tortilla de nopal', base:2, unit:'pz', type:'c'}]},
+  {label:'Colación 1', time:'9:30-10:00 am', items:[
+    {name:'Nueces', base:10, unit:'pz', type:'f'},
+    {name:'Mandarina', text:'1 pieza', fixed:true}]},
+  {label:'Colación 2', time:'1:00 pm — solo fruta, práctica entre clases', items:[
+    {name:'Moras azules', text:'1 taza', fixed:true}]},
+  {label:'Comida', time:'5:00 pm', items:[
+    {name:'Tilapia al horno', base:240, unit:'g', type:'p'},
+    {name:'Quinoa cocida', base:1, unit:'taza', type:'c'},
+    {name:'Calabacitas', text:'1 taza', fixed:true}]},
+  {label:'Cena', time:'8:00-8:30 pm — ligera', items:[
+    {name:'Atún en agua', base:140, unit:'g', type:'p'},
+    {name:'Aguacate', base:0.5, unit:'pz', type:'f'},
+    {name:'Jitomate', text:'libre', fixed:true},
+    CENA_ALT]},
+]},
+{day:'JUEVES', meals:[
+  {label:'Desayuno', time:'6:00 am', items:[
+    {name:'Proteína en polvo', base:1, unit:'pz', type:'p'},
+    {name:'Leche o bebida de almendra', text:'1 taza', fixed:true},
+    {name:'Espinaca', text:'libre', fixed:true},
+    {name:'Plátano', text:'1 mediano', fixed:true}]},
+  {label:'Colación 1', time:'9:30-10:00 am', items:[
+    {name:'Pera', text:'1 mediana', fixed:true}]},
+  {label:'Colación 2', time:'1:00 pm — solo fruta, práctica entre clases', items:[
+    {name:'Manzana', text:'1 mediana', fixed:true}]},
+  {label:'Comida', time:'5:00 pm', items:[
+    {name:'Lomo de cerdo magro', base:220, unit:'g', type:'p'},
+    {name:'Arroz integral', base:1, unit:'taza', type:'c'},
+    {name:'Ensalada verde', text:'libre', fixed:true}]},
+  {label:'Cena', time:'8:00-8:30 pm — ligera', items:[
+    {name:'Carne molida de res (en lechugas)', base:180, unit:'g', type:'p'},
+    {name:'Guacamole', base:0.25, unit:'pz', type:'f'},
+    CENA_ALT]},
+]},
+{day:'VIERNES', meals:[
+  {label:'Desayuno', time:'6:00 am', items:[
+    {name:'Huevo entero', base:2, unit:'pz', type:'p'},
+    {name:'Clara de huevo', base:1, unit:'pz', type:'p'},
+    {name:'Jitomate', text:'libre', fixed:true},
+    {name:'Aguacate', base:0.5, unit:'pz', type:'f'}]},
+  {label:'Colación 1', time:'9:30-10:00 am', items:[
+    {name:'Toronja', text:'½ pieza', fixed:true}]},
+  {label:'Colación 2', time:'1:00 pm — solo fruta, práctica entre clases', items:[
+    {name:'Piña', text:'1 taza', fixed:true}]},
+  {label:'Comida', time:'5:00 pm', items:[
+    {name:'Salmón', base:220, unit:'g', type:'p'},
+    {name:'Camote', base:1, unit:'pz', type:'c'},
+    {name:'Ejotes', text:'1 taza', fixed:true}]},
+  {label:'Cena', time:'8:00-8:30 pm — ligera', items:[
+    {name:'Res deshebrada', base:180, unit:'g', type:'p'},
+    {name:'Sopa de verduras', text:'libre', fixed:true},
+    CENA_ALT]},
+]},
+{day:'SÁBADO', meals:[
+  {label:'Desayuno', time:'6:00 am', items:[
+    {name:'Hot cakes de avena y plátano (sin azúcar)', base:3, unit:'pz', type:'c'},
+    {name:'Canela', text:'al gusto', fixed:true}]},
+  {label:'Colación 1', time:'9:30-10:00 am', items:[
+    {name:'Uvas', text:'1 taza', fixed:true}]},
+  {label:'Colación 2', time:'1:00 pm — solo fruta, práctica entre clases', items:[
+    {name:'Fresas', text:'1 taza', fixed:true}]},
+  {label:'Comida', time:'5:00 pm', items:[
+    {name:'Bistec de res', base:220, unit:'g', type:'p'},
+    {name:'Frijoles', base:0.5, unit:'taza', type:'c'},
+    {name:'Ensalada grande', text:'libre', fixed:true}]},
+  {label:'Cena', time:'8:00-8:30 pm — ligera', items:[
+    {name:'Queso panela', base:60, unit:'g', type:'f'},
+    {name:'Champiñones', text:'libre', fixed:true},
+    {name:'Huevo entero', base:2, unit:'pz', type:'p'},
+    CENA_ALT]},
+]},
+];
+
+function scaleItem(item, ratios){
+  if(item.fixed) return item.text;
+  const ratio = ratios[item.type];
+  const scaled = item.base * ratio;
+  if(item.unit==='g') return roundG(scaled) + ' g';
+  if(item.unit==='taza') return fmtTaza(roundTaza(scaled));
+  if(item.unit==='pz') return roundPZ(scaled) + ' pz';
+  return scaled;
+}
+
+function renderDietPlan(){
+  const profile = getDietProfile();
+  document.getElementById('dietWeight').value = profile.weight;
+  document.getElementById('dietHeight').value = profile.height;
+  document.getElementById('dietAge').value = profile.age;
+
+  const targets = calcDietTargets(profile.weight, profile.height, profile.age);
+  const ratios = {
+    p: targets.protein / DIET_BASE_TARGETS.protein,
+    c: targets.carbs / DIET_BASE_TARGETS.carbs,
+    f: targets.fat / DIET_BASE_TARGETS.fat,
+  };
+
+  document.getElementById('dietMacroGrid').innerHTML = `
+    <div class="dmacro"><b>${targets.kcal}</b><span>Kcal</span></div>
+    <div class="dmacro"><b>${targets.protein}g</b><span>Proteína</span></div>
+    <div class="dmacro"><b>${targets.fat}g</b><span>Grasa</span></div>
+    <div class="dmacro"><b>${targets.carbs}g</b><span>Carbos</span></div>
+  `;
+
+  const MEAL_LABELS = ['Desayuno','Colación 1','Colación 2','Comida','Cena'];
+  const theadCells = '<th>Día</th>' + MEAL_LABELS.map(l=>`<th>${l}</th>`).join('');
+
+  const bodyRows = DIET_PLAN.map(d=>{
+    const cells = MEAL_LABELS.map(label=>{
+      const meal = d.meals.find(m=>m.label===label);
+      if(!meal) return '<td>—</td>';
+      const timeHtml = meal.time ? `<div class="dt-time">${meal.time}</div>` : '';
+      const itemsHtml = meal.items.map(it=>`${it.name}: <b>${scaleItem(it, ratios)}</b>`).join('<br>');
+      return `<td>${timeHtml}${itemsHtml}</td>`;
+    }).join('');
+    return `<tr><td class="dt-day">${d.day}</td>${cells}</tr>`;
+  }).join('');
+
+  const sundayRow = `<tr><td class="dt-day">DOMINGO</td><td colspan="${MEAL_LABELS.length}" class="dt-free">🎉 Día libre — come balanceado, mantén proteína en cada comida y evita excesos de azúcar. El lunes retomas el plan estricto.</td></tr>`;
+
+  const container = document.getElementById('dietDaysContainer');
+  container.innerHTML = `
+    <div class="diet-table-wrap">
+      <table class="diet-table">
+        <thead><tr>${theadCells}</tr></thead>
+        <tbody>${bodyRows}${sundayRow}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+/* ---------------- Control de peso corporal (dentro de Alimentación) ---------------- */
+const DIET_WEIGHT_LOG_KEY = 'pulso_diet_weight_log';
+function loadWeightLog(){
+  try{
+    const raw = localStorage.getItem(DIET_WEIGHT_LOG_KEY);
+    return raw ? JSON.parse(raw) : [];
+  }catch(err){ return []; }
+}
+function saveWeightLog(list){
+  try{ localStorage.setItem(DIET_WEIGHT_LOG_KEY, JSON.stringify(list)); }catch(err){}
+}
+let dietWeightLog = loadWeightLog();
+
+function renderWeightLog(){
+  const sorted = dietWeightLog.slice().sort((a,b)=> a.date.localeCompare(b.date));
+  const statsEl = document.getElementById('dwlStats');
+  const listEl = document.getElementById('dwlList');
+
+  if(!sorted.length){
+    statsEl.innerHTML = '';
+    listEl.innerHTML = `<div class="dwl-empty">Aún no tienes registros de peso. Agrega el primero arriba.</div>`;
+    return;
+  }
+
+  const first = sorted[0];
+  const last = sorted[sorted.length-1];
+  const totalChange = (last.weight - first.weight);
+  statsEl.innerHTML = `
+    <div class="dmacro"><b>${last.weight}kg</b><span>Último</span></div>
+    <div class="dmacro"><b>${sorted.length}</b><span>Registros</span></div>
+    <div class="dmacro"><b>${totalChange>0?'+':''}${totalChange.toFixed(1)}kg</b><span>Desde inicio</span></div>
+  `;
+
+  const desc = sorted.slice().reverse();
+  listEl.innerHTML = desc.map((entry, idx)=>{
+    const prev = desc[idx+1];
+    let deltaHtml = '';
+    if(prev){
+      const diff = entry.weight - prev.weight;
+      const cls = diff < -0.05 ? 'down' : (diff > 0.05 ? 'up' : 'flat');
+      const sign = diff>0 ? '+' : '';
+      deltaHtml = `<span class="dwl-delta ${cls}">${sign}${diff.toFixed(1)}kg</span>`;
+    }
+    const d = new Date(entry.date+'T00:00:00');
+    const label = d.toLocaleDateString('es-MX', {weekday:'short', day:'numeric', month:'short'});
+    return `<div class="dwl-item">
+      <div>${label} — <b>${entry.weight}kg</b></div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        ${deltaHtml}
+        <button class="dwl-del" data-ts="${entry.ts}">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  listEl.querySelectorAll('.dwl-del').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const ts = Number(btn.dataset.ts);
+      dietWeightLog = dietWeightLog.filter(e=>e.ts !== ts);
+      saveWeightLog(dietWeightLog);
+      renderWeightLog();
+    });
+  });
+}
+
+function sendWeightToSheets(date, weight){
+  const url = getWebhookUrl();
+  const st = document.getElementById('dwlStatus');
+  if(!url){
+    if(st) st.textContent = '';
+    return;
+  }
+  // Sin "nivel": el escenario de Make lo enruta a la pestaña "Peso corporal" (independiente del registro de entrenamiento).
+  fetch(url, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ fecha: date, peso: weight })
+  }).then(()=>{
+    if(st) st.textContent = '✓ Peso enviado a tu Google Sheet (pestaña Peso corporal)';
+  }).catch(()=>{
+    if(st) st.textContent = '⚠ No se pudo enviar a Sheets (revisa tu conexión o la URL en Mi Progreso).';
+  });
+}
+
+document.getElementById('dwlSaveBtn').addEventListener('click', ()=>{
+  const date = document.getElementById('dwlDate').value || new Date().toISOString().slice(0,10);
+  const weight = parseFloat(document.getElementById('dwlWeight').value);
+  if(!weight){
+    return;
+  }
+  dietWeightLog = dietWeightLog.filter(e=>e.date !== date);
+  dietWeightLog.push({date, weight, ts: Date.now()});
+  saveWeightLog(dietWeightLog);
+
+  // También actualiza el perfil usado para calcular macros y porciones
+  const profile = getDietProfile();
+  setDietProfile({weight, height: profile.height, age: profile.age});
+
+  sendWeightToSheets(date, weight);
+
+  document.getElementById('dwlWeight').value = '';
+  renderWeightLog();
+  renderDietPlan();
+});
+
+document.getElementById('dietBtn').addEventListener('click', ()=>{
+  const dateInput = document.getElementById('dwlDate');
+  if(!dateInput.value) dateInput.value = new Date().toISOString().slice(0,10);
+  renderDietPlan();
+  renderWeightLog();
+  document.getElementById('dietOverlay').classList.add('open');
+});
+document.getElementById('dietCloseBtn').addEventListener('click', ()=>{
+  document.getElementById('dietOverlay').classList.remove('open');
+});
+document.getElementById('dietOverlay').addEventListener('click', (ev)=>{
+  if(ev.target.id==='dietOverlay') document.getElementById('dietOverlay').classList.remove('open');
+});
+document.getElementById('dietSaveBtn').addEventListener('click', ()=>{
+  const weight = parseFloat(document.getElementById('dietWeight').value);
+  const height = parseFloat(document.getElementById('dietHeight').value);
+  const age = parseFloat(document.getElementById('dietAge').value);
+  if(!weight || !height || !age){
+    document.getElementById('dietStatus').textContent = '⚠ Completa peso, estatura y edad para actualizar tu plan.';
+    return;
+  }
+  setDietProfile({weight, height, age});
+  renderDietPlan();
+  document.getElementById('dietStatus').textContent = '✓ Plan actualizado — todas las porciones se recalcularon con tus datos nuevos.';
 });
 </script>
 </body>
