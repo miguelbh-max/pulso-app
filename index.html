@@ -248,9 +248,20 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
 
 .diet-table-wrap{
   overflow-x:auto; -webkit-overflow-scrolling:touch; border:1px solid var(--line);
-  border-radius:14px; margin-bottom:16px;
+  border-radius:14px; margin-bottom:8px;
+  cursor:grab; position:relative;
+  scrollbar-width:thin; scrollbar-color:var(--lime) var(--surface-2);
 }
-.diet-table{border-collapse:collapse; width:100%; min-width:760px; font-size:12px;}
+.diet-table-wrap:active{cursor:grabbing;}
+.diet-table-wrap::-webkit-scrollbar{height:7px;}
+.diet-table-wrap::-webkit-scrollbar-track{background:var(--surface-2); border-radius:0 0 14px 14px;}
+.diet-table-wrap::-webkit-scrollbar-thumb{background:rgba(0,230,140,0.45); border-radius:8px;}
+.diet-table-wrap::-webkit-scrollbar-thumb:hover{background:rgba(0,230,140,0.7);}
+.diet-scroll-hint{
+  font-size:10.5px; color:var(--muted); text-align:center; margin-bottom:8px;
+  display:flex; align-items:center; justify-content:center; gap:5px;
+}
+.diet-table{border-collapse:collapse; width:100%; min-width:640px; font-size:12px; table-layout:fixed;}
 .diet-table thead th{
   background:rgba(0,230,140,0.08); color:#9CFFDD; text-transform:uppercase; letter-spacing:0.02em;
   font-size:10.5px; padding:9px 8px; text-align:left; border-bottom:1px solid var(--line); white-space:nowrap;
@@ -263,6 +274,7 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
 .diet-table .dt-day{
   font-weight:700; color:var(--lime); white-space:nowrap; background:rgba(0,230,140,0.04);
 }
+.diet-table th:first-child, .diet-table td:first-child{width:66px;}
 .diet-table .dt-time{font-size:9.5px; color:var(--muted); text-transform:uppercase; margin-bottom:3px;}
 .diet-table .dt-free{
   text-align:center; color:#9CFFDD; font-style:italic; padding:12px 10px; background:rgba(0,230,140,0.03);
@@ -624,6 +636,14 @@ footer b{color:#9AA6A0;}
   .guide-btn{width:100%;}
   .pf-row{grid-template-columns:1fr;}
   .pf-row input:last-child{grid-column:auto;}
+}
+@media (min-width:700px){
+  .sheet{max-width:820px;}
+  .diet-table{min-width:0; width:100%;}
+  .diet-table-wrap{cursor:default;}
+}
+@media (min-width:1000px){
+  .sheet{max-width:960px;}
 }
 </style>
 </head>
@@ -1025,7 +1045,7 @@ footer b{color:#9AA6A0;}
       <div class="close-btn" id="dietCloseBtn">✕</div>
     </div>
     <div class="guide-body">
-      <p style="font-size:13.5px; color:#E4E8E6; line-height:1.5; margin-bottom:14px;">Plan de recomposición corporal (bajar grasa / ganar músculo) sin azúcar añadida. Sin pollo, pavo, pato ni mariscos con caparazón (camarón, langosta, cangrejo).</p>
+      <p style="font-size:13.5px; color:#E4E8E6; line-height:1.5; margin-bottom:14px;">Plan cetogénico (keto) de recomposición corporal (bajar grasa / ganar músculo): carbohidratos bajos (~20-40g/día), proteína alta y grasa como fuente principal de energía, sin azúcar añadida. Sin pollo, pavo, pato ni mariscos con caparazón (camarón, langosta, cangrejo).</p>
 
       <div class="webhook-settings" id="dietInputs">
         <div class="pf-title">📏 Tus datos actuales</div>
@@ -1061,19 +1081,19 @@ footer b{color:#9AA6A0;}
       <div class="diet-day">
         <div class="rd-title" style="background:rgba(255,82,82,0.14); color:var(--pulse); border-color:rgba(255,82,82,0.3);">🔄 Sustitutos libres</div>
         <div class="diet-meal">
-          <div class="diet-meal-label">Queso Oaxaca</div>
+          <div class="diet-meal-label">Queso Oaxaca / manchego / crema</div>
           <ul>
             <li>Puede reemplazar al queso panela en cualquier comida. <b>30-40 g</b></li>
             <li>Regla: es fuente de grasa — si lo usas, quita el aguacate de esa misma comida (una fuente de grasa por comida).</li>
           </ul>
         </div>
         <div class="diet-meal">
-          <div class="diet-meal-label">Quesadilla (tortilla de maíz + queso Oaxaca)</div>
+          <div class="diet-meal-label">"Quesadilla" keto (tortilla de harina de almendra o solo queso gratinado)</div>
           <ul>
-            <li>Sustituto válido del desayuno de huevo + tortilla. <b>2 tortillas + 30-40g queso</b></li>
-            <li>Cocinar en comal/plancha, no frita en aceite.</li>
-            <li>Agrega 2-3 claras de huevo aparte para subir proteína — la quesadilla sola aporta poca.</li>
-            <li>No combinar con aguacate en la misma comida.</li>
+            <li>Sustituto válido del desayuno de huevo. <b>1 tortilla de almendra o queso gratinado en forma de "taco" + 30-40g queso</b></li>
+            <li>Cocinar en comal/plancha, no frita en aceite. Nada de tortilla de maíz ni de harina de trigo — rompen la cetosis.</li>
+            <li>Agrega 2-3 claras de huevo aparte para subir proteína.</li>
+            <li>No combinar con aguacate en la misma comida (ya tienes grasa del queso).</li>
           </ul>
         </div>
         <div class="diet-meal">
@@ -1081,14 +1101,22 @@ footer b{color:#9AA6A0;}
           <ul>
             <li>Uso ocasional, máximo 1-2 veces por semana. <b>50 g</b></li>
             <li>Combinar con claras de huevo (no huevo entero) para subir proteína sin sumar más grasa.</li>
-            <li>Ejemplo: 50g chorizo + 3 claras + 2 tortillas de maíz ≈ 400 kcal, 24g proteína.</li>
+            <li>Ejemplo: 50g chorizo + 3 claras + verduras salteadas (sin tortilla) ≈ 380 kcal, 24g proteína, carbohidratos casi nulos.</li>
             <li>Ese día no agregues aguacate, queso ni almendras en ninguna otra comida — ya usaste tu cupo de grasa fuerte.</li>
+          </ul>
+        </div>
+        <div class="diet-meal">
+          <div class="diet-meal-label">Colaciones para el trabajo (sin preparar nada en el momento)</div>
+          <ul>
+            <li>Cualquiera de estas reemplaza la colación de queso/nueces del día: <b>cecina o carne seca de res sin azúcar (30g)</b> · <b>huevo cocido pelado (1-2 pz)</b> · <b>queso tipo Babybel o string cheese (1-2 pz)</b> · <b>puñito de cacahuates o pistaches sin cáscara</b>.</li>
+            <li>Todas van en bolsita o frasquito individual — nada que cortar ni preparar a la hora de comer.</li>
           </ul>
         </div>
       </div>
 
-      <div class="guide-note">💡 Horario ajustado a tu rutina: desayuno 6:00am, dos colaciones antes de tu comida fuerte de las 5:00pm (la de la 1:00pm es solo fruta, práctica entre clases), y cena ligera 8:00-8:30pm con opciones intercambiables. La porción de proteína de la comida de las 5pm se subió un poco para compensar la proteína que ya no viene de la colación de la 1pm.</div>
-      <div class="guide-note">💡 Las porciones de proteína, grasa y carbohidrato de cada comida se recalculan automáticamente según tu peso, estatura y edad actuales — actualízalos conforme avances en la dieta. Las frutas de colación se mantienen fijas. Estos cálculos son estimaciones generales (fórmula Mifflin-St Jeor), no un plan médico personalizado. Con tu peso actual se recomienda supervisión médica al iniciar, y consultar a un nutriólogo para seguimiento individualizado.</div>
+      <div class="guide-note">💡 Prepara las colaciones el domingo: porciona nueces/queso en bolsitas o frascos individuales para toda la semana, cuece 6-8 huevos y pélalos, y lava/porciona las moras o fresas en contenedores chicos. Así en la semana solo tomas el paquete y lo llevas — cero preparación en el momento, ideal si vas a estar trabajando a la hora de la colación.</div>
+      <div class="guide-note">💡 Horario ajustado a tu rutina: desayuno 6:00am, dos colaciones antes de tu comida fuerte de las 5:00pm (la de la 1:00pm es una colación baja en carbohidratos, práctica entre clases), y cena ligera 8:00-8:30pm con opciones intercambiables. La porción de proteína de la comida de las 5pm se subió un poco para compensar la proteína que ya no viene de la colación de la 1pm.</div>
+      <div class="guide-note">💡 Las porciones de proteína, grasa y carbohidrato de cada comida se recalculan automáticamente según tu peso, estatura y edad actuales — actualízalos conforme avances en la dieta. En keto los carbohidratos se mantienen fijos en un rango bajo (~20-40g/día) para conservar la cetosis, sin importar cuánto suba tu meta de proteína o grasa. Estos cálculos son estimaciones generales (fórmula Mifflin-St Jeor), no un plan médico personalizado. Con tu peso actual se recomienda supervisión médica al iniciar keto, y consultar a un nutriólogo para seguimiento individualizado — especialmente si tienes antecedentes renales, de vesícula o vas a entrenar peso muerto con volumen alto, ya que el ajuste inicial de electrolitos (sodio, potasio, magnesio) es importante para evitar calambres y fatiga.</div>
     </div>
   </div>
 </div>
@@ -2044,16 +2072,19 @@ function setDietProfile(p){
 }
 
 // Fórmula Mifflin-St Jeor (hombre) + factor de actividad moderado-alto (entrena 4-5x/semana) + déficit para recomposición corporal
+// Versión KETO: carbohidratos fijos y bajos (20-40g/día) para mantener cetosis; proteína alta para conservar músculo; la grasa llena el resto de las calorías.
 function calcDietTargets(weight, height, age){
   const bmr = 10*weight + 6.25*height - 5*age + 5;
   const tdee = bmr * 1.45;
   let kcal = tdee - 650;
   const minKcal = Math.max(1500, bmr * 1.15);
   if(kcal < minKcal) kcal = minKcal;
-  const protein = weight * 1.45;
-  const fat = weight * 0.52;
-  let carbs = (kcal - protein*4 - fat*9) / 4;
-  if(carbs < 80) carbs = 80;
+  const protein = weight * 1.8;
+  let carbs = weight * 0.25;
+  if(carbs < 20) carbs = 20;
+  if(carbs > 40) carbs = 40; // rango keto fijo, no sube aunque suba el peso o la meta calórica
+  let fat = (kcal - protein*4 - carbs*4) / 9;
+  if(fat < 40) fat = 40;
   return {kcal: Math.round(kcal), protein: Math.round(protein), fat: Math.round(fat), carbs: Math.round(carbs)};
 }
 
@@ -2076,61 +2107,61 @@ function fmtPZ(v, singular, plural){
 // type: 'p' proteína, 'c' carbohidrato, 'f' grasa — escalan con la meta del usuario
 // unit: 'g' gramos, 'pz' piezas, 'taza' tazas
 // fixed:true -> se muestra tal cual (colaciones de fruta, verduras libres, condimentos)
-const CENA_ALT = {name:'Alternativas ligeras (elige la que tengas más a mano)', text:'yogur griego natural sin azúcar (1 taza) · quesadilla chica de 1 tortilla + 20g queso Oaxaca · o la opción de la lista de arriba', fixed:true};
+const CENA_ALT = {name:'Alternativas ligeras (elige la que tengas más a mano)', text:'2 huevos revueltos con queso (sin tortilla) · ensalada de atún con mayonesa y aguacate · caldo de res con verduras bajas en carbohidratos · o la opción de la lista de arriba', fixed:true};
 
 const DIET_PLAN = [
 {day:'LUNES', meals:[
   {label:'Desayuno', time:'6:00 am', items:[
     {name:'Huevo entero', base:3, unit:'pz', type:'p'},
-    {name:'Aguacate', base:70, unit:'g', type:'f'},
-    {name:'Tortilla de maíz', base:2, unit:'pz', type:'c'}]},
+    {name:'Aguacate', base:80, unit:'g', type:'f'},
+    {name:'Espinaca salteada', text:'libre', fixed:true}]},
   {label:'Colación 1', time:'9:30-10:00 am', items:[
-    {name:'Manzana', text:'1 mediana', fixed:true},
-    {name:'Almendras', base:15, unit:'pz', type:'f'}]},
-  {label:'Colación 2', time:'1:00 pm — solo fruta, práctica entre clases', items:[
-    {name:'Fresas', text:'1 taza', fixed:true}]},
+    {name:'Queso Oaxaca en cubos (bolsita porcionada)', base:35, unit:'g', type:'f'}]},
+  {label:'Colación 2', time:'1:00 pm — baja en carbohidratos, práctica entre clases', items:[
+    {name:'Moras azules (contenedor chico, prelavadas)', base:0.4, unit:'taza', type:'c'}]},
   {label:'Comida', time:'5:00 pm', items:[
     {name:'Salmón a la plancha', base:220, unit:'g', type:'p'},
-    {name:'Arroz integral cocido', base:1, unit:'taza', type:'c'},
-    {name:'Ensalada verde', text:'libre', fixed:true}]},
+    {name:'Espárragos al vapor', base:150, unit:'g', type:'c'},
+    {name:'Ensalada verde con aceite de oliva', text:'libre', fixed:true}]},
   {label:'Cena', time:'8:00-8:30 pm — ligera', items:[
     {name:'Carne molida de res (90% magra)', base:180, unit:'g', type:'p'},
-    {name:'Pico de gallo', text:'libre', fixed:true},
+    {name:'Guacamole', base:50, unit:'g', type:'f'},
+    {name:'Pico de gallo (poco jitomate)', text:'libre', fixed:true},
     CENA_ALT]},
 ]},
 {day:'MARTES', meals:[
   {label:'Desayuno', time:'6:00 am', items:[
-    {name:'Avena (seca)', base:0.5, unit:'taza', type:'c'},
-    {name:'Proteína en polvo', base:1, unit:'pz', type:'p'},
-    {name:'Plátano', text:'1 mediano', fixed:true},
-    {name:'Canela', text:'al gusto', fixed:true}]},
+    {name:'Huevo entero', base:2, unit:'pz', type:'p'},
+    {name:'Clara de huevo', base:3, unit:'pz', type:'p'},
+    {name:'Queso manchego', base:30, unit:'g', type:'f'},
+    {name:'Champiñones salteados', text:'libre', fixed:true}]},
   {label:'Colación 1', time:'9:30-10:00 am', items:[
-    {name:'Naranja', text:'1 mediana', fixed:true}]},
-  {label:'Colación 2', time:'1:00 pm — solo fruta, práctica entre clases', items:[
-    {name:'Duraznos', text:'1 pieza', fixed:true}]},
+    {name:'Almendras (bolsita porcionada)', base:20, unit:'pz', type:'f'}]},
+  {label:'Colación 2', time:'1:00 pm — baja en carbohidratos, práctica entre clases', items:[
+    {name:'Fresas (contenedor chico, prelavadas)', base:0.4, unit:'taza', type:'c'}]},
   {label:'Comida', time:'5:00 pm', items:[
     {name:'Bistec de res magro', base:220, unit:'g', type:'p'},
-    {name:'Camote', base:1, unit:'pz', type:'c'},
-    {name:'Brócoli al vapor', text:'1 taza', fixed:true}]},
+    {name:'Coliflor asada', base:150, unit:'g', type:'c'},
+    {name:'Brócoli al vapor', text:'libre', fixed:true}]},
   {label:'Cena', time:'8:00-8:30 pm — ligera', items:[
     {name:'Claras de huevo', base:6, unit:'pz', type:'p'},
+    {name:'Aguacate', base:0.5, unit:'pz', type:'f'},
     {name:'Espinaca y champiñones', text:'libre', fixed:true},
     CENA_ALT]},
 ]},
 {day:'MIÉRCOLES', meals:[
   {label:'Desayuno', time:'6:00 am', items:[
-    {name:'Huevo entero', base:2, unit:'pz', type:'p'},
-    {name:'Frijoles cocidos', base:0.5, unit:'taza', type:'c'},
-    {name:'Tortilla de nopal', base:2, unit:'pz', type:'c'}]},
+    {name:'Huevo entero', base:3, unit:'pz', type:'p'},
+    {name:'Queso Oaxaca', base:40, unit:'g', type:'f'},
+    {name:'Nopales asados', text:'libre', fixed:true}]},
   {label:'Colación 1', time:'9:30-10:00 am', items:[
-    {name:'Nueces', base:10, unit:'pz', type:'f'},
-    {name:'Mandarina', text:'1 pieza', fixed:true}]},
-  {label:'Colación 2', time:'1:00 pm — solo fruta, práctica entre clases', items:[
-    {name:'Moras azules', text:'1 taza', fixed:true}]},
+    {name:'Nueces (bolsita porcionada)', base:10, unit:'pz', type:'f'}]},
+  {label:'Colación 2', time:'1:00 pm — baja en carbohidratos, práctica entre clases', items:[
+    {name:'Moras azules (contenedor chico, prelavadas)', base:0.4, unit:'taza', type:'c'}]},
   {label:'Comida', time:'5:00 pm', items:[
     {name:'Tilapia al horno', base:240, unit:'g', type:'p'},
-    {name:'Quinoa cocida', base:1, unit:'taza', type:'c'},
-    {name:'Calabacitas', text:'1 taza', fixed:true}]},
+    {name:'Espárragos', base:150, unit:'g', type:'c'},
+    {name:'Calabacitas salteadas', text:'libre', fixed:true}]},
   {label:'Cena', time:'8:00-8:30 pm — ligera', items:[
     {name:'Atún en agua', base:140, unit:'g', type:'p'},
     {name:'Aguacate', base:0.5, unit:'pz', type:'f'},
@@ -2139,21 +2170,21 @@ const DIET_PLAN = [
 ]},
 {day:'JUEVES', meals:[
   {label:'Desayuno', time:'6:00 am', items:[
-    {name:'Proteína en polvo', base:1, unit:'pz', type:'p'},
-    {name:'Leche o bebida de almendra', text:'1 taza', fixed:true},
-    {name:'Espinaca', text:'libre', fixed:true},
-    {name:'Plátano', text:'1 mediano', fixed:true}]},
+    {name:'Proteína en polvo (sin azúcar)', base:1, unit:'pz', type:'p'},
+    {name:'Leche o bebida de almendra sin azúcar', text:'1 taza', fixed:true},
+    {name:'Mantequilla de almendra', base:15, unit:'g', type:'f'},
+    {name:'Espinaca', text:'libre', fixed:true}]},
   {label:'Colación 1', time:'9:30-10:00 am', items:[
-    {name:'Pera', text:'1 mediana', fixed:true}]},
-  {label:'Colación 2', time:'1:00 pm — solo fruta, práctica entre clases', items:[
-    {name:'Manzana', text:'1 mediana', fixed:true}]},
+    {name:'Queso panela en cubos (bolsita porcionada)', base:35, unit:'g', type:'f'}]},
+  {label:'Colación 2', time:'1:00 pm — baja en carbohidratos, práctica entre clases', items:[
+    {name:'Fresas (contenedor chico, prelavadas)', base:0.4, unit:'taza', type:'c'}]},
   {label:'Comida', time:'5:00 pm', items:[
     {name:'Lomo de cerdo magro', base:220, unit:'g', type:'p'},
-    {name:'Arroz integral', base:1, unit:'taza', type:'c'},
-    {name:'Ensalada verde', text:'libre', fixed:true}]},
+    {name:'Ejotes al vapor', base:150, unit:'g', type:'c'},
+    {name:'Ensalada verde con aceite de oliva', text:'libre', fixed:true}]},
   {label:'Cena', time:'8:00-8:30 pm — ligera', items:[
     {name:'Carne molida de res (en lechugas)', base:180, unit:'g', type:'p'},
-    {name:'Guacamole', base:0.25, unit:'pz', type:'f'},
+    {name:'Guacamole', base:60, unit:'g', type:'f'},
     CENA_ALT]},
 ]},
 {day:'VIERNES', meals:[
@@ -2163,29 +2194,30 @@ const DIET_PLAN = [
     {name:'Jitomate', text:'libre', fixed:true},
     {name:'Aguacate', base:0.5, unit:'pz', type:'f'}]},
   {label:'Colación 1', time:'9:30-10:00 am', items:[
-    {name:'Toronja', text:'½ pieza', fixed:true}]},
-  {label:'Colación 2', time:'1:00 pm — solo fruta, práctica entre clases', items:[
-    {name:'Piña', text:'1 taza', fixed:true}]},
+    {name:'Aceitunas deshuesadas (frasco individual)', base:10, unit:'pz', type:'f'}]},
+  {label:'Colación 2', time:'1:00 pm — baja en carbohidratos, práctica entre clases', items:[
+    {name:'Moras azules (contenedor chico, prelavadas)', base:0.4, unit:'taza', type:'c'}]},
   {label:'Comida', time:'5:00 pm', items:[
     {name:'Salmón', base:220, unit:'g', type:'p'},
-    {name:'Camote', base:1, unit:'pz', type:'c'},
-    {name:'Ejotes', text:'1 taza', fixed:true}]},
+    {name:'Coliflor', base:150, unit:'g', type:'c'},
+    {name:'Ejotes', text:'libre', fixed:true}]},
   {label:'Cena', time:'8:00-8:30 pm — ligera', items:[
     {name:'Res deshebrada', base:180, unit:'g', type:'p'},
-    {name:'Sopa de verduras', text:'libre', fixed:true},
+    {name:'Sopa de verduras baja en carbohidratos', text:'libre', fixed:true},
     CENA_ALT]},
 ]},
 {day:'SÁBADO', meals:[
   {label:'Desayuno', time:'6:00 am', items:[
-    {name:'Hot cakes de avena y plátano (sin azúcar)', base:3, unit:'pz', type:'c'},
+    {name:'Huevo entero', base:3, unit:'pz', type:'p'},
+    {name:'Queso crema', base:30, unit:'g', type:'f'},
     {name:'Canela', text:'al gusto', fixed:true}]},
   {label:'Colación 1', time:'9:30-10:00 am', items:[
-    {name:'Uvas', text:'1 taza', fixed:true}]},
-  {label:'Colación 2', time:'1:00 pm — solo fruta, práctica entre clases', items:[
-    {name:'Fresas', text:'1 taza', fixed:true}]},
+    {name:'Almendras (bolsita porcionada)', base:15, unit:'pz', type:'f'}]},
+  {label:'Colación 2', time:'1:00 pm — baja en carbohidratos, práctica entre clases', items:[
+    {name:'Fresas (contenedor chico, prelavadas)', base:0.4, unit:'taza', type:'c'}]},
   {label:'Comida', time:'5:00 pm', items:[
     {name:'Bistec de res', base:220, unit:'g', type:'p'},
-    {name:'Frijoles', base:0.5, unit:'taza', type:'c'},
+    {name:'Espárragos', base:150, unit:'g', type:'c'},
     {name:'Ensalada grande', text:'libre', fixed:true}]},
   {label:'Cena', time:'8:00-8:30 pm — ligera', items:[
     {name:'Queso panela', base:60, unit:'g', type:'f'},
@@ -2239,17 +2271,39 @@ function renderDietPlan(){
     return `<tr><td class="dt-day">${d.day}</td>${cells}</tr>`;
   }).join('');
 
-  const sundayRow = `<tr><td class="dt-day">DOMINGO</td><td colspan="${MEAL_LABELS.length}" class="dt-free">🎉 Día libre — come balanceado, mantén proteína en cada comida y evita excesos de azúcar. El lunes retomas el plan estricto.</td></tr>`;
+  const sundayRow = `<tr><td class="dt-day">DOMINGO</td><td colspan="${MEAL_LABELS.length}" class="dt-free">🎉 Día libre — mantén la cetosis: evita azúcar, harinas, arroz, tortilla de maíz y frutas altas en carbohidratos. Prioriza proteína y grasas saludables. El lunes retomas el plan estricto.</td></tr>`;
 
   const container = document.getElementById('dietDaysContainer');
   container.innerHTML = `
-    <div class="diet-table-wrap">
+    <div class="diet-scroll-hint">↔️ Desliza o arrastra la tabla horizontalmente para ver todos los días</div>
+    <div class="diet-table-wrap" id="dietTableWrap">
       <table class="diet-table">
         <thead><tr>${theadCells}</tr></thead>
         <tbody>${bodyRows}${sundayRow}</tbody>
       </table>
     </div>
   `;
+  setupDietTableDrag();
+}
+
+/* Permite arrastrar la tabla de alimentación con el mouse (desktop) además del swipe táctil */
+function setupDietTableDrag(){
+  const wrap = document.getElementById('dietTableWrap');
+  if(!wrap) return;
+  let isDown = false, startX = 0, scrollStart = 0;
+  wrap.addEventListener('mousedown', (e)=>{
+    isDown = true;
+    startX = e.pageX;
+    scrollStart = wrap.scrollLeft;
+  });
+  window.addEventListener('mouseup', ()=>{ isDown = false; });
+  window.addEventListener('mouseleave', ()=>{ isDown = false; });
+  wrap.addEventListener('mousemove', (e)=>{
+    if(!isDown) return;
+    e.preventDefault();
+    const dx = e.pageX - startX;
+    wrap.scrollLeft = scrollStart - dx;
+  });
 }
 
 /* ---------------- Control de peso corporal (dentro de Alimentación) ---------------- */
