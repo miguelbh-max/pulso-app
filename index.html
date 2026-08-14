@@ -865,8 +865,15 @@ footer b{color:#9AA6A0;}
             <li onclick="openRoutineExercise('e47')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg">1️⃣ Peso muerto convencional con barra — trabajo progresivo (ver rutina especial abajo)</li>
             <li onclick="openRoutineExercise('e6')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/0.jpg">2️⃣ Peso muerto rumano — 3 x 10 (accesorio, después del pesado)</li>
           </ul>
+          <div class="webhook-settings" style="margin-top:10px;">
+            <div class="pf-title">🔧 Progresión Peso muerto rumano (accesorio)</div>
+            <input type="number" id="rdlBase" placeholder="Peso inicial (ej. 60)" step="2.5" min="1">
+            <input type="number" id="rdlWeek" placeholder="Semana actual" step="1" min="1">
+            <button id="rdlSave">Actualizar</button>
+            <div class="webhook-status" id="rdlStatus">Peso sugerido esta semana: <span id="rdlCurrent" class="plate-calc">60 kg</span></div>
+          </div>
         </div>
-        <div class="cardio-note">🎯 Ver la rutina especial de peso muerto más abajo para la progresión semanal completa.</div>
+        <div class="cardio-note">🎯 Ver la rutina especial de peso muerto más abajo para la progresión semanal completa. Toca el número del peso muerto rumano para ver los discos por lado.</div>
         <div class="routine-day">
           <div class="rd-title">Viernes — Pierna (bajo impacto) + Hombro + Abdomen</div>
           <ul>
@@ -1747,6 +1754,7 @@ document.getElementById('routineBtn').addEventListener('click', ()=>{
   showRoutineMenu();
   document.getElementById('routineOverlay').classList.add('open');
   renderDeadliftPlan();
+  renderRdlPlan();
 });
 document.getElementById('routineCloseBtn').addEventListener('click', ()=>{
   const panelOpen = document.querySelector('.routine-panel.open');
@@ -1828,6 +1836,57 @@ document.getElementById('dl1rmSave').addEventListener('click', ()=>{
   renderDeadliftPlan();
   const st = document.getElementById('dl1rmStatus');
   if(st) st.textContent = `✓ Actualizado a ${v} kg — todos los pesos de arriba ya se recalcularon.`;
+});
+
+/* ---------------- Progresión de Peso muerto rumano (accesorio, Intermedio - Jueves) ---------------- */
+const RDL_BASE_KEY = 'pulso_rdl_base_kg';
+const RDL_WEEK_KEY = 'pulso_rdl_week';
+function getRdlBase(){
+  try{
+    const v = parseFloat(localStorage.getItem(RDL_BASE_KEY));
+    return (v && v > 0) ? v : 60;
+  }catch(e){ return 60; }
+}
+function setRdlBase(v){ try{ localStorage.setItem(RDL_BASE_KEY, v); }catch(e){} }
+function getRdlWeek(){
+  try{
+    const v = parseInt(localStorage.getItem(RDL_WEEK_KEY), 10);
+    return (v && v > 0) ? v : 1;
+  }catch(e){ return 1; }
+}
+function setRdlWeek(v){ try{ localStorage.setItem(RDL_WEEK_KEY, v); }catch(e){} }
+// Cada bloque de 2 semanas sube 5 kg (2.5 kg por lado) sobre el peso inicial que definas.
+function computeRdlWeight(week, base){
+  return base + Math.floor((week-1)/2)*5;
+}
+function renderRdlPlan(){
+  const base = getRdlBase();
+  const week = getRdlWeek();
+  const baseInput = document.getElementById('rdlBase');
+  const weekInput = document.getElementById('rdlWeek');
+  if(baseInput && !baseInput.value) baseInput.value = base;
+  if(weekInput && !weekInput.value) weekInput.value = week;
+
+  const current = computeRdlWeight(week, base);
+  const next = current + 5;
+  const weeksIntoBlock = ((week-1) % 2) + 1; // 1 o 2
+  const weeksLeft = 2 - weeksIntoBlock;
+
+  const st = document.getElementById('rdlStatus');
+  if(st){
+    const msg = weeksLeft === 0
+      ? `si esta semana salieron las 3x10 limpias y sin molestia lumbar, la próxima semana sube a <b>${next} kg</b>.`
+      : `mantenlo ${weeksLeft + 1} semana(s) más antes de subir a ${next} kg.`;
+    st.innerHTML = `Peso sugerido esta semana: <span id="rdlCurrent" class="plate-calc">${current} kg</span> — ${msg}`;
+  }
+}
+document.getElementById('rdlSave').addEventListener('click', ()=>{
+  const b = parseFloat(document.getElementById('rdlBase').value);
+  const w = parseInt(document.getElementById('rdlWeek').value, 10);
+  if(!b || b <= 0) return;
+  setRdlBase(b);
+  setRdlWeek(w && w > 0 ? w : 1);
+  renderRdlPlan();
 });
 
 /* ---------------- Cálculo de discos por lado (barra de 20 kg) ---------------- */
