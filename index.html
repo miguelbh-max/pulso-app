@@ -446,7 +446,7 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
 .lightbox-overlay{
   position:fixed; inset:0; background:rgba(4,5,4,0.94);
   z-index:80; display:none; align-items:center; justify-content:center;
-  padding:20px;
+  padding:20px; touch-action:none; overscroll-behavior:contain;
 }
 .lightbox-overlay.open{display:flex;}
 .lightbox-stage{
@@ -1719,7 +1719,7 @@ function closeLightbox(){
 
 /* ---------------- Zoom con gesto de pellizco (pinch-to-zoom) en la foto ampliada ---------------- */
 let lbScale = 1, lbPinchStartDist = 0, lbPinchStartScale = 1;
-const LB_MIN_SCALE = 1, LB_MAX_SCALE = 4;
+const LB_MIN_SCALE = 1, LB_MAX_SCALE = 2.5; // tope moderado: las fotos son de baja resolución y pasar de ahí solo se ve pixelado
 function resetLightboxZoom(){
   lbScale = 1;
   const stage = document.querySelector('.lightbox-stage');
@@ -1729,17 +1729,22 @@ function lbTouchDist(touches){
   return Math.hypot(touches[0].clientX - touches[1].clientX, touches[0].clientY - touches[1].clientY);
 }
 (function setupLightboxPinchZoom(){
+  const overlay = document.getElementById('photoLightbox');
   const stage = document.querySelector('.lightbox-stage');
-  if(!stage) return;
-  stage.addEventListener('touchstart', (ev)=>{
+  if(!stage || !overlay) return;
+
+  // Bloquea el zoom nativo del navegador (Chrome/Android) mientras el lightbox está abierto,
+  // para que no compita con nuestro zoom manual y se vea "cortado".
+  overlay.addEventListener('touchstart', (ev)=>{
     if(ev.touches.length === 2){
+      ev.preventDefault();
       lbPinchStartDist = lbTouchDist(ev.touches);
       lbPinchStartScale = lbScale;
     }
-  }, {passive:true});
-  stage.addEventListener('touchmove', (ev)=>{
+  }, {passive:false});
+  overlay.addEventListener('touchmove', (ev)=>{
     if(ev.touches.length === 2){
-      ev.preventDefault(); // evita que el navegador haga zoom de la página entera
+      ev.preventDefault(); // evita que el navegador haga zoom de la página entera al mismo tiempo
       const dist = lbTouchDist(ev.touches);
       if(lbPinchStartDist > 0){
         let next = lbPinchStartScale * (dist / lbPinchStartDist);
@@ -1749,9 +1754,12 @@ function lbTouchDist(touches){
       }
     }
   }, {passive:false});
-  stage.addEventListener('touchend', (ev)=>{
+  overlay.addEventListener('touchend', (ev)=>{
     if(ev.touches.length < 2) lbPinchStartDist = 0;
   }, {passive:true});
+  // Safari/iOS antiguos disparan gesturestart/change en vez de tocar con 2 dedos vía touch events — los bloqueamos también.
+  overlay.addEventListener('gesturestart', (ev)=> ev.preventDefault());
+  overlay.addEventListener('gesturechange', (ev)=> ev.preventDefault());
 })();
 document.getElementById('lightboxCloseBtn').addEventListener('click', closeLightbox);
 document.getElementById('photoLightbox').addEventListener('click', (ev)=>{
