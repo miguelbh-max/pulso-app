@@ -372,6 +372,21 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
 }
 .webhook-status{font-size:11.5px; color:var(--muted); margin-top:8px; line-height:1.5;}
 .pf-title{font-size:13px; font-weight:600; color:#E4E8E6; margin-bottom:10px;}
+.wp-clean-btn{
+  width:100%; box-sizing:border-box; padding:10px 12px; border-radius:10px; margin-bottom:8px;
+  background:var(--surface-2); border:1px solid var(--line); color:var(--text);
+  font-size:12.5px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif;
+}
+.wp-clean-btn.done{ background:rgba(0,230,140,0.12); border-color:#00E68C; color:#00E68C; }
+.wp-suggest{
+  font-size:12.5px; color:#00E68C; background:rgba(0,230,140,0.08);
+  border-radius:10px; padding:10px 12px; line-height:1.5;
+}
+.wp-suggest button{
+  margin-top:8px; padding:7px 12px; border-radius:8px; background:none;
+  border:1px solid #00E68C; color:#00E68C; font-weight:600; font-size:12px; cursor:pointer;
+  font-family:'Inter',sans-serif;
+}
 .progress-form select, .progress-form input{
   width:100%; box-sizing:border-box;
   background:var(--surface-2); border:1px solid var(--line); border-radius:10px;
@@ -436,6 +451,7 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
 .lightbox-overlay.open{display:flex;}
 .lightbox-stage{
   position:relative; width:100%; height:90vh;
+  touch-action:none; transform-origin:center center;
 }
 .lightbox-photo{
   position:absolute; inset:0; width:100%; height:100%; object-fit:contain;
@@ -865,15 +881,8 @@ footer b{color:#9AA6A0;}
             <li onclick="openRoutineExercise('e47')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg">1️⃣ Peso muerto convencional con barra — trabajo progresivo (ver rutina especial abajo)</li>
             <li onclick="openRoutineExercise('e6')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/0.jpg">2️⃣ Peso muerto rumano — 3 x 10 (accesorio, después del pesado)</li>
           </ul>
-          <div class="webhook-settings" style="margin-top:10px;">
-            <div class="pf-title">🔧 Progresión Peso muerto rumano (accesorio)</div>
-            <input type="number" id="rdlBase" placeholder="Peso inicial (ej. 60)" step="2.5" min="1">
-            <input type="number" id="rdlWeek" placeholder="Semana actual" step="1" min="1">
-            <button id="rdlSave">Actualizar</button>
-            <div class="webhook-status" id="rdlStatus">Peso sugerido esta semana: <span id="rdlCurrent" class="plate-calc">60 kg</span></div>
-          </div>
         </div>
-        <div class="cardio-note">🎯 Ver la rutina especial de peso muerto más abajo para la progresión semanal completa. Toca el número del peso muerto rumano para ver los discos por lado.</div>
+        <div class="cardio-note">🎯 Ver la rutina especial de peso muerto más abajo para la progresión semanal completa.</div>
         <div class="routine-day">
           <div class="rd-title">Viernes — Pierna (bajo impacto) + Hombro + Abdomen</div>
           <ul>
@@ -1514,6 +1523,7 @@ function openDetail(id){
       <ol>${e.steps.map(s=>`<li>${s}</li>`).join('')}</ol>
     </div>
     <div class="tip">💡 ${e.tip}</div>
+    ${renderWeightProgress(e)}
     <div class="rest-timer">
       <div class="rt-title">⏱ Temporizador de descanso</div>
       <div class="rt-display" id="rtDisplay">00:00</div>
@@ -1531,6 +1541,7 @@ function openDetail(id){
   `;
   document.getElementById('closeBtn').addEventListener('click', closeDetail);
   setupRestTimer();
+  setupWeightProgress(e);
 
   let currentView = e.view;
   function paintBody(){
@@ -1689,6 +1700,7 @@ function openLightbox(srcA, srcB){
   imgA.classList.add('on');
   imgB.classList.remove('on');
   document.getElementById('photoLightbox').classList.add('open');
+  resetLightboxZoom();
   if(lightboxInterval) clearInterval(lightboxInterval);
   if(srcB && srcB !== srcA){
     let showingA = true;
@@ -1702,7 +1714,45 @@ function openLightbox(srcA, srcB){
 function closeLightbox(){
   document.getElementById('photoLightbox').classList.remove('open');
   if(lightboxInterval){ clearInterval(lightboxInterval); lightboxInterval = null; }
+  resetLightboxZoom();
 }
+
+/* ---------------- Zoom con gesto de pellizco (pinch-to-zoom) en la foto ampliada ---------------- */
+let lbScale = 1, lbPinchStartDist = 0, lbPinchStartScale = 1;
+const LB_MIN_SCALE = 1, LB_MAX_SCALE = 4;
+function resetLightboxZoom(){
+  lbScale = 1;
+  const stage = document.querySelector('.lightbox-stage');
+  if(stage) stage.style.transform = 'scale(1)';
+}
+function lbTouchDist(touches){
+  return Math.hypot(touches[0].clientX - touches[1].clientX, touches[0].clientY - touches[1].clientY);
+}
+(function setupLightboxPinchZoom(){
+  const stage = document.querySelector('.lightbox-stage');
+  if(!stage) return;
+  stage.addEventListener('touchstart', (ev)=>{
+    if(ev.touches.length === 2){
+      lbPinchStartDist = lbTouchDist(ev.touches);
+      lbPinchStartScale = lbScale;
+    }
+  }, {passive:true});
+  stage.addEventListener('touchmove', (ev)=>{
+    if(ev.touches.length === 2){
+      ev.preventDefault(); // evita que el navegador haga zoom de la página entera
+      const dist = lbTouchDist(ev.touches);
+      if(lbPinchStartDist > 0){
+        let next = lbPinchStartScale * (dist / lbPinchStartDist);
+        next = Math.min(Math.max(next, LB_MIN_SCALE), LB_MAX_SCALE);
+        lbScale = next;
+        stage.style.transform = `scale(${lbScale})`;
+      }
+    }
+  }, {passive:false});
+  stage.addEventListener('touchend', (ev)=>{
+    if(ev.touches.length < 2) lbPinchStartDist = 0;
+  }, {passive:true});
+})();
 document.getElementById('lightboxCloseBtn').addEventListener('click', closeLightbox);
 document.getElementById('photoLightbox').addEventListener('click', (ev)=>{
   if(ev.target.id==='photoLightbox') closeLightbox();
@@ -1754,7 +1804,6 @@ document.getElementById('routineBtn').addEventListener('click', ()=>{
   showRoutineMenu();
   document.getElementById('routineOverlay').classList.add('open');
   renderDeadliftPlan();
-  renderRdlPlan();
 });
 document.getElementById('routineCloseBtn').addEventListener('click', ()=>{
   const panelOpen = document.querySelector('.routine-panel.open');
@@ -1774,6 +1823,92 @@ document.getElementById('routineOverlay').addEventListener('click', (ev)=>{
     }
   }
 });
+
+/* ---------------- Progresión de peso genérica (todos los ejercicios excepto peso muerto y RDL, que ya tienen su propio sistema) ---------------- */
+const WEIGHT_PROG_KEY = 'pulso_ex_progress';
+const NO_WEIGHT_WIDGET = ['e6','e47']; // peso muerto rumano y peso muerto convencional — no tocar, ya tienen su propia progresión
+function getWeightProgressAll(){
+  try{ return JSON.parse(localStorage.getItem(WEIGHT_PROG_KEY)) || {}; }catch(err){ return {}; }
+}
+function setWeightProgressAll(all){
+  try{ localStorage.setItem(WEIGHT_PROG_KEY, JSON.stringify(all)); }catch(err){}
+}
+function equipTypeFor(equipStr){
+  const s = (equipStr||'').toLowerCase();
+  if(s === 'peso corporal' || s.includes('pared') || s.includes('dominadas') || s.includes('paralelas') || s.includes('bicicleta') || s.includes('caminadora')) return null;
+  if(s.includes('barra')) return 'barra';
+  if(s.includes('mancuerna')) return 'mancuerna';
+  return 'maquina'; // polea, máquina, banco, etc.
+}
+const WP_INCREMENT = {barra:2.5, mancuerna:2, maquina:5};
+const WP_LABEL = {barra:'barra', mancuerna:'mancuerna (o la siguiente disponible)', maquina:'máquina/polea'};
+function renderWeightProgress(e){
+  if(NO_WEIGHT_WIDGET.includes(e.id)) return '';
+  const type = equipTypeFor(e.equipment);
+  if(!type) return '';
+  return `
+    <div class="webhook-settings" id="wpBox">
+      <div class="pf-title">🏋️ Tu progresión de peso</div>
+      <input type="number" id="wpWeight" step="0.5" min="0" placeholder="Peso actual (kg)">
+      <button id="wpCleanBtn" class="wp-clean-btn">✅ Completé todas las reps limpias hoy</button>
+      <div class="wp-suggest" id="wpSuggest"></div>
+    </div>
+  `;
+}
+function refreshWeightProgressUI(e, type){
+  const all = getWeightProgressAll();
+  const rec = all[e.id] || {weight:null, streak:0};
+  const weightInput = document.getElementById('wpWeight');
+  if(weightInput && rec.weight != null) weightInput.value = rec.weight;
+  const btn = document.getElementById('wpCleanBtn');
+  const sugBox = document.getElementById('wpSuggest');
+  if(btn){
+    btn.classList.toggle('done', (rec.streak||0) > 0);
+    btn.textContent = (rec.streak||0) > 0 ? `✅ Completado (${rec.streak}/2 sesiones limpias)` : '✅ Completé todas las reps limpias hoy';
+  }
+  if(sugBox){
+    if(rec.weight == null){
+      sugBox.innerHTML = 'Ingresa el peso que usaste para empezar a llevar tu progresión.';
+    } else if((rec.streak||0) >= 2){
+      const inc = WP_INCREMENT[type];
+      const next = Math.round((rec.weight + inc) * 2) / 2;
+      sugBox.innerHTML = `💡 Llevas 2 sesiones limpias con ${fmtKg(rec.weight)} — hora de subir a <b>${fmtKg(next)}</b> (${WP_LABEL[type]}).<br><button id="wpApplyBtn">Subir a ${fmtKg(next)}</button>`;
+      const applyBtn = document.getElementById('wpApplyBtn');
+      if(applyBtn) applyBtn.addEventListener('click', ()=>{
+        const all2 = getWeightProgressAll();
+        all2[e.id] = {weight: next, streak: 0};
+        setWeightProgressAll(all2);
+        refreshWeightProgressUI(e, type);
+      });
+    } else {
+      sugBox.innerHTML = `Sigue con ${fmtKg(rec.weight)} hasta completar las reps limpias 2 veces seguidas.`;
+    }
+  }
+}
+function setupWeightProgress(e){
+  if(NO_WEIGHT_WIDGET.includes(e.id)) return;
+  const type = equipTypeFor(e.equipment);
+  if(!type) return;
+  refreshWeightProgressUI(e, type);
+  const wInput = document.getElementById('wpWeight');
+  if(wInput) wInput.addEventListener('change', ()=>{
+    const all = getWeightProgressAll();
+    const v = parseFloat(wInput.value);
+    all[e.id] = {weight: isNaN(v) ? null : v, streak: 0}; // peso manual reinicia la racha
+    setWeightProgressAll(all);
+    refreshWeightProgressUI(e, type);
+  });
+  const cleanBtn = document.getElementById('wpCleanBtn');
+  if(cleanBtn) cleanBtn.addEventListener('click', ()=>{
+    const all = getWeightProgressAll();
+    const rec = all[e.id] || {weight:null, streak:0};
+    if(rec.weight == null){ alert('Primero ingresa el peso que usaste.'); return; }
+    rec.streak = Math.min((rec.streak||0) + 1, 2);
+    all[e.id] = rec;
+    setWeightProgressAll(all);
+    refreshWeightProgressUI(e, type);
+  });
+}
 
 /* ---------------- Cálculo dinámico de la rutina especial de peso muerto ---------------- */
 const DL_1RM_KEY = 'pulso_deadlift_1rm';
@@ -1836,57 +1971,6 @@ document.getElementById('dl1rmSave').addEventListener('click', ()=>{
   renderDeadliftPlan();
   const st = document.getElementById('dl1rmStatus');
   if(st) st.textContent = `✓ Actualizado a ${v} kg — todos los pesos de arriba ya se recalcularon.`;
-});
-
-/* ---------------- Progresión de Peso muerto rumano (accesorio, Intermedio - Jueves) ---------------- */
-const RDL_BASE_KEY = 'pulso_rdl_base_kg';
-const RDL_WEEK_KEY = 'pulso_rdl_week';
-function getRdlBase(){
-  try{
-    const v = parseFloat(localStorage.getItem(RDL_BASE_KEY));
-    return (v && v > 0) ? v : 60;
-  }catch(e){ return 60; }
-}
-function setRdlBase(v){ try{ localStorage.setItem(RDL_BASE_KEY, v); }catch(e){} }
-function getRdlWeek(){
-  try{
-    const v = parseInt(localStorage.getItem(RDL_WEEK_KEY), 10);
-    return (v && v > 0) ? v : 1;
-  }catch(e){ return 1; }
-}
-function setRdlWeek(v){ try{ localStorage.setItem(RDL_WEEK_KEY, v); }catch(e){} }
-// Cada bloque de 2 semanas sube 5 kg (2.5 kg por lado) sobre el peso inicial que definas.
-function computeRdlWeight(week, base){
-  return base + Math.floor((week-1)/2)*5;
-}
-function renderRdlPlan(){
-  const base = getRdlBase();
-  const week = getRdlWeek();
-  const baseInput = document.getElementById('rdlBase');
-  const weekInput = document.getElementById('rdlWeek');
-  if(baseInput && !baseInput.value) baseInput.value = base;
-  if(weekInput && !weekInput.value) weekInput.value = week;
-
-  const current = computeRdlWeight(week, base);
-  const next = current + 5;
-  const weeksIntoBlock = ((week-1) % 2) + 1; // 1 o 2
-  const weeksLeft = 2 - weeksIntoBlock;
-
-  const st = document.getElementById('rdlStatus');
-  if(st){
-    const msg = weeksLeft === 0
-      ? `si esta semana salieron las 3x10 limpias y sin molestia lumbar, la próxima semana sube a <b>${next} kg</b>.`
-      : `mantenlo ${weeksLeft + 1} semana(s) más antes de subir a ${next} kg.`;
-    st.innerHTML = `Peso sugerido esta semana: <span id="rdlCurrent" class="plate-calc">${current} kg</span> — ${msg}`;
-  }
-}
-document.getElementById('rdlSave').addEventListener('click', ()=>{
-  const b = parseFloat(document.getElementById('rdlBase').value);
-  const w = parseInt(document.getElementById('rdlWeek').value, 10);
-  if(!b || b <= 0) return;
-  setRdlBase(b);
-  setRdlWeek(w && w > 0 ? w : 1);
-  renderRdlPlan();
 });
 
 /* ---------------- Cálculo de discos por lado (barra de 20 kg) ---------------- */
