@@ -464,6 +464,22 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
   background:rgba(20,22,19,0.85);
   z-index:5;
 }
+.lightbox-zoom-controls{
+  position:absolute; bottom:24px; left:50%; transform:translateX(-50%);
+  z-index:6; display:flex; align-items:center; gap:10px;
+  background:rgba(20,22,19,0.85); border:1px solid var(--line);
+  border-radius:999px; padding:6px 8px;
+}
+.lightbox-zoom-btn{
+  width:38px; height:38px; border-radius:50%; background:var(--surface-2);
+  border:1px solid var(--line); color:var(--text); font-size:20px; font-weight:700;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  font-family:'Inter',sans-serif; line-height:1;
+}
+.lightbox-zoom-btn:active{background:rgba(0,230,140,0.15); border-color:#00E68C; color:#00E68C;}
+.lightbox-zoom-level{
+  font-size:12px; color:var(--muted); min-width:40px; text-align:center; font-weight:600;
+}
 .stage-box.zoomable{cursor:zoom-in;}
 .stage-box .zoom-hint{
   position:absolute; bottom:8px; right:10px;
@@ -696,6 +712,11 @@ footer b{color:#9AA6A0;}
 
 <div class="lightbox-overlay" id="photoLightbox">
   <div class="close-btn lightbox-close" id="lightboxCloseBtn">✕</div>
+  <div class="lightbox-zoom-controls">
+    <button class="lightbox-zoom-btn" id="lbZoomOut">−</button>
+    <div class="lightbox-zoom-level" id="lbZoomLevel">100%</div>
+    <button class="lightbox-zoom-btn" id="lbZoomIn">+</button>
+  </div>
   <div class="lightbox-stage">
     <img id="lightboxImgA" class="lightbox-img lightbox-photo" alt="Foto ampliada del ejercicio">
     <img id="lightboxImgB" class="lightbox-img lightbox-photo" alt="Foto ampliada del ejercicio">
@@ -1720,11 +1741,29 @@ function closeLightbox(){
 /* ---------------- Zoom con gesto de pellizco (pinch-to-zoom) en la foto ampliada ---------------- */
 let lbScale = 1, lbPinchStartDist = 0, lbPinchStartScale = 1;
 const LB_MIN_SCALE = 1, LB_MAX_SCALE = 2.5; // tope moderado: las fotos son de baja resolución y pasar de ahí solo se ve pixelado
+const LB_BTN_STEP = 0.25;
+function updateLbZoomLevelLabel(){
+  const lvl = document.getElementById('lbZoomLevel');
+  if(lvl) lvl.textContent = Math.round(lbScale * 100) + '%';
+}
+function setLightboxZoom(next){
+  lbScale = Math.min(Math.max(next, LB_MIN_SCALE), LB_MAX_SCALE);
+  const stage = document.querySelector('.lightbox-stage');
+  if(stage) stage.style.transform = `scale(${lbScale})`;
+  updateLbZoomLevelLabel();
+}
 function resetLightboxZoom(){
   lbScale = 1;
   const stage = document.querySelector('.lightbox-stage');
   if(stage) stage.style.transform = 'scale(1)';
+  updateLbZoomLevelLabel();
 }
+(function setupLightboxZoomButtons(){
+  const zoomIn = document.getElementById('lbZoomIn');
+  const zoomOut = document.getElementById('lbZoomOut');
+  if(zoomIn) zoomIn.addEventListener('click', ()=> setLightboxZoom(lbScale + LB_BTN_STEP));
+  if(zoomOut) zoomOut.addEventListener('click', ()=> setLightboxZoom(lbScale - LB_BTN_STEP));
+})();
 function lbTouchDist(touches){
   return Math.hypot(touches[0].clientX - touches[1].clientX, touches[0].clientY - touches[1].clientY);
 }
@@ -1748,9 +1787,7 @@ function lbTouchDist(touches){
       const dist = lbTouchDist(ev.touches);
       if(lbPinchStartDist > 0){
         let next = lbPinchStartScale * (dist / lbPinchStartDist);
-        next = Math.min(Math.max(next, LB_MIN_SCALE), LB_MAX_SCALE);
-        lbScale = next;
-        stage.style.transform = `scale(${lbScale})`;
+        setLightboxZoom(next);
       }
     }
   }, {passive:false});
