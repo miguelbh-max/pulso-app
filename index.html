@@ -12,4 +12,57 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="PULSO">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-PLACEHOLDER_WILL_BE_REPLACED
+<style>
+:root{
+  --bg:#0A0B0A;
+  --surface:#141613;
+  --surface-2:#1B1F1B;
+  --line:#262B26;
+  --lime:#00E68C;
+  --pulse:#FF5252;
+  --text:#F2F5F3;
+  --muted:#8B948F;
+  --muscle-off:#262B26;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html,body{height:100%;}
+body{
+  background:linear-gradient(180deg, rgba(10,11,10,0.55), rgba(10,11,10,0.85));
+  background-color:#0A0B0A;
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+.display{font-family:'Inter',sans-serif; font-weight:800; letter-spacing:-0.02em;}
+
+header{
+  position:sticky; top:0; z-index:20;
+  background:linear-gradient(180deg, rgba(8,9,8,0.55), rgba(8,9,8,0.15));
+  backdrop-filter:blur(6px);
+  padding:18px 20px 14px;
+  border-bottom:1px solid var(--line);
+}
+.brand{display:flex; align-items:center; gap:10px;}
+.brand .dot{
+  width:12px; height:12px; border-radius:50%;
+  background:var(--pulse);
+  box-shadow:0 0 0 0 rgba(255,82,82,0.6);
+  animation:beat 1.15s infinite;
+}
+@keyframes beat{
+  0%{box-shadow:0 0 0 0 rgba(255,82,82,0.55);}
+  70%{box-shadow:0 0 0 9px rgba(255,82,82,0);}
+  100%{box-shadow:0 0 0 0 rgba(255,82,82,0);}
+}
+.brand h1{font-size:28px; font-weight:800; letter-spacing:-0.02em; text-shadow:0 2px 12px rgba(0,0,0,0.7);}
+.brand h1 span{color:var(--lime);}
+.tagline{color:var(--muted); font-size:12.5px; margin-top:2px; margin-left:22px; text-shadow:0 1px 8px rgba(0,0,0,0.8);}
+
+body{background-attachment:fixed;}
+</style>
+</head>
+<body>
+<p>PLACEHOLDER — full content restore in progress, see next commit.</p>
+</body>
+</html>
