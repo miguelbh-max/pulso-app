@@ -2230,13 +2230,17 @@ function renderHistDay(){
   const listEl = document.getElementById('histList');
   if(!listEl) return;
   if(!remoteHistoryData){ listEl.innerHTML = ''; return; }
-  const rows = remoteHistoryData.filter(r => normalizeFecha(r.fecha) === dateStr);
+  // El Aggregator de Make regresa los campos por índice numérico: 0=fecha, 1=nivel, 2=dia, 3=ejercicio, 4=peso
+  const norm = r => ({
+    fecha: normalizeFecha(r['0'] ?? r.fecha),
+    nivel: r['1'] ?? r.nivel,
+    dia: r['2'] ?? r.dia,
+    ejercicio: r['3'] ?? r.ejercicio,
+    peso: r['4'] ?? r.peso
+  });
+  const rows = remoteHistoryData.map(norm).filter(r => r.fecha === dateStr);
   if(!rows.length){
-    let debugMsg = '';
-    if(remoteHistoryData.length){
-      debugMsg = `<div style="font-size:11px;color:var(--muted);margin-top:6px;word-break:break-all;">Depuración: llegaron ${remoteHistoryData.length} registros. Primer objeto completo: ${JSON.stringify(remoteHistoryData[0])}</div>`;
-    }
-    listEl.innerHTML = '<div class="progress-empty">Sin registros este día.</div>' + debugMsg;
+    listEl.innerHTML = '<div class="progress-empty">Sin registros este día.</div>';
     return;
   }
   const groups = {};
