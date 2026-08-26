@@ -2208,6 +2208,15 @@ function loadRemoteHistory(){
   });
 }
 
+function normalizeFecha(raw){
+  if(raw==null) return '';
+  const s = String(raw).trim();
+  const m1 = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/); // 2026-8-25 o 2026-08-25...
+  if(m1) return `${m1[1]}-${m1[2].padStart(2,'0')}-${m1[3].padStart(2,'0')}`;
+  const m2 = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/); // MM/DD/YYYY (formato típico de Sheets en EE.UU.)
+  if(m2) return `${m2[3]}-${m2[1].padStart(2,'0')}-${m2[2].padStart(2,'0')}`;
+  return s;
+}
 function renderHistDay(){
   const dateStr = dateToStr(histCurrentDate);
   const labelEl = document.getElementById('histDateLabel');
@@ -2221,9 +2230,13 @@ function renderHistDay(){
   const listEl = document.getElementById('histList');
   if(!listEl) return;
   if(!remoteHistoryData){ listEl.innerHTML = ''; return; }
-  const rows = remoteHistoryData.filter(r => r.fecha === dateStr);
+  const rows = remoteHistoryData.filter(r => normalizeFecha(r.fecha) === dateStr);
   if(!rows.length){
-    listEl.innerHTML = '<div class="progress-empty">Sin registros este día.</div>';
+    let debugMsg = '';
+    if(remoteHistoryData.length){
+      debugMsg = `<div style="font-size:11px;color:var(--muted);margin-top:6px;">Depuración: llegaron ${remoteHistoryData.length} registros, pero ninguno coincide con ${dateStr}. Ejemplo de fecha recibida: "${remoteHistoryData[0].fecha}"</div>`;
+    }
+    listEl.innerHTML = '<div class="progress-empty">Sin registros este día.</div>' + debugMsg;
     return;
   }
   const groups = {};
