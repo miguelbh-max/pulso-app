@@ -2234,7 +2234,7 @@ function renderHistDay(){
   if(!rows.length){
     let debugMsg = '';
     if(remoteHistoryData.length){
-      debugMsg = `<div style="font-size:11px;color:var(--muted);margin-top:6px;">Depuración: llegaron ${remoteHistoryData.length} registros, pero ninguno coincide con ${dateStr}. Ejemplo de fecha recibida: "${remoteHistoryData[0].fecha}"</div>`;
+      debugMsg = `<div style="font-size:11px;color:var(--muted);margin-top:6px;word-break:break-all;">Depuración: llegaron ${remoteHistoryData.length} registros. Primer objeto completo: ${JSON.stringify(remoteHistoryData[0])}</div>`;
     }
     listEl.innerHTML = '<div class="progress-empty">Sin registros este día.</div>' + debugMsg;
     return;
