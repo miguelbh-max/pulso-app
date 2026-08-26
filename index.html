@@ -2162,8 +2162,14 @@ function setWebhookUrl(url){ try{ localStorage.setItem(WEBHOOK_KEY, url); }catch
 
 /* ---------------- Historial remoto (lee de Google Sheets vía Make, misma URL de sincronización) ---------------- */
 let remoteHistoryData = null;
-function todayStr(){ return new Date().toISOString().slice(0,10); }
-function dateToStr(d){ return d.toISOString().slice(0,10); }
+function todayStr(){ return localDateStr(new Date()); }
+function localDateStr(d){
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function dateToStr(d){ return localDateStr(d); }
 function fmtHistDateLabel(d){
   const label = d.toLocaleDateString('es-MX', {weekday:'long', day:'numeric', month:'long'});
   return dateToStr(d) === todayStr() ? label + ' (hoy)' : label;
@@ -2420,7 +2426,7 @@ document.getElementById('progressBtn').addEventListener('click', ()=>{
   fillDaySelect();
   fillHistFilter();
   const dateInput = document.getElementById('pfDate');
-  if(!dateInput.value) dateInput.value = new Date().toISOString().slice(0,10);
+  if(!dateInput.value) dateInput.value = todayStr();
   renderProgress();
   renderWebhookStatus();
   renderPfPreview();
@@ -2456,7 +2462,7 @@ document.getElementById('progressOverlay').addEventListener('click', (ev)=>{
 document.getElementById('pfSave').addEventListener('click', ()=>{
   const level = document.getElementById('pfLevel').value;
   const day = document.getElementById('pfDay').value;
-  const date = document.getElementById('pfDate').value || new Date().toISOString().slice(0,10);
+  const date = document.getElementById('pfDate').value || todayStr();
   if(!level || !day) return;
   const exercises = getExercisesForDay(level, day).map(ex=>({
     id: ex.id, nombre: ex.nombre, peso: getWeightForExercise(ex.id)
@@ -2805,7 +2811,7 @@ function sendWeightToSheets(date, weight){
 }
 
 document.getElementById('dwlSaveBtn').addEventListener('click', ()=>{
-  const date = document.getElementById('dwlDate').value || new Date().toISOString().slice(0,10);
+  const date = document.getElementById('dwlDate').value || todayStr();
   const weight = parseFloat(document.getElementById('dwlWeight').value);
   if(!weight){
     return;
@@ -2827,7 +2833,7 @@ document.getElementById('dwlSaveBtn').addEventListener('click', ()=>{
 
 document.getElementById('dietBtn').addEventListener('click', ()=>{
   const dateInput = document.getElementById('dwlDate');
-  if(!dateInput.value) dateInput.value = new Date().toISOString().slice(0,10);
+  if(!dateInput.value) dateInput.value = todayStr();
   renderDietPlan();
   renderWeightLog();
   document.getElementById('dietOverlay').classList.add('open');
