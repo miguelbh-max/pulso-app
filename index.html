@@ -1093,12 +1093,8 @@ footer b{color:#9AA6A0;}
           <select id="pfLevel"></select>
           <select id="pfDay"></select>
         </div>
-        <div class="pf-row">
-          <input type="number" id="pfWeight" placeholder="Peso (kg)" min="0" step="0.5">
-          <input type="number" id="pfReps" placeholder="Repeticiones" min="1">
-          <input type="number" id="pfSets" placeholder="Series" min="1">
-        </div>
         <input type="date" id="pfDate">
+        <div class="webhook-status" id="pfPreview" style="margin-bottom:8px;"></div>
         <button id="pfSave">Guardar registro</button>
       </div>
 
@@ -1926,7 +1922,8 @@ document.getElementById('routineOverlay').addEventListener('click', (ev)=>{
 
 /* ---------------- Progresión de peso genérica (todos los ejercicios excepto peso muerto y RDL, que ya tienen su propio sistema) ---------------- */
 const WEIGHT_PROG_KEY = 'pulso_ex_progress';
-const NO_WEIGHT_WIDGET = ['e6','e47']; // peso muerto rumano y peso muerto convencional — no tocar, ya tienen su propia progresión
+const NO_WEIGHT_WIDGET = ['e47']; // peso muerto convencional — no tocar, ya tiene su propia progresión (ciclo de 4 semanas basado en 1RM)
+const SIMPLE_WEIGHT_ONLY = ['e6']; // peso muerto rumano — solo caja de peso manual, sin racha/botón automático
 function getWeightProgressAll(){
   try{ return JSON.parse(localStorage.getItem(WEIGHT_PROG_KEY)) || {}; }catch(err){ return {}; }
 }
@@ -1944,6 +1941,15 @@ const WP_INCREMENT = {barra:2.5, mancuerna:2, maquina:5};
 const WP_LABEL = {barra:'barra', mancuerna:'mancuerna (o la siguiente disponible)', maquina:'máquina/polea'};
 function renderWeightProgress(e){
   if(NO_WEIGHT_WIDGET.includes(e.id)) return '';
+  if(SIMPLE_WEIGHT_ONLY.includes(e.id)){
+    return `
+    <div class="webhook-settings" id="wpBox">
+      <div class="pf-title">🏋️ Tu peso actual</div>
+      <input type="number" id="wpWeight" step="0.5" min="0" placeholder="Peso actual (kg)">
+      <div class="wp-suggest" id="wpSuggest">Anota aquí el peso que uses. Mantenlo 2 sesiones seguidas y a la siguiente sube 5 kg — luego anota el nuevo peso aquí.</div>
+    </div>
+    `;
+  }
   const type = equipTypeFor(e.equipment);
   if(!type) return '';
   return `
@@ -1987,6 +1993,19 @@ function refreshWeightProgressUI(e, type){
 }
 function setupWeightProgress(e){
   if(NO_WEIGHT_WIDGET.includes(e.id)) return;
+  if(SIMPLE_WEIGHT_ONLY.includes(e.id)){
+    const all = getWeightProgressAll();
+    const rec = all[e.id] || {weight:null};
+    const wInput = document.getElementById('wpWeight');
+    if(wInput && rec.weight != null) wInput.value = rec.weight;
+    if(wInput) wInput.addEventListener('change', ()=>{
+      const all2 = getWeightProgressAll();
+      const v = parseFloat(wInput.value);
+      all2[e.id] = {weight: isNaN(v) ? null : v};
+      setWeightProgressAll(all2);
+    });
+    return;
+  }
   const type = equipTypeFor(e.equipment);
   if(!type) return;
   refreshWeightProgressUI(e, type);
@@ -2133,7 +2152,7 @@ function sendToSheets(entry){
     body: JSON.stringify({
       fecha: entry.date,
       nivel: entry.level, dia: entry.day,
-      peso: entry.weight, reps: entry.reps, series: entry.sets
+      ejercicios: entry.exercises // array de {id, nombre, peso}
     })
   }).then(()=>{
     const st = document.getElementById('webhookStatus');
@@ -2157,20 +2176,56 @@ function renderWebhookStatus(){
 }
 
 const TRAIN_LEVELS = ['Principiante','Intermedio','Avanzado'];
-const DAYS_BY_LEVEL = {
-  'Principiante': ['Lunes — Empuje','Martes — Pierna/Abdomen','Miércoles — Jalón','Jueves — Peso muerto','Viernes — Pierna/Hombro/Abdomen'],
-  'Intermedio': ['Lunes — Empuje','Martes — Pierna/Abdomen','Miércoles — Jalón','Jueves — Peso muerto','Viernes — Pierna/Hombro/Abdomen'],
-  'Avanzado': ['Lunes — Empuje','Martes — Pierna/Abdomen','Miércoles — Jalón','Jueves — Peso muerto','Viernes — Pierna/Hombro/Abdomen'],
-};
+const WEEKDAYS = ['Lunes','Martes','Miércoles','Jueves','Viernes'];
 function fillLevelSelect(){
   const sel = document.getElementById('pfLevel');
   sel.innerHTML = TRAIN_LEVELS.map(l=>`<option value="${l}">${l}</option>`).join('');
 }
 function fillDaySelect(){
-  const level = document.getElementById('pfLevel').value;
   const sel = document.getElementById('pfDay');
-  const days = DAYS_BY_LEVEL[level] || [];
-  sel.innerHTML = days.map(d=>`<option value="${d}">${d}</option>`).join('');
+  sel.innerHTML = WEEKDAYS.map(d=>`<option value="${d}">${d}</option>`).join('');
+}
+// Lee del DOM la lista real de ejercicios para un nivel+día, tomada de las mismas
+// rutinas que se muestran en "Rutinas" — así nunca se desincroniza si se agregan/quitan ejercicios.
+function getExercisesForDay(level, day){
+  const panel = document.getElementById('routinePanel-' + level.toLowerCase());
+  if(!panel) return [];
+  let targetDiv = null;
+  panel.querySelectorAll('.routine-day').forEach(div=>{
+    const title = div.querySelector('.rd-title')?.textContent || '';
+    const dayWord = title.split('—')[0].trim();
+    if(dayWord === day) targetDiv = div;
+  });
+  if(!targetDiv) return [];
+  const list = [];
+  targetDiv.querySelectorAll('li[onclick]').forEach(li=>{
+    const m = (li.getAttribute('onclick')||'').match(/openRoutineExercise\('(e\d+)'\)/);
+    if(!m) return;
+    const ex = EX.find(x=>x.id===m[1]);
+    if(!ex) return;
+    list.push({id: ex.id, nombre: ex.name});
+  });
+  return list;
+}
+// Peso actual de un ejercicio: peso muerto convencional toma el "peso a vencer" (1RM),
+// el resto toma lo guardado en su propia ficha (incluye el RDL, con su caja manual).
+function getWeightForExercise(id){
+  if(id === 'e47') return getDl1RM();
+  const all = getWeightProgressAll();
+  const rec = all[id];
+  return (rec && rec.weight != null) ? rec.weight : null;
+}
+function renderPfPreview(){
+  const level = document.getElementById('pfLevel').value;
+  const day = document.getElementById('pfDay').value;
+  const box = document.getElementById('pfPreview');
+  if(!box) return;
+  const list = getExercisesForDay(level, day);
+  if(!list.length){ box.innerHTML = 'Sin ejercicios encontrados para esta combinación.'; return; }
+  box.innerHTML = 'Se registrará:<br>' + list.map(ex=>{
+    const w = getWeightForExercise(ex.id);
+    return `• ${ex.nombre} — ${w!=null ? fmtKg(w) : 'sin dato'}`;
+  }).join('<br>');
 }
 
 let histFilterLevel = 'todos';
@@ -2219,12 +2274,12 @@ function renderProgress(){
     const label = d.toLocaleDateString('es-MX', {weekday:'long', day:'numeric', month:'long'});
     html += `<div class="plog-day"><div class="plog-date">${label}</div>`;
     byDate[date].forEach(p=>{
-      const detailParts = [];
-      if(p.sets) detailParts.push(p.sets+' series');
-      if(p.reps) detailParts.push(p.reps+' reps');
-      if(p.weight) detailParts.push(p.weight+' kg');
+      const exRows = (p.exercises||[]).map(ex=>{
+        const pesoTxt = (ex.peso!=null) ? fmtKg(ex.peso) : 'sin dato';
+        return `<div style="display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);padding:1px 0;"><span>${ex.nombre}</span><span>${pesoTxt}</span></div>`;
+      }).join('') || '<div class="pl-detail">Sin ejercicios registrados</div>';
       html += `<div class="plog-item">
-        <div><div class="pl-name">${p.level} · ${p.day}</div><div class="pl-detail">${detailParts.join(' · ')||'Sin detalles'}</div></div>
+        <div style="flex:1"><div class="pl-name">${p.level} · ${p.day}</div>${exRows}</div>
         <button class="plog-del" data-id="${p.ts}">✕</button>
       </div>`;
     });
@@ -2250,6 +2305,7 @@ document.getElementById('progressBtn').addEventListener('click', ()=>{
   if(!dateInput.value) dateInput.value = new Date().toISOString().slice(0,10);
   renderProgress();
   renderWebhookStatus();
+  renderPfPreview();
   document.getElementById('progressOverlay').classList.add('open');
 });
 document.getElementById('histFilter').addEventListener('change', (ev)=>{
@@ -2264,7 +2320,8 @@ document.getElementById('clearHistBtn').addEventListener('click', ()=>{
   saveProgress(progressData);
   renderProgress();
 });
-document.getElementById('pfLevel').addEventListener('change', fillDaySelect);
+document.getElementById('pfLevel').addEventListener('change', ()=>{ fillDaySelect(); renderPfPreview(); });
+document.getElementById('pfDay').addEventListener('change', renderPfPreview);
 document.getElementById('pfSaveWebhook').addEventListener('click', ()=>{
   const url = document.getElementById('pfWebhook').value.trim();
   setWebhookUrl(url);
@@ -2280,19 +2337,14 @@ document.getElementById('pfSave').addEventListener('click', ()=>{
   const level = document.getElementById('pfLevel').value;
   const day = document.getElementById('pfDay').value;
   const date = document.getElementById('pfDate').value || new Date().toISOString().slice(0,10);
-  const weight = document.getElementById('pfWeight').value;
-  const reps = document.getElementById('pfReps').value;
-  const sets = document.getElementById('pfSets').value;
   if(!level || !day) return;
-  progressData.push({
-    ts: Date.now(), date, level, day,
-    weight: weight?Number(weight):null, reps: reps?Number(reps):null, sets: sets?Number(sets):null
-  });
+  const exercises = getExercisesForDay(level, day).map(ex=>({
+    id: ex.id, nombre: ex.nombre, peso: getWeightForExercise(ex.id)
+  }));
+  const entry = { ts: Date.now(), date, level, day, exercises };
+  progressData.push(entry);
   saveProgress(progressData);
-  sendToSheets(progressData[progressData.length-1]);
-  document.getElementById('pfWeight').value = '';
-  document.getElementById('pfReps').value = '';
-  document.getElementById('pfSets').value = '';
+  sendToSheets(entry);
   renderProgress();
 });
 
