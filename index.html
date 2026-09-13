@@ -233,6 +233,15 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
   font-size:12px; color:#AEB6B1; line-height:1.5; background:rgba(0,230,140,0.06);
   border:1px solid rgba(0,230,140,0.18); border-radius:10px; padding:9px 10px; margin:10px 0;
 }
+.diet-adjust-banner{
+  font-size:12.5px; line-height:1.5; border-radius:10px; padding:10px 12px; margin-bottom:14px;
+  border:1px solid var(--line); color:#AEB6B1;
+}
+.diet-adjust-banner.dab-normal{background:rgba(0,230,140,0.06); border-color:rgba(0,230,140,0.2);}
+.diet-adjust-banner.dab-reduced{background:rgba(255,82,82,0.08); border-color:rgba(255,82,82,0.25);}
+.diet-adjust-banner.dab-eased{background:rgba(255,193,7,0.08); border-color:rgba(255,193,7,0.3);}
+.diet-adjust-banner.dab-insufficient{background:var(--surface); border-color:var(--line);}
+.diet-adjust-banner b{color:var(--text);}
 #dwlList{display:flex; flex-direction:column; gap:6px; margin-top:8px; max-height:220px; overflow-y:auto;}
 .dwl-item{
   display:flex; justify-content:space-between; align-items:center; gap:8px;
@@ -814,9 +823,8 @@ footer b{color:#9AA6A0;}
           <ul>
             <li onclick="openRoutineExercise('e23')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bench_Press/0.jpg">Press de banca con mancuernas — 3 x 12</li>
             <li onclick="openRoutineExercise('e12')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg">Elevaciones laterales — 3 x 12</li>
-            <li onclick="openRoutineExercise('e35')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Overhead_Triceps/0.jpg">Extensión de tríceps sobre la cabeza — 4 x 15</li>
-            <li onclick="openRoutineExercise('e29')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Tricep_Dumbbell_Kickback/0.jpg">Patada de tríceps con mancuerna — 3 x 15</li>
-            <li onclick="openRoutineExercise('e55')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/EZ-Bar_Skullcrusher/0.jpg">Press francés (skullcrusher) con barra Z — 3 x 12</li>
+            <li onclick="openRoutineExercise('e35')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Overhead_Triceps/0.jpg">Extensión de tríceps sobre la cabeza — 3 x 12</li>
+            <li onclick="openRoutineExercise('e29')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Tricep_Dumbbell_Kickback/0.jpg">Patada de tríceps con mancuerna — 3 x 12</li>
           </ul>
         </div>
         <div class="routine-day">
@@ -836,7 +844,6 @@ footer b{color:#9AA6A0;}
             <li onclick="openRoutineExercise('e5')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wide-Grip_Lat_Pulldown/0.jpg">Jalón al pecho (polea) — 3 x 12</li>
             <li onclick="openRoutineExercise('e34')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/0.jpg">Curl de bíceps con mancuernas — 3 x 12</li>
             <li onclick="openRoutineExercise('e28')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hammer_Curls/0.jpg">Curl martillo con mancuernas — 3 x 12</li>
-            <li onclick="openRoutineExercise('e54')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternate_Incline_Dumbbell_Curl/0.jpg">Curl inclinado con mancuerna — 3 x 12</li>
           </ul>
         </div>
         <div class="routine-day">
@@ -866,8 +873,6 @@ footer b{color:#9AA6A0;}
             <li onclick="openRoutineExercise('e50')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Butt_Lift_Bridge/0.jpg">Puente de glúteo (unilateral) — 2 x 12 por lado</li>
             <li onclick="openRoutineExercise('e51')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hip_Circles_prone/0.jpg">Círculos de cadera (boca abajo) — 2 x 8 por lado</li>
             <li onclick="openRoutineExercise('e52')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/External_Rotation/0.jpg">Rotación externa de hombro — 2 x 12 por lado</li>
-            <li onclick="openRoutineExercise('e18')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Crunches/0.jpg">Crunch abdominal — 2 x 12-15</li>
-            <li onclick="openRoutineExercise('e56')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Flat_Bench_Lying_Leg_Raise/0.jpg">Elevación de piernas acostado — 2 x 12-15</li>
           </ul>
         </div>
         <div class="cardio-note">😴 Domingo: descanso completo, sin cardio ni pesas.</div>
@@ -890,9 +895,8 @@ footer b{color:#9AA6A0;}
             <li onclick="openRoutineExercise('e1')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Bench_Press_-_Medium_Grip/0.jpg">Press de banca con barra — 4 x 10</li>
             <li onclick="openRoutineExercise('e11')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shoulder_Press/0.jpg">Press militar con mancuernas — 3 x 10</li>
             <li onclick="openRoutineExercise('e53')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Shoulder_Press/0.jpg">Press militar con barra — 3 x 8-10</li>
-            <li onclick="openRoutineExercise('e15')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg">Extensión de tríceps en polea — 3 x 15</li>
-            <li onclick="openRoutineExercise('e35')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Overhead_Triceps/0.jpg">Extensión de tríceps sobre la cabeza — 4 x 15</li>
-            <li onclick="openRoutineExercise('e55')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/EZ-Bar_Skullcrusher/0.jpg">Press francés (skullcrusher) con barra Z — 3 x 12</li>
+            <li onclick="openRoutineExercise('e15')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg">Extensión de tríceps en polea — 3 x 12</li>
+            <li onclick="openRoutineExercise('e35')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Overhead_Triceps/0.jpg">Extensión de tríceps sobre la cabeza — 3 x 12</li>
           </ul>
         </div>
         <div class="routine-day">
@@ -912,7 +916,6 @@ footer b{color:#9AA6A0;}
             <li onclick="openRoutineExercise('e5')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wide-Grip_Lat_Pulldown/0.jpg">Jalón al pecho (polea) — 3 x 10</li>
             <li onclick="openRoutineExercise('e14')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Curl/0.jpg">Curl de bíceps con barra — 3 x 12</li>
             <li onclick="openRoutineExercise('e28')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hammer_Curls/0.jpg">Curl martillo con mancuernas — 3 x 12</li>
-            <li onclick="openRoutineExercise('e54')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternate_Incline_Dumbbell_Curl/0.jpg">Curl inclinado con mancuerna — 3 x 12</li>
           </ul>
         </div>
         <div class="routine-day">
@@ -943,8 +946,6 @@ footer b{color:#9AA6A0;}
             <li onclick="openRoutineExercise('e50')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Butt_Lift_Bridge/0.jpg">Puente de glúteo (unilateral) — 2 x 12 por lado</li>
             <li onclick="openRoutineExercise('e51')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hip_Circles_prone/0.jpg">Círculos de cadera (boca abajo) — 2 x 8 por lado</li>
             <li onclick="openRoutineExercise('e52')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/External_Rotation/0.jpg">Rotación externa de hombro — 2 x 12 por lado</li>
-            <li onclick="openRoutineExercise('e18')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Crunches/0.jpg">Crunch abdominal — 2 x 12-15</li>
-            <li onclick="openRoutineExercise('e56')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Flat_Bench_Lying_Leg_Raise/0.jpg">Elevación de piernas acostado — 2 x 12-15</li>
           </ul>
         </div>
         <div class="cardio-note">😴 Domingo: descanso completo, sin cardio ni pesas.</div>
@@ -971,7 +972,6 @@ footer b{color:#9AA6A0;}
             <li onclick="openRoutineExercise('e12')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg">Elevaciones laterales — 3 x 12-15</li>
             <li onclick="openRoutineExercise('e40')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dips_-_Triceps_Version/0.jpg">Fondos en paralelas (tríceps) — 3 x al fallo</li>
             <li onclick="openRoutineExercise('e15')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg">Extensión de tríceps en polea — 3 x 12-15</li>
-            <li onclick="openRoutineExercise('e55')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/EZ-Bar_Skullcrusher/0.jpg">Press francés (skullcrusher) con barra Z — 4 x 10</li>
           </ul>
         </div>
         <div class="routine-day">
@@ -991,7 +991,6 @@ footer b{color:#9AA6A0;}
             <li onclick="openRoutineExercise('e32')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Two-Dumbbell_Row/0.jpg">Remo inclinado bilateral con mancuernas — 4 x 8</li>
             <li onclick="openRoutineExercise('e28')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hammer_Curls/0.jpg">Curl martillo con mancuernas — 3 x 12</li>
             <li onclick="openRoutineExercise('e14')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Curl/0.jpg">Curl de bíceps con barra — 4 x 8-10</li>
-            <li onclick="openRoutineExercise('e54')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternate_Incline_Dumbbell_Curl/0.jpg">Curl inclinado con mancuerna — 3 x 12</li>
           </ul>
         </div>
         <div class="routine-day">
@@ -1023,8 +1022,6 @@ footer b{color:#9AA6A0;}
             <li onclick="openRoutineExercise('e50')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Butt_Lift_Bridge/0.jpg">Puente de glúteo (unilateral) — 2 x 12 por lado</li>
             <li onclick="openRoutineExercise('e51')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hip_Circles_prone/0.jpg">Círculos de cadera (boca abajo) — 2 x 8 por lado</li>
             <li onclick="openRoutineExercise('e52')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/External_Rotation/0.jpg">Rotación externa de hombro — 2 x 12 por lado</li>
-            <li onclick="openRoutineExercise('e18')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Crunches/0.jpg">Crunch abdominal — 2 x 12-15</li>
-            <li onclick="openRoutineExercise('e56')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Flat_Bench_Lying_Leg_Raise/0.jpg">Elevación de piernas acostado — 2 x 12-15</li>
           </ul>
         </div>
         <div class="cardio-note">😴 Domingo: descanso completo, sin cardio ni pesas.</div>
@@ -1144,7 +1141,7 @@ footer b{color:#9AA6A0;}
       <div class="close-btn" id="dietCloseBtn">✕</div>
     </div>
     <div class="guide-body">
-      <p style="font-size:13.5px; color:#E4E8E6; line-height:1.5; margin-bottom:14px;">Plan cetogénico (keto) de recomposición corporal (bajar grasa / ganar músculo): carbohidratos bajos (~20-40g/día), proteína alta y grasa como fuente principal de energía, sin azúcar añadida. Sin pollo, pavo, pato ni mariscos con caparazón (camarón, langosta, cangrejo).</p>
+      <p style="font-size:13.5px; color:#E4E8E6; line-height:1.5; margin-bottom:14px;">Plan bajo en carbohidratos (flexible, no keto estricto) armado con ingredientes accesibles: proteína alta para conservar músculo mientras entrenas, carbohidratos moderados (tortilla y frijol en porciones controladas, fruta en porciones), sin azúcar añadida. Sin pollo, pavo, pato ni mariscos con caparazón (camarón, langosta, cangrejo).</p>
 
       <div class="webhook-settings" id="dietInputs">
         <div class="pf-title">📏 Tus datos actuales</div>
@@ -1170,6 +1167,8 @@ footer b{color:#9AA6A0;}
         <div id="dwlList"></div>
       </div>
 
+      <div id="dietAdjustBanner"></div>
+
       <div class="diet-target-box">
         <div class="pf-title" style="margin-bottom:0;">🎯 Tu meta diaria</div>
         <div class="diet-macro-grid" id="dietMacroGrid"></div>
@@ -1180,42 +1179,44 @@ footer b{color:#9AA6A0;}
       <div class="diet-day">
         <div class="rd-title" style="background:rgba(255,82,82,0.14); color:var(--pulse); border-color:rgba(255,82,82,0.3);">🔄 Sustitutos libres</div>
         <div class="diet-meal">
-          <div class="diet-meal-label">Queso Oaxaca / manchego / crema</div>
+          <div class="diet-meal-label">Café</div>
           <ul>
-            <li>Puede reemplazar al queso panela en cualquier comida. <b>30-40 g</b></li>
-            <li>Regla: es fuente de grasa — si lo usas, quita el aguacate de esa misma comida (una fuente de grasa por comida).</li>
+            <li>Solo o con un chorrito de <b>leche de coco sin azúcar</b> — sin restricción.</li>
+            <li>Si usas leche entera en vez de leche de coco, que sea poca cantidad (tiene más carbohidratos por la lactosa).</li>
           </ul>
         </div>
         <div class="diet-meal">
-          <div class="diet-meal-label">"Quesadilla" keto (tortilla de harina de almendra o solo queso gratinado)</div>
+          <div class="diet-meal-label">Tocino / chorizo / salchichas</div>
           <ul>
-            <li>Sustituto válido del desayuno de huevo. <b>1 tortilla de almendra o queso gratinado en forma de "taco" + 30-40g queso</b></li>
-            <li>Cocinar en comal/plancha, no frita en aceite. Nada de tortilla de maíz ni de harina de trigo — rompen la cetosis.</li>
-            <li>Agrega 2-3 claras de huevo aparte para subir proteína.</li>
-            <li>No combinar con aguacate en la misma comida (ya tienes grasa del queso).</li>
+            <li>Son los más calóricos de tu lista — no hay que eliminarlos, pero no abuses: <b>tocino o chorizo 2-3 veces por semana</b>, no a diario.</li>
+            <li>Se pueden intercambiar entre sí en el desayuno si un día no tienes uno de los dos.</li>
           </ul>
         </div>
         <div class="diet-meal">
-          <div class="diet-meal-label">Chorizo</div>
+          <div class="diet-meal-label">Jamón / queso oaxaca</div>
           <ul>
-            <li>Uso ocasional, máximo 1-2 veces por semana. <b>50 g</b></li>
-            <li>Combinar con claras de huevo (no huevo entero) para subir proteína sin sumar más grasa.</li>
-            <li>Ejemplo: 50g chorizo + 3 claras + verduras salteadas (sin tortilla) ≈ 380 kcal, 24g proteína, carbohidratos casi nulos.</li>
-            <li>Ese día no agregues aguacate, queso ni almendras en ninguna otra comida — ya usaste tu cupo de grasa fuerte.</li>
+            <li>Intercambiables entre sí en cualquier colación o cena ligera — ambos cumplen función similar (proteína/grasa de fácil acceso).</li>
+          </ul>
+        </div>
+        <div class="diet-meal">
+          <div class="diet-meal-label">Tortilla de maíz / frijoles</div>
+          <ul>
+            <li>Son tu fuente de carbohidrato — aparecen en porciones controladas (<b>1 tortilla</b>, <b>½ taza de frijol</b>) y no en todas las comidas del día.</li>
+            <li>Si un día se te antoja más, agrégalo a la comida de las 5pm (no a la cena), y ese día evita la fruta de la colación de la 1pm.</li>
           </ul>
         </div>
         <div class="diet-meal">
           <div class="diet-meal-label">Colaciones para el trabajo (sin preparar nada en el momento)</div>
           <ul>
-            <li>Cualquiera de estas reemplaza la colación de queso/nueces del día: <b>cecina o carne seca de res sin azúcar (30g)</b> · <b>huevo cocido pelado (1-2 pz)</b> · <b>queso tipo Babybel o string cheese (1-2 pz)</b> · <b>puñito de cacahuates o pistaches sin cáscara</b>.</li>
-            <li>Todas van en bolsita o frasquito individual — nada que cortar ni preparar a la hora de comer.</li>
+            <li>Fresas y moras van en contenedores chicos prelavados — nada que cortar ni preparar a la hora de la colación.</li>
+            <li>Puedes intercambiar fresas por moras (o viceversa) entre colaciones sin problema.</li>
           </ul>
         </div>
       </div>
 
-      <div class="guide-note">💡 Prepara las colaciones el domingo: porciona nueces/queso en bolsitas o frascos individuales para toda la semana, cuece 6-8 huevos y pélalos, y lava/porciona las moras o fresas en contenedores chicos. Así en la semana solo tomas el paquete y lo llevas — cero preparación en el momento, ideal si vas a estar trabajando a la hora de la colación.</div>
-      <div class="guide-note">💡 Horario ajustado a tu rutina: desayuno 6:00am, dos colaciones antes de tu comida fuerte de las 5:00pm (la de la 1:00pm es una colación baja en carbohidratos, práctica entre clases), y cena ligera 8:00-8:30pm con opciones intercambiables. La porción de proteína de la comida de las 5pm se subió un poco para compensar la proteína que ya no viene de la colación de la 1pm.</div>
-      <div class="guide-note">💡 Las porciones de proteína, grasa y carbohidrato de cada comida se recalculan automáticamente según tu peso, estatura y edad actuales — actualízalos conforme avances en la dieta. En keto los carbohidratos se mantienen fijos en un rango bajo (~20-40g/día) para conservar la cetosis, sin importar cuánto suba tu meta de proteína o grasa. Estos cálculos son estimaciones generales (fórmula Mifflin-St Jeor), no un plan médico personalizado. Con tu peso actual se recomienda supervisión médica al iniciar keto, y consultar a un nutriólogo para seguimiento individualizado — especialmente si tienes antecedentes renales, de vesícula o vas a entrenar peso muerto con volumen alto, ya que el ajuste inicial de electrolitos (sodio, potasio, magnesio) es importante para evitar calambres y fatiga.</div>
+      <div class="guide-note">💡 Prepara las colaciones el domingo: lava y porciona las fresas y moras en contenedores chicos para toda la semana. Así en la semana solo tomas el paquete y lo llevas — cero preparación en el momento, ideal si vas a estar trabajando a la hora de la colación.</div>
+      <div class="guide-note">💡 Horario ajustado a tu rutina: desayuno 6:00am, dos colaciones antes de tu comida fuerte de las 5:00pm (la de la 1:00pm es solo fruta, práctica entre clases), y cena ligera 8:00-8:30pm.</div>
+      <div class="guide-note">💡 Las porciones de proteína, grasa y carbohidrato de cada comida se recalculan automáticamente según tu peso, estatura y edad actuales — actualízalos conforme avances en la dieta. Además, cada vez que registras un peso nuevo en el control de arriba, la app revisa tu tendencia de las últimas semanas y ajusta sola el nivel de carbohidrato y la meta de calorías (ver el aviso arriba de "Tu meta diaria"). Estos cálculos son estimaciones generales (fórmula Mifflin-St Jeor), no un plan médico personalizado — consulta a un nutriólogo para seguimiento individualizado, especialmente si tienes antecedentes renales o de vesícula.</div>
     </div>
   </div>
 </div>
@@ -1271,12 +1272,6 @@ const EX = [
   {id:'e53', cat:'hombro', en:'barbell shoulder press', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Shoulder_Press/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Shoulder_Press/1.jpg'], name:'Press militar con barra', muscle:'Deltoides anterior', equipment:'Barra', level:'Intermedio', pattern:'push', view:'front', regions:['shoulderF'],
     steps:['De pie, barra al frente de los hombros con agarre un poco más ancho que los hombros.','Empuja la barra verticalmente hasta extender los brazos por completo.','Baja controlado hasta la altura de la clavícula.','Mantén el core apretado para no arquear la espalda baja.'],
     tip:'Permite cargar más peso que las mancuernas — ideal para progresar en fuerza y estímulo de crecimiento del hombro. Inicia con la barra sola (20 kg) para dominar la técnica, sube 2.5 kg cuando completes las series limpias y sin dolor durante dos sesiones seguidas.'},
-  {id:'e54', cat:'brazos', en:'incline dumbbell curl', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternate_Incline_Dumbbell_Curl/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Alternate_Incline_Dumbbell_Curl/1.jpg'], name:'Curl inclinado con mancuerna', muscle:'Bíceps braquial (cabeza larga)', equipment:'Mancuernas + banco inclinado', level:'Intermedio', pattern:'curl', view:'front', regions:['bicepsF'],
-    steps:['Siéntate en un banco inclinado a 45-60°, brazos colgando a los costados con las palmas al frente.','Flexiona los codos llevando las mancuernas hacia los hombros, sin despegar el brazo del respaldo.','Aprieta el bíceps arriba sin balancear el torso.','Baja controlado hasta sentir el estiramiento completo del bíceps.'],
-    tip:'La posición inclinada estira más el bíceps al inicio del movimiento que el curl de pie — dale prioridad al estiramiento, no al peso. Inicia con 6-8 kg por mancuerna, sube 1-2 kg cuando completes 3x12 limpio sin balancear el torso.'},
-  {id:'e55', cat:'brazos', en:'ez-bar skullcrusher', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/EZ-Bar_Skullcrusher/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/EZ-Bar_Skullcrusher/1.jpg'], name:'Press francés (skullcrusher) con barra Z', muscle:'Tríceps (las 3 cabezas)', equipment:'Barra Z + banco', level:'Intermedio', pattern:'push', view:'front', regions:['tricepsF'],
-    steps:['Acuéstate en un banco con la barra Z sostenida sobre el pecho, brazos extendidos.','Manteniendo el brazo superior fijo y vertical, baja la barra flexionando solo el codo hasta cerca de la frente.','Pausa un instante sin golpear la frente con la barra.','Extiende de regreso apretando el tríceps, sin mover el hombro.'],
-    tip:'Permite más carga que las extensiones con mancuerna — ideal para masa de tríceps. Inicia con la barra sola o poco peso para dominar la técnica, sube 2.5 kg cuando completes 3x12 sin que el codo se abra hacia los lados.'},
   {id:'e12', cat:'hombro', en:'lateral raise', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/1.jpg'], name:'Elevaciones laterales', muscle:'Deltoides lateral', equipment:'Mancuernas', level:'Principiante', pattern:'pull', view:'front', regions:['shoulderF'],
     steps:['De pie, mancuernas a los costados, ligero doblez de codo.','Eleva los brazos hasta la altura de los hombros.','Pausa un instante en la parte alta.','Baja lento controlando el peso, sin dejarlo caer.'],
     tip:'Usa un peso que te permita controlar la bajada — el momentum quita trabajo al deltoides.'},
@@ -1298,9 +1293,6 @@ const EX = [
   {id:'e18', cat:'core', en:'crunches', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Crunches/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Crunches/1.jpg'], name:'Crunch abdominal', muscle:'Recto abdominal', equipment:'Peso corporal', level:'Principiante', pattern:'core', view:'front', regions:['abs'],
     steps:['Acuéstate boca arriba, rodillas flexionadas, pies en el piso.','Manos detrás de la cabeza sin jalar el cuello.','Eleva los hombros del piso contrayendo el abdomen.','Baja controlado sin apoyar completamente la cabeza.'],
     tip:'El movimiento es corto — no es necesario sentarse por completo.'},
-  {id:'e56', cat:'core', en:'lying leg raise', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Flat_Bench_Lying_Leg_Raise/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Flat_Bench_Lying_Leg_Raise/1.jpg'], name:'Elevación de piernas acostado', muscle:'Recto abdominal inferior', equipment:'Peso corporal', level:'Principiante', pattern:'core', view:'front', regions:['abs'],
-    steps:['Acuéstate boca arriba, manos a los costados o bajo la cadera para apoyo lumbar.','Piernas juntas y extendidas, eleva hasta formar un ángulo de 90° con el torso.','Baja controlado sin dejar que la zona lumbar se despegue del piso.','Evita que las piernas toquen el piso por completo entre repeticiones si buscas más tensión.'],
-    tip:'Si sientes tensión en la zona lumbar, flexiona ligeramente las rodillas o reduce el rango de bajada.'},
   {id:'e19', cat:'core', en:'hanging leg raise', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hanging_Leg_Raise/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hanging_Leg_Raise/1.jpg'], name:'Elevación de piernas colgado', muscle:'Recto abdominal inferior', equipment:'Barra de dominadas', level:'Avanzado', pattern:'core', view:'front', regions:['abs'],
     steps:['Cuélgate de la barra con agarre firme.','Eleva las piernas rectas o flexionadas hasta la altura de la cadera.','Controla la bajada sin balancear el cuerpo.','Evita usar impulso de espalda para levantar las piernas.'],
     tip:'Si es muy demandante, empieza flexionando las rodillas al elevar.'},
@@ -2531,23 +2523,66 @@ function setDietProfile(p){
 }
 
 // Fórmula Mifflin-St Jeor (hombre) + factor de actividad moderado-alto (entrena 4-5x/semana) + déficit para recomposición corporal
-// Versión KETO: carbohidratos fijos y bajos (20-40g/día) para mantener cetosis; proteína alta para conservar músculo; la grasa llena el resto de las calorías.
-function calcDietTargets(weight, height, age){
+// Versión LOW-CARB FLEXIBLE (no keto estricto): carbohidratos moderados (no fijos en rango de cetosis), proteína alta para conservar músculo, grasa llena el resto.
+// level: -1 = estancado (déficit un poco mayor), 0 = normal, 1 = bajada muy rápida (déficit un poco menor) — lo calcula solo computeWeightTrend() según tu registro de peso.
+function calcDietTargets(weight, height, age, level){
+  level = level || 0;
   const bmr = 10*weight + 6.25*height - 5*age + 5;
   const tdee = bmr * 1.45;
-  let kcal = tdee - 650;
-  const minKcal = Math.max(1500, bmr * 1.15);
+  const deficit = level === -1 ? 850 : (level === 1 ? 450 : 650);
+  let kcal = tdee - deficit;
+  const minKcal = Math.max(1500, bmr * 1.15); // piso de seguridad, no baja de aquí sin importar el nivel de ajuste
   if(kcal < minKcal) kcal = minKcal;
   const protein = weight * 1.8;
-  let carbs = weight * 0.25;
-  if(carbs < 20) carbs = 20;
-  if(carbs > 40) carbs = 40; // rango keto fijo, no sube aunque suba el peso o la meta calórica
+  let carbs = weight * 0.65; // low-carb flexible, no keto estricto
+  if(carbs < 70) carbs = 70;
+  if(carbs > 140) carbs = 140;
   let fat = (kcal - protein*4 - carbs*4) / 9;
   if(fat < 40) fat = 40;
   return {kcal: Math.round(kcal), protein: Math.round(protein), fat: Math.round(fat), carbs: Math.round(carbs)};
 }
 
-const DIET_BASE_TARGETS = calcDietTargets(DIET_BASELINE.weight, DIET_BASELINE.height, DIET_BASELINE.age);
+const DIET_BASE_TARGETS = calcDietTargets(DIET_BASELINE.weight, DIET_BASELINE.height, DIET_BASELINE.age, 0);
+
+// ---- Tendencia de peso → nivel de ajuste automático ----
+// Necesita al menos 3 pesadas con 12+ días entre la primera y la última (evita reaccionar a ruido de días sueltos).
+function computeWeightTrend(log){
+  const sorted = (log||[]).slice().sort((a,b)=> a.date.localeCompare(b.date));
+  if(sorted.length < 3) return {status:'insufficient', level:0};
+  const first = sorted[0], last = sorted[sorted.length-1];
+  const daysSpan = (new Date(last.date+'T00:00:00') - new Date(first.date+'T00:00:00')) / 86400000;
+  if(daysSpan < 12) return {status:'insufficient', level:0};
+  const weeks = daysSpan / 7;
+  const weeklyRate = (first.weight - last.weight) / weeks; // positivo = está bajando
+  let level = 0, status = 'normal';
+  if(weeklyRate < 0.2){ level = -1; status = 'stalled'; }
+  else if(weeklyRate > 1.5){ level = 1; status = 'fast'; }
+  return {status, level, weeklyRate, weeks};
+}
+
+function renderAdjustBanner(trend){
+  const el = document.getElementById('dietAdjustBanner');
+  if(!el) return;
+  let cls, html;
+  if(trend.status === 'insufficient'){
+    cls = 'dab-insufficient';
+    html = '📊 Aún no hay suficientes pesadas para calcular tu tendencia (se necesitan al menos 3, con 12+ días entre la primera y la última). Sigue pesándote 1 vez por semana, mismo día.';
+  } else {
+    const rate = trend.weeklyRate.toFixed(2);
+    if(trend.status === 'stalled'){
+      cls = 'dab-reduced';
+      const dirWord = trend.weeklyRate <= 0 ? 'subiendo o estancado' : 'estancado';
+      html = `⏸️ Tendencia: <b>${rate} kg/semana</b> (${dirWord}) — se pausó la tortilla del miércoles esta semana para ayudar a romper el estancamiento. Si retomas el ritmo normal, vuelve sola, sin que la quites tú.`;
+    } else if(trend.status === 'fast'){
+      cls = 'dab-eased';
+      html = `⚠️ Tendencia: <b>${rate} kg/semana</b> (muy rápido) — se subió un poco tu meta de calorías esta semana para proteger tu masa muscular mientras entrenas.`;
+    } else {
+      cls = 'dab-normal';
+      html = `✅ Tendencia: <b>${rate} kg/semana</b> — vas en el rango sano (0.3-1.2 kg/semana), sin ajustes.`;
+    }
+  }
+  el.innerHTML = `<div class="diet-adjust-banner ${cls}">${html}</div>`;
+}
 
 function roundG(x){ return Math.max(0, Math.round(x/5)*5); }
 function roundPZ(x){ return Math.max(1, Math.round(x)); }
@@ -2566,123 +2601,118 @@ function fmtPZ(v, singular, plural){
 // type: 'p' proteína, 'c' carbohidrato, 'f' grasa — escalan con la meta del usuario
 // unit: 'g' gramos, 'pz' piezas, 'taza' tazas
 // fixed:true -> se muestra tal cual (colaciones de fruta, verduras libres, condimentos)
-const CENA_ALT = {name:'Alternativas ligeras (elige la que tengas más a mano)', text:'2 huevos revueltos con queso (sin tortilla) · ensalada de atún con mayonesa y aguacate · caldo de res con verduras bajas en carbohidratos · o la opción de la lista de arriba', fixed:true};
+// adjustable:true -> este item se omite automáticamente cuando el nivel de ajuste es -1 (estancado), y regresa solo cuando la tendencia mejora
+const CAFE = {name:'Café', text:'solo o con leche de coco sin azúcar', fixed:true};
+const ENSALADA_LIBRE = {name:'Ensalada (lechuga, tomate, pepino)', text:'libre', fixed:true};
+const PICO_DE_GALLO = {name:'Pico de gallo (tomate, cebolla)', text:'libre', fixed:true};
 
 const DIET_PLAN = [
 {day:'LUNES', meals:[
   {label:'Desayuno', time:'6:00 am', items:[
-    {name:'Huevo entero', base:3, unit:'pz', type:'p'},
-    {name:'Aguacate', base:80, unit:'g', type:'f'},
-    {name:'Espinaca salteada', text:'libre', fixed:true}]},
+    {name:'Huevo entero', base:4, unit:'pz', type:'p'},
+    {name:'Tocino', base:2, unit:'pz', type:'f'},
+    {name:'Queso Oaxaca', base:30, unit:'g', type:'f'},
+    CAFE]},
   {label:'Colación 1', time:'9:30-10:00 am', items:[
-    {name:'Queso Oaxaca en cubos (bolsita porcionada)', base:35, unit:'g', type:'f'}]},
-  {label:'Colación 2', time:'1:00 pm — baja en carbohidratos, práctica entre clases', items:[
-    {name:'Moras azules (contenedor chico, prelavadas)', base:0.4, unit:'taza', type:'c'}]},
+    {name:'Fresas (contenedor chico, prelavadas)', base:9, unit:'pz', type:'c'}]},
+  {label:'Colación 2', time:'1:00 pm — solo fruta, práctica entre clases', items:[
+    {name:'Moras (un puñado, contenedor chico)', base:0.33, unit:'taza', type:'c'}]},
   {label:'Comida', time:'5:00 pm', items:[
-    {name:'Salmón a la plancha', base:220, unit:'g', type:'p'},
-    {name:'Espárragos al vapor', base:150, unit:'g', type:'c'},
-    {name:'Ensalada verde con aceite de oliva', text:'libre', fixed:true}]},
+    {name:'Carne de puerco a la plancha', base:150, unit:'g', type:'p'},
+    {name:'Tortilla de maíz', base:1, unit:'pz', type:'c'},
+    ENSALADA_LIBRE]},
   {label:'Cena', time:'8:00-8:30 pm — ligera', items:[
-    {name:'Carne molida de res (90% magra)', base:180, unit:'g', type:'p'},
-    {name:'Guacamole', base:50, unit:'g', type:'f'},
-    {name:'Pico de gallo (poco jitomate)', text:'libre', fixed:true},
-    CENA_ALT]},
+    {name:'Jamón', base:4, unit:'pz', type:'p'},
+    {name:'Queso Oaxaca', base:30, unit:'g', type:'f'}]},
 ]},
 {day:'MARTES', meals:[
   {label:'Desayuno', time:'6:00 am', items:[
-    {name:'Huevo entero', base:2, unit:'pz', type:'p'},
-    {name:'Clara de huevo', base:3, unit:'pz', type:'p'},
-    {name:'Queso manchego', base:30, unit:'g', type:'f'},
-    {name:'Champiñones salteados', text:'libre', fixed:true}]},
+    {name:'Huevo entero', base:4, unit:'pz', type:'p'},
+    {name:'Chorizo', base:50, unit:'g', type:'f'},
+    CAFE]},
   {label:'Colación 1', time:'9:30-10:00 am', items:[
-    {name:'Almendras (bolsita porcionada)', base:20, unit:'pz', type:'f'}]},
-  {label:'Colación 2', time:'1:00 pm — baja en carbohidratos, práctica entre clases', items:[
-    {name:'Fresas (contenedor chico, prelavadas)', base:0.4, unit:'taza', type:'c'}]},
+    {name:'Moras (un puñado, contenedor chico)', base:0.33, unit:'taza', type:'c'}]},
+  {label:'Colación 2', time:'1:00 pm — solo fruta, práctica entre clases', items:[
+    {name:'Fresas (contenedor chico, prelavadas)', base:9, unit:'pz', type:'c'}]},
   {label:'Comida', time:'5:00 pm', items:[
-    {name:'Bistec de res magro', base:220, unit:'g', type:'p'},
-    {name:'Coliflor asada', base:150, unit:'g', type:'c'},
-    {name:'Brócoli al vapor', text:'libre', fixed:true}]},
+    {name:'Taco de carne de puerco deshebrada', base:150, unit:'g', type:'p'},
+    {name:'Tortilla de maíz', base:1, unit:'pz', type:'c'},
+    {name:'Frijoles', base:0.5, unit:'taza', type:'c'},
+    PICO_DE_GALLO]},
   {label:'Cena', time:'8:00-8:30 pm — ligera', items:[
-    {name:'Claras de huevo', base:6, unit:'pz', type:'p'},
-    {name:'Aguacate', base:0.5, unit:'pz', type:'f'},
-    {name:'Espinaca y champiñones', text:'libre', fixed:true},
-    CENA_ALT]},
+    {name:'Atún (lata escurrida)', base:140, unit:'g', type:'p'},
+    {name:'Pepino', text:'libre', fixed:true}]},
 ]},
 {day:'MIÉRCOLES', meals:[
   {label:'Desayuno', time:'6:00 am', items:[
-    {name:'Huevo entero', base:3, unit:'pz', type:'p'},
-    {name:'Queso Oaxaca', base:40, unit:'g', type:'f'},
-    {name:'Nopales asados', text:'libre', fixed:true}]},
+    {name:'Huevo entero', base:4, unit:'pz', type:'p'},
+    {name:'Jamón', base:4, unit:'pz', type:'p'},
+    {name:'Queso Oaxaca', base:30, unit:'g', type:'f'},
+    CAFE]},
   {label:'Colación 1', time:'9:30-10:00 am', items:[
-    {name:'Nueces (bolsita porcionada)', base:10, unit:'pz', type:'f'}]},
-  {label:'Colación 2', time:'1:00 pm — baja en carbohidratos, práctica entre clases', items:[
-    {name:'Moras azules (contenedor chico, prelavadas)', base:0.4, unit:'taza', type:'c'}]},
+    {name:'Fresas (contenedor chico, prelavadas)', base:9, unit:'pz', type:'c'}]},
+  {label:'Colación 2', time:'1:00 pm — solo fruta, práctica entre clases', items:[
+    {name:'Moras (un puñado, contenedor chico)', base:0.33, unit:'taza', type:'c'}]},
   {label:'Comida', time:'5:00 pm', items:[
-    {name:'Tilapia al horno', base:240, unit:'g', type:'p'},
-    {name:'Espárragos', base:150, unit:'g', type:'c'},
-    {name:'Calabacitas salteadas', text:'libre', fixed:true}]},
+    {name:'Atún (lata escurrida)', base:140, unit:'g', type:'p'},
+    ENSALADA_LIBRE,
+    {name:'Tortilla de maíz', base:1, unit:'pz', type:'c', adjustable:true}]},
   {label:'Cena', time:'8:00-8:30 pm — ligera', items:[
-    {name:'Atún en agua', base:140, unit:'g', type:'p'},
-    {name:'Aguacate', base:0.5, unit:'pz', type:'f'},
-    {name:'Jitomate', text:'libre', fixed:true},
-    CENA_ALT]},
+    {name:'Salchichas', base:2, unit:'pz', type:'p'},
+    {name:'Queso Oaxaca', base:30, unit:'g', type:'f'}]},
 ]},
 {day:'JUEVES', meals:[
   {label:'Desayuno', time:'6:00 am', items:[
-    {name:'Proteína en polvo (sin azúcar)', base:1, unit:'pz', type:'p'},
-    {name:'Leche o bebida de almendra sin azúcar', text:'1 taza', fixed:true},
-    {name:'Mantequilla de almendra', base:15, unit:'g', type:'f'},
-    {name:'Espinaca', text:'libre', fixed:true}]},
+    {name:'Huevo entero', base:4, unit:'pz', type:'p'},
+    {name:'Tocino', base:2, unit:'pz', type:'f'},
+    CAFE]},
   {label:'Colación 1', time:'9:30-10:00 am', items:[
-    {name:'Queso panela en cubos (bolsita porcionada)', base:35, unit:'g', type:'f'}]},
-  {label:'Colación 2', time:'1:00 pm — baja en carbohidratos, práctica entre clases', items:[
-    {name:'Fresas (contenedor chico, prelavadas)', base:0.4, unit:'taza', type:'c'}]},
+    {name:'Moras (un puñado, contenedor chico)', base:0.33, unit:'taza', type:'c'}]},
+  {label:'Colación 2', time:'1:00 pm — solo fruta, práctica entre clases', items:[
+    {name:'Fresas (contenedor chico, prelavadas)', base:9, unit:'pz', type:'c'}]},
   {label:'Comida', time:'5:00 pm', items:[
-    {name:'Lomo de cerdo magro', base:220, unit:'g', type:'p'},
-    {name:'Ejotes al vapor', base:150, unit:'g', type:'c'},
-    {name:'Ensalada verde con aceite de oliva', text:'libre', fixed:true}]},
+    {name:'Carne de puerco a la plancha', base:150, unit:'g', type:'p'},
+    {name:'Frijoles', base:0.5, unit:'taza', type:'c'},
+    {name:'Tortilla de maíz', base:1, unit:'pz', type:'c'},
+    ENSALADA_LIBRE]},
   {label:'Cena', time:'8:00-8:30 pm — ligera', items:[
-    {name:'Carne molida de res (en lechugas)', base:180, unit:'g', type:'p'},
-    {name:'Guacamole', base:60, unit:'g', type:'f'},
-    CENA_ALT]},
+    {name:'Jamón', base:4, unit:'pz', type:'p'},
+    {name:'Queso Oaxaca', base:30, unit:'g', type:'f'}]},
 ]},
 {day:'VIERNES', meals:[
   {label:'Desayuno', time:'6:00 am', items:[
-    {name:'Huevo entero', base:2, unit:'pz', type:'p'},
-    {name:'Clara de huevo', base:1, unit:'pz', type:'p'},
-    {name:'Jitomate', text:'libre', fixed:true},
-    {name:'Aguacate', base:0.5, unit:'pz', type:'f'}]},
+    {name:'Huevo entero', base:4, unit:'pz', type:'p'},
+    {name:'Chorizo', base:50, unit:'g', type:'f'},
+    {name:'Queso Oaxaca', base:30, unit:'g', type:'f'},
+    CAFE]},
   {label:'Colación 1', time:'9:30-10:00 am', items:[
-    {name:'Aceitunas deshuesadas (frasco individual)', base:10, unit:'pz', type:'f'}]},
-  {label:'Colación 2', time:'1:00 pm — baja en carbohidratos, práctica entre clases', items:[
-    {name:'Moras azules (contenedor chico, prelavadas)', base:0.4, unit:'taza', type:'c'}]},
+    {name:'Fresas (contenedor chico, prelavadas)', base:9, unit:'pz', type:'c'}]},
+  {label:'Colación 2', time:'1:00 pm — solo fruta, práctica entre clases', items:[
+    {name:'Moras (un puñado, contenedor chico)', base:0.33, unit:'taza', type:'c'}]},
   {label:'Comida', time:'5:00 pm', items:[
-    {name:'Salmón', base:220, unit:'g', type:'p'},
-    {name:'Coliflor', base:150, unit:'g', type:'c'},
-    {name:'Ejotes', text:'libre', fixed:true}]},
+    {name:'Taco de carne de puerco', base:150, unit:'g', type:'p'},
+    {name:'Tortilla de maíz', base:1, unit:'pz', type:'c'},
+    PICO_DE_GALLO]},
   {label:'Cena', time:'8:00-8:30 pm — ligera', items:[
-    {name:'Res deshebrada', base:180, unit:'g', type:'p'},
-    {name:'Sopa de verduras baja en carbohidratos', text:'libre', fixed:true},
-    CENA_ALT]},
+    {name:'Atún (lata escurrida)', base:140, unit:'g', type:'p'},
+    {name:'Pepino', text:'libre', fixed:true}]},
 ]},
 {day:'SÁBADO', meals:[
   {label:'Desayuno', time:'6:00 am', items:[
-    {name:'Huevo entero', base:3, unit:'pz', type:'p'},
-    {name:'Queso crema', base:30, unit:'g', type:'f'},
-    {name:'Canela', text:'al gusto', fixed:true}]},
+    {name:'Huevo entero', base:4, unit:'pz', type:'p'},
+    {name:'Jamón', base:4, unit:'pz', type:'p'},
+    CAFE]},
   {label:'Colación 1', time:'9:30-10:00 am', items:[
-    {name:'Almendras (bolsita porcionada)', base:15, unit:'pz', type:'f'}]},
-  {label:'Colación 2', time:'1:00 pm — baja en carbohidratos, práctica entre clases', items:[
-    {name:'Fresas (contenedor chico, prelavadas)', base:0.4, unit:'taza', type:'c'}]},
+    {name:'Moras (un puñado, contenedor chico)', base:0.33, unit:'taza', type:'c'}]},
+  {label:'Colación 2', time:'1:00 pm — solo fruta, práctica entre clases', items:[
+    {name:'Fresas (contenedor chico, prelavadas)', base:9, unit:'pz', type:'c'}]},
   {label:'Comida', time:'5:00 pm', items:[
-    {name:'Bistec de res', base:220, unit:'g', type:'p'},
-    {name:'Espárragos', base:150, unit:'g', type:'c'},
-    {name:'Ensalada grande', text:'libre', fixed:true}]},
+    {name:'Salchichas', base:2, unit:'pz', type:'p'},
+    {name:'Frijoles', base:0.5, unit:'taza', type:'c'},
+    ENSALADA_LIBRE]},
   {label:'Cena', time:'8:00-8:30 pm — ligera', items:[
-    {name:'Queso panela', base:60, unit:'g', type:'f'},
-    {name:'Champiñones', text:'libre', fixed:true},
-    {name:'Huevo entero', base:2, unit:'pz', type:'p'},
-    CENA_ALT]},
+    {name:'Queso Oaxaca', base:30, unit:'g', type:'f'},
+    {name:'Jamón', base:4, unit:'pz', type:'p'}]},
 ]},
 ];
 
@@ -2702,7 +2732,11 @@ function renderDietPlan(){
   document.getElementById('dietHeight').value = profile.height;
   document.getElementById('dietAge').value = profile.age;
 
-  const targets = calcDietTargets(profile.weight, profile.height, profile.age);
+  const trend = computeWeightTrend(dietWeightLog);
+  renderAdjustBanner(trend);
+  const level = trend.level;
+
+  const targets = calcDietTargets(profile.weight, profile.height, profile.age, level);
   const ratios = {
     p: targets.protein / DIET_BASE_TARGETS.protein,
     c: targets.carbs / DIET_BASE_TARGETS.carbs,
@@ -2724,13 +2758,20 @@ function renderDietPlan(){
       const meal = d.meals.find(m=>m.label===label);
       if(!meal) return '<td>—</td>';
       const timeHtml = meal.time ? `<div class="dt-time">${meal.time}</div>` : '';
-      const itemsHtml = meal.items.map(it=>`${it.name}: <b>${scaleItem(it, ratios)}</b>`).join('<br>');
+      const visibleItems = meal.items.filter(it => !(it.adjustable && level === -1));
+      const pausedItems = meal.items.filter(it => it.adjustable && level === -1);
+      let itemsHtml = visibleItems.map(it=>`${it.name}: <b>${scaleItem(it, ratios)}</b>`).join('<br>');
+      if(pausedItems.length){
+        itemsHtml += (itemsHtml ? '<br>' : '') + pausedItems.map(it=>
+          `<span style="color:var(--muted); text-decoration:line-through;">${it.name}</span> <span style="color:var(--muted); font-size:11px;">(pausado)</span>`
+        ).join('<br>');
+      }
       return `<td>${timeHtml}${itemsHtml}</td>`;
     }).join('');
     return `<tr><td class="dt-day">${d.day}</td>${cells}</tr>`;
   }).join('');
 
-  const sundayRow = `<tr><td class="dt-day">DOMINGO</td><td colspan="${MEAL_LABELS.length}" class="dt-free">🎉 Día libre — mantén la cetosis: evita azúcar, harinas, arroz, tortilla de maíz y frutas altas en carbohidratos. Prioriza proteína y grasas saludables. El lunes retomas el plan estricto.</td></tr>`;
+  const sundayRow = `<tr><td class="dt-day">DOMINGO</td><td colspan="${MEAL_LABELS.length}" class="dt-free">🎉 Día libre — sin restricción estricta, pero prioriza proteína como base. El lunes retomas las porciones controladas.</td></tr>`;
 
   const container = document.getElementById('dietDaysContainer');
   container.innerHTML = `
