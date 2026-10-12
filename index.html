@@ -1976,7 +1976,7 @@ function equipTypeFor(equipStr){
   return 'maquina'; // polea, máquina, banco, etc.
 }
 const WP_INCREMENT = {barra:2.5, mancuerna:2, maquina:5};
-const WP_LABEL = {barra:'barra', mancuerna:'mancuerna (o la siguiente disponible)', maquina:'máquina/polea'};
+const WP_LABEL = {barra:'barra', mancuerna:'o la siguiente pesa disponible', maquina:'máquina/polea'};
 // Peso de la barra por ejercicio, para calcular discos por lado como en el peso muerto (null = no usa barra con discos)
 const BAR_WEIGHT_OVERRIDE = {e14: 10}; // curl con barra Z / recta corta
 function barWeightFor(e){
@@ -2041,7 +2041,7 @@ function renderWeightProgress(e){
     <div class="webhook-settings" id="wpBox">
       <div class="pf-title">🏋️ Tu progresión de peso</div>
       ${usesStack(e) ? '<div class="wp-unit"><button data-unit="kg">Kilos</button><button data-unit="placa">N.º de placa</button></div>' : ''}
-      <input type="number" id="wpWeight" step="0.5" min="0" placeholder="Peso actual (kg)">
+      <input type="number" id="wpWeight" step="0.5" min="0" placeholder="${type === 'mancuerna' ? 'Peso por mancuerna (kg)' : 'Peso actual (kg)'}">
       ${barWeightFor(e) ? '<div class="wp-plates" id="wpPlates"></div>' : ''}
       <button id="wpCleanBtn" class="wp-clean-btn">✅ Completé todas las reps limpias hoy</button>
       <div class="wp-suggest" id="wpSuggest"></div>
@@ -2053,11 +2053,12 @@ function refreshWeightProgressUI(e, type){
   const all = getWeightProgressAll();
   const rec = all[e.id] || {weight:null, streak:0};
   const unit = getUnitForExercise(e.id);
+  const perDb = type === 'mancuerna' ? ' por mancuerna' : '';
   const weightInput = document.getElementById('wpWeight');
   if(weightInput){
     weightInput.value = rec.weight != null ? rec.weight : '';
     weightInput.step = unit === 'placa' ? '1' : '0.5';
-    weightInput.placeholder = unit === 'placa' ? 'Número de placa (cuenta desde arriba)' : 'Peso actual (kg)';
+    weightInput.placeholder = unit === 'placa' ? 'Número de placa (cuenta desde arriba)' : (type === 'mancuerna' ? 'Peso por mancuerna (kg)' : 'Peso actual (kg)');
   }
   document.querySelectorAll('#wpBox .wp-unit button').forEach(b=>b.classList.toggle('on', b.dataset.unit === unit));
   const btn = document.getElementById('wpCleanBtn');
@@ -2070,13 +2071,15 @@ function refreshWeightProgressUI(e, type){
     if(rec.weight == null){
       sugBox.innerHTML = unit === 'placa'
         ? 'Ingresa el número de placa donde pusiste el pasador (cuenta desde la placa de arriba).'
-        : 'Ingresa el peso que usaste para empezar a llevar tu progresión.';
+        : (type === 'mancuerna'
+          ? 'Ingresa el peso de <b>una</b> mancuerna (si usas 12 kg en cada mano, escribe 12).'
+          : 'Ingresa el peso que usaste para empezar a llevar tu progresión.');
     } else if((rec.streak||0) >= 2){
       const inc = unit === 'placa' ? 1 : WP_INCREMENT[type];
       const next = Math.round((rec.weight + inc) * 2) / 2;
       sugBox.innerHTML = unit === 'placa'
         ? `💡 Llevas 2 sesiones limpias en la ${fmtLoad(rec.weight, unit)} — hora de bajar el pasador una placa, a la <b>${fmtLoad(next, unit)}</b>.<br><button id="wpApplyBtn">Subir a ${fmtLoad(next, unit)}</button>`
-        : `💡 Llevas 2 sesiones limpias con ${plateCalcSpan(rec.weight, bar)} — hora de subir a <b>${plateCalcSpan(next, bar)}</b> (${WP_LABEL[type]}).<br><button id="wpApplyBtn">Subir a ${fmtKg(next)}</button>`;
+        : `💡 Llevas 2 sesiones limpias con ${plateCalcSpan(rec.weight, bar)}${perDb} — hora de subir a <b>${plateCalcSpan(next, bar)}${perDb}</b> (${WP_LABEL[type]}).<br><button id="wpApplyBtn">Subir a ${fmtKg(next)}</button>`;
       const applyBtn = document.getElementById('wpApplyBtn');
       if(applyBtn) applyBtn.addEventListener('click', ()=>{
         const all2 = getWeightProgressAll();
@@ -2088,7 +2091,7 @@ function refreshWeightProgressUI(e, type){
     } else {
       sugBox.innerHTML = unit === 'placa'
         ? `Sigue en la ${fmtLoad(rec.weight, unit)} hasta completar las reps limpias 2 veces seguidas.`
-        : `Sigue con ${plateCalcSpan(rec.weight, bar)} hasta completar las reps limpias 2 veces seguidas.`;
+        : `Sigue con ${plateCalcSpan(rec.weight, bar)}${perDb} hasta completar las reps limpias 2 veces seguidas.`;
     }
   }
 }
