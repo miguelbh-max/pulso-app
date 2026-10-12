@@ -387,6 +387,8 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
   font-size:12.5px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif;
 }
 .wp-clean-btn.done{ background:rgba(0,230,140,0.12); border-color:#00E68C; color:#00E68C; }
+.wp-plates{font-size:12px; color:var(--muted); margin:-2px 0 8px; line-height:1.45;}
+.wp-plates b{color:var(--lime);}
 .wp-suggest{
   font-size:12.5px; color:#00E68C; background:rgba(0,230,140,0.08);
   border-radius:10px; padding:10px 12px; line-height:1.5;
@@ -1969,6 +1971,26 @@ function equipTypeFor(equipStr){
 }
 const WP_INCREMENT = {barra:2.5, mancuerna:2, maquina:5};
 const WP_LABEL = {barra:'barra', mancuerna:'mancuerna (o la siguiente disponible)', maquina:'máquina/polea'};
+// Peso de la barra por ejercicio, para calcular discos por lado como en el peso muerto (null = no usa barra con discos)
+const BAR_WEIGHT_OVERRIDE = {e14: 10}; // curl con barra Z / recta corta
+function barWeightFor(e){
+  if(NO_WEIGHT_WIDGET.includes(e.id)) return null;
+  if(equipTypeFor(e.equipment) !== 'barra') return null;
+  return BAR_WEIGHT_OVERRIDE[e.id] || BAR_WEIGHT_KG;
+}
+function plateCalcSpan(kg, bar){
+  return bar ? `<span class="plate-calc" data-bar="${bar}">${fmtKg(kg)}</span>` : fmtKg(kg);
+}
+function updateWpPlates(e){
+  const box = document.getElementById('wpPlates');
+  const input = document.getElementById('wpWeight');
+  if(!box || !input) return;
+  const bar = barWeightFor(e);
+  const v = parseFloat(input.value);
+  box.innerHTML = (isNaN(v) || v <= 0)
+    ? `🏋️ Barra de ${bar} kg — escribe el peso total y te digo cuántos discos poner por lado.`
+    : plateBreakdown(v, bar);
+}
 function renderWeightProgress(e){
   if(NO_WEIGHT_WIDGET.includes(e.id)) return '';
   if(SIMPLE_WEIGHT_ONLY.includes(e.id)){
@@ -1976,6 +1998,7 @@ function renderWeightProgress(e){
     <div class="webhook-settings" id="wpBox">
       <div class="pf-title">🏋️ Tu peso actual</div>
       <input type="number" id="wpWeight" step="0.5" min="0" placeholder="Peso actual (kg)">
+      ${barWeightFor(e) ? '<div class="wp-plates" id="wpPlates"></div>' : ''}
       <div class="wp-suggest" id="wpSuggest">Anota aquí el peso que uses. Mantenlo 2 sesiones seguidas y a la siguiente sube 5 kg — luego anota el nuevo peso aquí.</div>
     </div>
     `;
@@ -1986,12 +2009,14 @@ function renderWeightProgress(e){
     <div class="webhook-settings" id="wpBox">
       <div class="pf-title">🏋️ Tu progresión de peso</div>
       <input type="number" id="wpWeight" step="0.5" min="0" placeholder="Peso actual (kg)">
+      ${barWeightFor(e) ? '<div class="wp-plates" id="wpPlates"></div>' : ''}
       <button id="wpCleanBtn" class="wp-clean-btn">✅ Completé todas las reps limpias hoy</button>
       <div class="wp-suggest" id="wpSuggest"></div>
     </div>
   `;
 }
 function refreshWeightProgressUI(e, type){
+  const bar = barWeightFor(e);
   const all = getWeightProgressAll();
   const rec = all[e.id] || {weight:null, streak:0};
   const weightInput = document.getElementById('wpWeight');
@@ -2008,16 +2033,17 @@ function refreshWeightProgressUI(e, type){
     } else if((rec.streak||0) >= 2){
       const inc = WP_INCREMENT[type];
       const next = Math.round((rec.weight + inc) * 2) / 2;
-      sugBox.innerHTML = `💡 Llevas 2 sesiones limpias con ${fmtKg(rec.weight)} — hora de subir a <b>${fmtKg(next)}</b> (${WP_LABEL[type]}).<br><button id="wpApplyBtn">Subir a ${fmtKg(next)}</button>`;
+      sugBox.innerHTML = `💡 Llevas 2 sesiones limpias con ${plateCalcSpan(rec.weight, bar)} — hora de subir a <b>${plateCalcSpan(next, bar)}</b> (${WP_LABEL[type]}).<br><button id="wpApplyBtn">Subir a ${fmtKg(next)}</button>`;
       const applyBtn = document.getElementById('wpApplyBtn');
       if(applyBtn) applyBtn.addEventListener('click', ()=>{
         const all2 = getWeightProgressAll();
         all2[e.id] = {weight: next, streak: 0};
         setWeightProgressAll(all2);
         refreshWeightProgressUI(e, type);
+        updateWpPlates(e);
       });
     } else {
-      sugBox.innerHTML = `Sigue con ${fmtKg(rec.weight)} hasta completar las reps limpias 2 veces seguidas.`;
+      sugBox.innerHTML = `Sigue con ${plateCalcSpan(rec.weight, bar)} hasta completar las reps limpias 2 veces seguidas.`;
     }
   }
 }
@@ -2028,6 +2054,8 @@ function setupWeightProgress(e){
     const rec = all[e.id] || {weight:null};
     const wInput = document.getElementById('wpWeight');
     if(wInput && rec.weight != null) wInput.value = rec.weight;
+    updateWpPlates(e);
+    if(wInput) wInput.addEventListener('input', ()=>updateWpPlates(e));
     if(wInput) wInput.addEventListener('change', ()=>{
       const all2 = getWeightProgressAll();
       const v = parseFloat(wInput.value);
@@ -2039,7 +2067,9 @@ function setupWeightProgress(e){
   const type = equipTypeFor(e.equipment);
   if(!type) return;
   refreshWeightProgressUI(e, type);
+  updateWpPlates(e);
   const wInput = document.getElementById('wpWeight');
+  if(wInput) wInput.addEventListener('input', ()=>updateWpPlates(e));
   if(wInput) wInput.addEventListener('change', ()=>{
     const all = getWeightProgressAll();
     const v = parseFloat(wInput.value);
@@ -2124,6 +2154,12 @@ document.getElementById('dl1rmSave').addEventListener('click', ()=>{
 
 /* ---------------- Cálculo de discos por lado (barra de 20 kg) ---------------- */
 const BAR_WEIGHT_KG = 20;
+function plateBreakdown(total, bar){
+  const perSide = (total - bar) / 2;
+  if(perSide < 0) return `${total} kg — menos que tu barra (${bar} kg), no necesitas discos`;
+  if(perSide === 0) return `<b>${total} kg</b> = solo la barra (${bar} kg), sin discos`;
+  return `<b>${total} kg</b> = barra (${bar} kg) + <b>${perSide} kg</b> por lado`;
+}
 let plateToastTimer = null;
 function showPlateToast(html){
   const toast = document.getElementById('plateToast');
@@ -2139,13 +2175,8 @@ document.addEventListener('click', (ev)=>{
   ev.stopPropagation();
   const nums = el.textContent.match(/\d+(\.\d+)?/g);
   if(!nums || !nums.length) return;
-  const lines = nums.map(n=>{
-    const total = parseFloat(n);
-    const perSide = (total - BAR_WEIGHT_KG) / 2;
-    if(perSide < 0) return `${total} kg — menos que tu barra (${BAR_WEIGHT_KG} kg), no necesitas discos`;
-    return `<b>${total} kg</b> = barra (${BAR_WEIGHT_KG} kg) + <b>${perSide} kg</b> por lado`;
-  });
-  showPlateToast(lines.join('<br>'));
+  const bar = parseFloat(el.dataset.bar) || BAR_WEIGHT_KG;
+  showPlateToast(nums.map(n=>plateBreakdown(parseFloat(n), bar)).join('<br>'));
 }, true);
 
 /* ---------------- MI PROGRESO (guardado en el celular con localStorage) ---------------- */
