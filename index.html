@@ -1265,7 +1265,7 @@ const EX = [
   {id:'e7', cat:'piernas', en:'barbell squat', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Full_Squat/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Full_Squat/1.jpg'], name:'Sentadilla con barra', muscle:'Cuádriceps / glúteo', equipment:'Barra + rack', level:'Intermedio', pattern:'squat', view:'front', regions:['quads','glutes'],
     steps:['Barra apoyada en la parte alta de la espalda.','Pies al ancho de hombros, punta ligeramente hacia afuera.','Baja doblando cadera y rodilla a la vez, pecho arriba.','Sube empujando el piso con todo el pie.'],
     tip:'Las rodillas siguen la dirección de los dedos de los pies — no las dejes colapsar hacia adentro.'},
-  {id:'e8', cat:'piernas', en:'leg press', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/1.jpg'], name:'Prensa de piernas', muscle:'Cuádriceps / glúteo', equipment:'Máquina', level:'Principiante', pattern:'squat', view:'front', regions:['quads','glutes'],
+  {id:'e8', cat:'piernas', en:'leg press', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/1.jpg'], name:'Prensa de piernas', muscle:'Cuádriceps / glúteo', equipment:'Máquina de placas', level:'Principiante', pattern:'squat', view:'front', regions:['quads','glutes'],
     steps:['Siéntate en la máquina con la espalda pegada al respaldo.','Pies al ancho de hombros sobre la plataforma.','Baja controlado hasta 90° de rodilla.','Empuja sin extender la rodilla al 100% (evita bloquearla).'],
     tip:'No dejes que la zona lumbar se despegue del respaldo al bajar.'},
   {id:'e9', cat:'piernas', en:'walking lunge', img:['https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Walking_Lunge/0.jpg','https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Walking_Lunge/1.jpg'], name:'Zancadas caminando', muscle:'Cuádriceps / glúteo', equipment:'Peso corporal o mancuernas', level:'Principiante', pattern:'squat', view:'front', regions:['quads','glutes','calvesF'],
@@ -1996,9 +1996,12 @@ function linkifyBarWeights(text, bar){
 // Máquinas de polea/pila de placas: se puede llevar la progresión en kg o por número de placa
 const STACK_IDS = ['e5','e8','e10','e13','e15','e43'];
 function usesStack(e){ return STACK_IDS.includes(e.id); }
+const STACK_DEFAULT_PLACA = ['e8']; // la prensa del gimnasio es de pila de placas
 function getUnitForExercise(id){
   const rec = getWeightProgressAll()[id];
-  return (rec && rec.unit === 'placa') ? 'placa' : 'kg';
+  if(rec && rec.unit) return rec.unit === 'placa' ? 'placa' : 'kg';
+  if(rec && rec.weight != null) return 'kg'; // valor guardado antes de existir la opción de placa
+  return STACK_DEFAULT_PLACA.includes(id) ? 'placa' : 'kg';
 }
 function fmtLoad(v, unit){ return unit === 'placa' ? `placa ${v}` : fmtKg(v); }
 // Texto de un peso guardado en un registro (número en kg, o texto como "placa 5")
@@ -2049,7 +2052,7 @@ function refreshWeightProgressUI(e, type){
   const bar = barWeightFor(e);
   const all = getWeightProgressAll();
   const rec = all[e.id] || {weight:null, streak:0};
-  const unit = rec.unit === 'placa' ? 'placa' : 'kg';
+  const unit = getUnitForExercise(e.id);
   const weightInput = document.getElementById('wpWeight');
   if(weightInput){
     weightInput.value = rec.weight != null ? rec.weight : '';
