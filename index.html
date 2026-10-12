@@ -387,6 +387,12 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
   font-size:12.5px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif;
 }
 .wp-clean-btn.done{ background:rgba(0,230,140,0.12); border-color:#00E68C; color:#00E68C; }
+.wp-unit{display:flex; gap:6px; margin-bottom:8px;}
+.wp-unit button{
+  flex:1; padding:7px 8px; border-radius:8px; background:var(--surface-2); border:1px solid var(--line);
+  color:var(--muted); font-size:12px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif;
+}
+.wp-unit button.on{background:rgba(0,230,140,0.12); border-color:#00E68C; color:#00E68C;}
 .wp-plates{font-size:12px; color:var(--muted); margin:-2px 0 8px; line-height:1.45;}
 .wp-plates b{color:var(--lime);}
 .wp-suggest{
@@ -1987,6 +1993,20 @@ function linkifyBarWeights(text, bar){
     return `<span class="plate-calc" data-bar="${bar}">${m}</span>`;
   });
 }
+// Máquinas de polea/pila de placas: se puede llevar la progresión en kg o por número de placa
+const STACK_IDS = ['e5','e8','e10','e13','e15','e43'];
+function usesStack(e){ return STACK_IDS.includes(e.id); }
+function getUnitForExercise(id){
+  const rec = getWeightProgressAll()[id];
+  return (rec && rec.unit === 'placa') ? 'placa' : 'kg';
+}
+function fmtLoad(v, unit){ return unit === 'placa' ? `placa ${v}` : fmtKg(v); }
+// Texto de un peso guardado en un registro (número en kg, o texto como "placa 5")
+function fmtPeso(p){
+  if(p == null || p === '') return 'sin dato';
+  const n = Number(p);
+  return isNaN(n) ? String(p) : fmtKg(n);
+}
 function plateCalcSpan(kg, bar){
   return bar ? `<span class="plate-calc" data-bar="${bar}">${fmtKg(kg)}</span>` : fmtKg(kg);
 }
@@ -2017,6 +2037,7 @@ function renderWeightProgress(e){
   return `
     <div class="webhook-settings" id="wpBox">
       <div class="pf-title">🏋️ Tu progresión de peso</div>
+      ${usesStack(e) ? '<div class="wp-unit"><button data-unit="kg">Kilos</button><button data-unit="placa">N.º de placa</button></div>' : ''}
       <input type="number" id="wpWeight" step="0.5" min="0" placeholder="Peso actual (kg)">
       ${barWeightFor(e) ? '<div class="wp-plates" id="wpPlates"></div>' : ''}
       <button id="wpCleanBtn" class="wp-clean-btn">✅ Completé todas las reps limpias hoy</button>
@@ -2028,8 +2049,14 @@ function refreshWeightProgressUI(e, type){
   const bar = barWeightFor(e);
   const all = getWeightProgressAll();
   const rec = all[e.id] || {weight:null, streak:0};
+  const unit = rec.unit === 'placa' ? 'placa' : 'kg';
   const weightInput = document.getElementById('wpWeight');
-  if(weightInput && rec.weight != null) weightInput.value = rec.weight;
+  if(weightInput){
+    weightInput.value = rec.weight != null ? rec.weight : '';
+    weightInput.step = unit === 'placa' ? '1' : '0.5';
+    weightInput.placeholder = unit === 'placa' ? 'Número de placa (cuenta desde arriba)' : 'Peso actual (kg)';
+  }
+  document.querySelectorAll('#wpBox .wp-unit button').forEach(b=>b.classList.toggle('on', b.dataset.unit === unit));
   const btn = document.getElementById('wpCleanBtn');
   const sugBox = document.getElementById('wpSuggest');
   if(btn){
@@ -2038,21 +2065,27 @@ function refreshWeightProgressUI(e, type){
   }
   if(sugBox){
     if(rec.weight == null){
-      sugBox.innerHTML = 'Ingresa el peso que usaste para empezar a llevar tu progresión.';
+      sugBox.innerHTML = unit === 'placa'
+        ? 'Ingresa el número de placa donde pusiste el pasador (cuenta desde la placa de arriba).'
+        : 'Ingresa el peso que usaste para empezar a llevar tu progresión.';
     } else if((rec.streak||0) >= 2){
-      const inc = WP_INCREMENT[type];
+      const inc = unit === 'placa' ? 1 : WP_INCREMENT[type];
       const next = Math.round((rec.weight + inc) * 2) / 2;
-      sugBox.innerHTML = `💡 Llevas 2 sesiones limpias con ${plateCalcSpan(rec.weight, bar)} — hora de subir a <b>${plateCalcSpan(next, bar)}</b> (${WP_LABEL[type]}).<br><button id="wpApplyBtn">Subir a ${fmtKg(next)}</button>`;
+      sugBox.innerHTML = unit === 'placa'
+        ? `💡 Llevas 2 sesiones limpias en la ${fmtLoad(rec.weight, unit)} — hora de bajar el pasador una placa, a la <b>${fmtLoad(next, unit)}</b>.<br><button id="wpApplyBtn">Subir a ${fmtLoad(next, unit)}</button>`
+        : `💡 Llevas 2 sesiones limpias con ${plateCalcSpan(rec.weight, bar)} — hora de subir a <b>${plateCalcSpan(next, bar)}</b> (${WP_LABEL[type]}).<br><button id="wpApplyBtn">Subir a ${fmtKg(next)}</button>`;
       const applyBtn = document.getElementById('wpApplyBtn');
       if(applyBtn) applyBtn.addEventListener('click', ()=>{
         const all2 = getWeightProgressAll();
-        all2[e.id] = {weight: next, streak: 0};
+        all2[e.id] = {weight: next, streak: 0, unit};
         setWeightProgressAll(all2);
         refreshWeightProgressUI(e, type);
         updateWpPlates(e);
       });
     } else {
-      sugBox.innerHTML = `Sigue con ${plateCalcSpan(rec.weight, bar)} hasta completar las reps limpias 2 veces seguidas.`;
+      sugBox.innerHTML = unit === 'placa'
+        ? `Sigue en la ${fmtLoad(rec.weight, unit)} hasta completar las reps limpias 2 veces seguidas.`
+        : `Sigue con ${plateCalcSpan(rec.weight, bar)} hasta completar las reps limpias 2 veces seguidas.`;
     }
   }
 }
@@ -2082,10 +2115,20 @@ function setupWeightProgress(e){
   if(wInput) wInput.addEventListener('change', ()=>{
     const all = getWeightProgressAll();
     const v = parseFloat(wInput.value);
-    all[e.id] = {weight: isNaN(v) ? null : v, streak: 0}; // peso manual reinicia la racha
+    all[e.id] = {weight: isNaN(v) ? null : v, streak: 0, unit: getUnitForExercise(e.id)}; // peso manual reinicia la racha
     setWeightProgressAll(all);
     refreshWeightProgressUI(e, type);
   });
+  document.querySelectorAll('#wpBox .wp-unit button').forEach(b=>b.addEventListener('click', ()=>{
+    const unit = b.dataset.unit;
+    if(unit === getUnitForExercise(e.id)) return;
+    const all = getWeightProgressAll();
+    const rec = all[e.id];
+    if(rec && rec.weight != null && !confirm('Al cambiar de unidad se borra el valor actual de este ejercicio y su racha. ¿Continuar?')) return;
+    all[e.id] = {weight: null, streak: 0, unit};
+    setWeightProgressAll(all);
+    refreshWeightProgressUI(e, type);
+  }));
   const cleanBtn = document.getElementById('wpCleanBtn');
   if(cleanBtn) cleanBtn.addEventListener('click', ()=>{
     const all = getWeightProgressAll();
@@ -2305,7 +2348,7 @@ function renderHistDay(){
   Object.values(groups).forEach(g=>{
     html += `<div class="pl-name" style="margin:8px 0 4px;">${g.nivel} · ${g.dia}</div>`;
     g.items.forEach(it=>{
-      const w = (it.peso!=null && it.peso!=='') ? fmtKg(Number(it.peso)) : 'sin dato';
+      const w = fmtPeso(it.peso);
       html += `<div style="display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);padding:2px 0;"><span>${it.ejercicio}</span><span>${w}</span></div>`;
     });
   });
@@ -2409,6 +2452,11 @@ function getWeightForExercise(id){
   const rec = all[id];
   return (rec && rec.weight != null) ? rec.weight : null;
 }
+// Peso tal como se guarda en el registro: número en kg, o "placa N" si el ejercicio se lleva por número de placa
+function getRecordWeight(id){
+  const w = getWeightForExercise(id);
+  return (w != null && getUnitForExercise(id) === 'placa') ? `placa ${w}` : w;
+}
 function renderPfPreview(){
   const level = document.getElementById('pfLevel').value;
   const day = document.getElementById('pfDay').value;
@@ -2417,8 +2465,7 @@ function renderPfPreview(){
   const list = getExercisesForDay(level, day);
   if(!list.length){ box.innerHTML = 'Sin ejercicios encontrados para esta combinación.'; return; }
   box.innerHTML = 'Se registrará:<br>' + list.map(ex=>{
-    const w = getWeightForExercise(ex.id);
-    return `• ${ex.nombre} — ${w!=null ? fmtKg(w) : 'sin dato'}`;
+    return `• ${ex.nombre} — ${fmtPeso(getRecordWeight(ex.id))}`;
   }).join('<br>');
 }
 
@@ -2469,7 +2516,7 @@ function renderProgress(){
     html += `<div class="plog-day"><div class="plog-date">${label}</div>`;
     byDate[date].forEach(p=>{
       const exRows = (p.exercises||[]).map(ex=>{
-        const pesoTxt = (ex.peso!=null) ? fmtKg(ex.peso) : 'sin dato';
+        const pesoTxt = fmtPeso(ex.peso);
         return `<div style="display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);padding:1px 0;"><span>${ex.nombre}</span><span>${pesoTxt}</span></div>`;
       }).join('') || '<div class="pl-detail">Sin ejercicios registrados</div>';
       html += `<div class="plog-item">
@@ -2535,7 +2582,7 @@ document.getElementById('pfSave').addEventListener('click', ()=>{
   const date = document.getElementById('pfDate').value || todayStr();
   if(!level || !day) return;
   const exercises = getExercisesForDay(level, day).map(ex=>({
-    id: ex.id, nombre: ex.nombre, peso: getWeightForExercise(ex.id)
+    id: ex.id, nombre: ex.nombre, peso: getRecordWeight(ex.id)
   }));
   const entry = { ts: Date.now(), date, level, day, exercises };
   progressData.push(entry);
