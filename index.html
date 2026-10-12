@@ -2468,11 +2468,11 @@ document.getElementById('histFilter').addEventListener('change', (ev)=>{
   renderProgress();
 });
 document.getElementById('clearHistBtn').addEventListener('click', ()=>{
-  if(!progressData.length){ return; }
-  const ok = confirm('¿Borrar todos tus registros guardados en este celular? Esta acción no se puede deshacer.');
+  const ok = confirm('¿Borrar todos tus registros guardados en este celular, incluida la progresión de peso de cada ejercicio? Esta acción no se puede deshacer.');
   if(!ok) return;
   progressData = [];
   saveProgress(progressData);
+  try{ localStorage.removeItem(WEIGHT_PROG_KEY); }catch(err){}
   renderProgress();
 });
 document.getElementById('pfLevel').addEventListener('change', ()=>{ fillDaySelect(); renderPfPreview(); });
