@@ -198,6 +198,8 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
 .routine-menu-item .rm-desc{font-size:12.5px; color:var(--muted); line-height:1.4;}
 .routine-menu-item .rm-arrow{font-size:20px; color:var(--muted); flex:0 0 auto;}
 .ds-tip{border-color:rgba(255,82,82,0.35) !important; background:rgba(255,82,82,0.07) !important; margin-bottom:10px; line-height:1.55;}
+.opt-badge{display:inline-block; margin-left:6px; font-size:10px; font-weight:700; color:#9AA6A0; background:rgba(255,255,255,0.08); border-radius:999px; padding:2px 7px; white-space:nowrap; vertical-align:middle;}
+.light-w{color:var(--lime); font-weight:600; white-space:nowrap;}
 .ds-badge{display:inline-block; margin-left:6px; font-size:10px; font-weight:700; color:var(--pulse); background:rgba(255,82,82,0.12); border-radius:999px; padding:2px 7px; white-space:nowrap; vertical-align:middle;}
 .lvl-track{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px; margin-bottom:6px;}
 .lvl-track.ready{border-color:rgba(0,230,140,0.45); background:rgba(0,230,140,0.06);}
@@ -977,9 +979,12 @@ footer b{color:#9AA6A0;}
             <li onclick="openRoutineExercise('e50')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Butt_Lift_Bridge/0.jpg">Puente de glúteo (unilateral) — 2 x 12 por lado</li>
             <li onclick="openRoutineExercise('e51')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hip_Circles_prone/0.jpg">Círculos de cadera (boca abajo) — 2 x 8 por lado</li>
             <li onclick="openRoutineExercise('e52')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/External_Rotation/0.jpg">Rotación externa de hombro — 2 x 12 por lado</li>
+            <li onclick="openRoutineExercise('e28', 'ligero')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hammer_Curls/0.jpg"><span>Curl martillo ligero — 2 x 15 con <span class="light-w" data-light="e28">—</span></span><span class="opt-badge">Opcional</span></li>
+            <li onclick="openRoutineExercise('e15', 'ligero')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg"><span>Tríceps en polea ligero — 2 x 15 con <span class="light-w" data-light="e15">—</span></span><span class="opt-badge">Opcional</span></li>
           </ul>
         </div>
         <div class="cardio-note">😴 Domingo: descanso completo, sin cardio ni pesas.</div>
+        <div class="cardio-note">💪 <b>Brazo ligero del sábado (opcional)</b>: solo si tienes energía, después del cardio. El peso se calcula solo a partir del que anotas entre semana en cada ejercicio (curl martillo ≈ 65%, tríceps en polea ≈ 60%), así que se actualiza cuando subes de peso. Al terminar cada serie deberías sentir que te quedaban 4-5 repeticiones; nada de fallo ni dropsets. Si estás cansado o adolorido, no lo hagas.</div>
         <div class="cardio-note">🦵 Prehab/movilidad: círculos de tobillo, puente de glúteo y círculos de cadera son con peso corporal — no necesitan progresión de carga, el objetivo es técnica y control, no fatiga. Rotación externa de hombro es la única con peso: empieza sin mancuerna o con 1 kg, y sube a 2 kg solo cuando controles las 2 series de 12 por lado sin balancear el codo ni el torso.</div>
         <div class="routine-duration">⏱ Duración sugerida: 3-6 meses antes de pasar a Avanzado.</div>
         <div class="cardio-note">💪 Hombro (masa muscular): Press militar mancuernas — inicia con 8-10 kg por mancuerna, sube 1-2 kg cuando completes 3x10 limpio y sin dolor. Press militar con barra (nuevo) — inicia con la barra sola (<span class="plate-calc">20 kg</span>) para dominar la técnica del empuje vertical; después agrega discos y cuenta siempre el peso total (barra + discos), p. ej. barra + 2.5 kg por lado = <span class="plate-calc">25 kg</span>. Sube 2.5 kg al total (1.25 kg por lado; si no hay discos de 1.25, sube 5 kg = 2.5 kg por lado) cuando completes 3x8-10 limpio y sin dolor durante dos sesiones seguidas. Elevaciones laterales y Pájaros — inicia con 3-5 kg por mancuerna (son movimientos de aislamiento, el peso ligero con buena técnica rinde más), sube 1 kg solo cuando controles las 3x12-15 sin usar impulso del torso.</div>
@@ -1054,9 +1059,12 @@ footer b{color:#9AA6A0;}
             <li onclick="openRoutineExercise('e50')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Butt_Lift_Bridge/0.jpg">Puente de glúteo (unilateral) — 2 x 12 por lado</li>
             <li onclick="openRoutineExercise('e51')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hip_Circles_prone/0.jpg">Círculos de cadera (boca abajo) — 2 x 8 por lado</li>
             <li onclick="openRoutineExercise('e52')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/External_Rotation/0.jpg">Rotación externa de hombro — 2 x 12 por lado</li>
+            <li onclick="openRoutineExercise('e28', 'ligero')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hammer_Curls/0.jpg"><span>Curl martillo ligero — 2 x 15 con <span class="light-w" data-light="e28">—</span></span><span class="opt-badge">Opcional</span></li>
+            <li onclick="openRoutineExercise('e15', 'ligero')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg"><span>Tríceps en polea ligero — 2 x 15 con <span class="light-w" data-light="e15">—</span></span><span class="opt-badge">Opcional</span></li>
           </ul>
         </div>
         <div class="cardio-note">😴 Domingo: descanso completo, sin cardio ni pesas.</div>
+        <div class="cardio-note">💪 <b>Brazo ligero del sábado (opcional)</b>: solo si tienes energía, después del cardio. El peso se calcula solo a partir del que anotas entre semana en cada ejercicio (curl martillo ≈ 65%, tríceps en polea ≈ 60%), así que se actualiza cuando subes de peso. Al terminar cada serie deberías sentir que te quedaban 4-5 repeticiones; nada de fallo ni dropsets. Si estás cansado o adolorido, no lo hagas.</div>
         <div class="cardio-note">🦵 Prehab/movilidad: círculos de tobillo, puente de glúteo y círculos de cadera son con peso corporal — no necesitan progresión de carga, el objetivo es técnica y control, no fatiga. Rotación externa de hombro es la única con peso: empieza sin mancuerna o con 1 kg, y sube a 2 kg solo cuando controles las 2 series de 12 por lado sin balancear el codo ni el torso.</div>
         <div class="routine-duration">⏱ En este nivel el trabajo es variar la rutina cada 8-12 semanas y seguir progresando cargas.</div>
         <div class="cardio-note">💪 Hombro (masa muscular): Press Arnold — inicia con el peso que ya usas en press militar mancuernas (o 1-2 kg menos, por el giro extra), sube 1-2 kg cuando completes 3x10 limpio. Press militar con barra (nuevo) — como ya dominas el patrón de empuje vertical, inicia con <span class="plate-calc">20-25 kg</span> (barra + poco peso), sube 2.5 kg cuando completes 4x6-8 limpio y sin dolor durante dos sesiones seguidas. Elevaciones laterales y Pájaros — inicia con 4-6 kg por mancuerna, sube 1 kg solo cuando controles todas las series sin balancear el torso ni usar impulso; en este nivel prioriza técnica estricta y llegar cerca del fallo en las últimas repeticiones.</div>
@@ -1744,7 +1752,7 @@ function openDetail(id){
     startFigureAnim(e.pattern);
   }
 }
-function closeDetail(){ document.getElementById('overlay').classList.remove('open'); stopFigureAnim(); closeLightbox(); resetRestTimer(); }
+function closeDetail(){ document.getElementById('overlay').classList.remove('open'); stopFigureAnim(); closeLightbox(); resetRestTimer(); if(typeof renderLightWeights === 'function') renderLightWeights(); }
 
 /* ---------------- Temporizador de descanso ---------------- */
 let restInterval = null;
@@ -1931,12 +1939,42 @@ function dropsetHtml(e){
     ${ejemplo}<br>
     Si una semana estás muy cansado, sáltate el dropset y haz solo las series normales.</div>`;
 }
-function openRoutineExercise(id, dropset){
+// Brazo ligero opcional del sábado: peso calculado desde el que anotas entre semana en la ficha del ejercicio
+const LIGHT_PCT = {e28: 0.65, e15: 0.60};
+function lightWeightText(id){
+  const w = getWeightForExercise(id);
+  const pct = LIGHT_PCT[id] || 0.65;
+  if(w == null || isNaN(Number(w)) || Number(w) <= 0) return `el ${Math.round(pct*100)}% de tu peso de entre semana`;
+  const e = EX.find(x=>x.id===id);
+  if(getUnitForExercise(id) === 'placa') return `placa ${Math.max(1, Math.round(w*pct))}`;
+  if(equipTypeFor(e.equipment) === 'mancuerna') return `${Math.max(2, Math.round(w*pct/2)*2)} kg por mancuerna`;
+  return fmtKg(Math.max(2.5, roundTo25(w*pct)));
+}
+function renderLightWeights(){
+  document.querySelectorAll('.light-w[data-light]').forEach(el=>{ el.textContent = lightWeightText(el.dataset.light); });
+}
+function lightHtml(e){
+  const w = getWeightForExercise(e.id);
+  const base = w == null ? 'Aún no tienes peso anotado para este ejercicio; anótalo en su ficha desde la rutina de entre semana.'
+    : `Entre semana usas <b>${fmtPeso(getRecordWeight(e.id))}</b> → el sábado usa <b>${lightWeightText(e.id)}</b>.`;
+  return `<div class="tip ds-tip" style="border-color:rgba(255,255,255,0.15) !important; background:rgba(255,255,255,0.04) !important;"><b>Opcional · sábado ligero</b><br>
+    ${base}<br>
+    2 series de 15 repeticiones, 1 minuto de descanso. Termina cada serie sintiendo que te quedaban 4-5 repeticiones: nada de fallo ni dropsets.<br>
+    El peso se actualiza solo cuando subes el de entre semana. No lo cambies aquí.</div>`;
+}
+function openRoutineExercise(id, mode){
   openDetail(id);
-  if(!dropset) return;
+  if(!mode) return;
   const e = EX.find(x=>x.id===id);
   const tip = document.querySelector('#sheet .tip');
-  if(e && tip) tip.insertAdjacentHTML('beforebegin', dropsetHtml(e));
+  if(!e || !tip) return;
+  if(mode === 'ligero'){
+    tip.insertAdjacentHTML('beforebegin', lightHtml(e));
+    const wp = document.getElementById('wpBox');
+    if(wp) wp.style.display = 'none'; // el sábado no se edita el peso de entre semana
+  } else {
+    tip.insertAdjacentHTML('beforebegin', dropsetHtml(e));
+  }
 }
 document.getElementById('overlay').addEventListener('click', (ev)=>{
   if(ev.target.id==='overlay') closeDetail();
@@ -1983,6 +2021,7 @@ document.querySelectorAll('.routine-back').forEach(btn=>{
 document.getElementById('routineBtn').addEventListener('click', ()=>{
   showRoutineMenu();
   renderLevelTrack();
+  renderLightWeights();
   ensureRemoteHistoryForLevel();
   document.getElementById('routineOverlay').classList.add('open');
   renderDeadliftPlan();
