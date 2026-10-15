@@ -1931,6 +1931,7 @@ renderGrid();
 
 document.getElementById('guideBtn').addEventListener('click', ()=>{
   renderLevelTrack();
+  ensureRemoteHistoryForLevel();
   document.getElementById('guideOverlay').classList.add('open');
 });
 document.getElementById('guideCloseBtn').addEventListener('click', ()=>{
@@ -1965,6 +1966,7 @@ document.querySelectorAll('.routine-back').forEach(btn=>{
 document.getElementById('routineBtn').addEventListener('click', ()=>{
   showRoutineMenu();
   renderLevelTrack();
+  ensureRemoteHistoryForLevel();
   document.getElementById('routineOverlay').classList.add('open');
   renderDeadliftPlan();
 });
@@ -2331,6 +2333,7 @@ function loadRemoteHistory(){
     body: JSON.stringify({accion: 'historial'})
   }).then(r=>r.json()).then(data=>{
     remoteHistoryData = Array.isArray(data) ? data : [];
+    renderLevelTrack();
     st.textContent = '✓ ' + remoteHistoryData.length + ' registros cargados';
     histCurrentDate = new Date(todayStr()+'T00:00:00');
     renderHistDay();
@@ -2339,6 +2342,16 @@ function loadRemoteHistory(){
   });
 }
 
+// El Aggregator de Make regresa los campos por índice numérico: 0=fecha, 1=nivel, 2=dia, 3=ejercicio, 4=peso
+function normHistRow(r){
+  return {
+    fecha: normalizeFecha(r['0'] ?? r.fecha),
+    nivel: r['1'] ?? r.nivel,
+    dia: r['2'] ?? r.dia,
+    ejercicio: r['3'] ?? r.ejercicio,
+    peso: r['4'] ?? r.peso
+  };
+}
 function normalizeFecha(raw){
   if(raw==null) return '';
   const s = String(raw).trim();
@@ -2361,15 +2374,7 @@ function renderHistDay(){
   const listEl = document.getElementById('histList');
   if(!listEl) return;
   if(!remoteHistoryData){ listEl.innerHTML = ''; return; }
-  // El Aggregator de Make regresa los campos por índice numérico: 0=fecha, 1=nivel, 2=dia, 3=ejercicio, 4=peso
-  const norm = r => ({
-    fecha: normalizeFecha(r['0'] ?? r.fecha),
-    nivel: r['1'] ?? r.nivel,
-    dia: r['2'] ?? r.dia,
-    ejercicio: r['3'] ?? r.ejercicio,
-    peso: r['4'] ?? r.peso
-  });
-  const rows = remoteHistoryData.map(norm).filter(r => r.fecha === dateStr);
+  const rows = remoteHistoryData.map(normHistRow).filter(r => r.fecha === dateStr);
   if(!rows.length){
     listEl.innerHTML = '<div class="progress-empty">Sin registros este día.</div>';
     return;
@@ -2640,17 +2645,55 @@ const LEVEL_RULES = {
   Avanzado: null
 };
 const MIN_SESSIONS_PER_WEEK = 2;
+// Registros de entrenamiento {date, level}: los de este celular + los de tu Google Sheet (si está conectado),
+// así el contador se reconstruye aunque cambies de celular o borres los datos del navegador.
+function fixLevelName(l){
+  const v = String(l || '').trim().toLowerCase();
+  return TRAIN_LEVELS.find(x=>x.toLowerCase() === v) || null;
+}
+function getTrainingRecords(){
+  const recs = (progressData || []).map(r=>({date: r.date, level: fixLevelName(r.level)}));
+  (remoteHistoryData || []).forEach(raw=>{
+    const r = normHistRow(raw);
+    recs.push({date: r.fecha, level: fixLevelName(r.nivel)});
+  });
+  return recs.filter(r=>r.level && /^\d{4}-\d{2}-\d{2}$/.test(r.date || ''))
+    .sort((a,b)=>a.date.localeCompare(b.date));
+}
+// Nivel más reciente y fecha del primer registro de esa racha
+function deriveLevelTrack(){
+  const recs = getTrainingRecords();
+  if(!recs.length) return null;
+  const last = recs[recs.length-1];
+  let start = last.date;
+  for(let i=recs.length-1; i>=0 && recs[i].level===last.level; i--) start = recs[i].date;
+  return {level: last.level, start, lastDate: last.date, checks:[]};
+}
 function getLevelTrack(){
   let t = null;
   try{ t = JSON.parse(localStorage.getItem(LEVEL_TRACK_KEY)); }catch(err){}
-  if(t && t.level && t.start) return t;
-  // Sin datos guardados: lo deduce de tus registros (fecha del primer registro del nivel más reciente)
-  const recs = (progressData || []).filter(r=>r.level && r.date).sort((a,b)=>a.date.localeCompare(b.date));
-  if(!recs.length) return null;
-  const level = recs[recs.length-1].level;
-  let start = recs[recs.length-1].date;
-  for(let i=recs.length-1; i>=0 && recs[i].level===level; i--) start = recs[i].date;
-  return {level, start, checks:[]};
+  const d = deriveLevelTrack();
+  if(t && t.level && t.start){
+    // Si en tus registros ya entrenaste otro nivel después de tu fecha guardada, manda el historial
+    if(d && d.level !== t.level && d.lastDate > t.start) return d;
+    return t;
+  }
+  return d;
+}
+let levelTrackSheetsAsked = false, levelTrackSheetsFailed = false;
+// Pide una vez tu historial de Sheets (misma URL de "Sincronizar") para calcular el contador con él
+function ensureRemoteHistoryForLevel(){
+  const url = getWebhookUrl();
+  if(!url || remoteHistoryData || levelTrackSheetsAsked) return;
+  levelTrackSheetsAsked = true;
+  fetch(url, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({accion: 'historial'})
+  }).then(r=>r.json()).then(data=>{
+    if(!remoteHistoryData) remoteHistoryData = Array.isArray(data) ? data : [];
+    renderLevelTrack();
+  }).catch(()=>{ levelTrackSheetsAsked = false; levelTrackSheetsFailed = true; renderLevelTrack(); });
 }
 function setLevelTrack(t){ try{ localStorage.setItem(LEVEL_TRACK_KEY, JSON.stringify(t)); }catch(err){} }
 function daysBetween(a, b){
@@ -2692,14 +2735,15 @@ function levelTrackHtml(boxId){
   const today = todayStr();
   const days = Math.max(0, daysBetween(t.start, today));
   const rule = LEVEL_RULES[t.level];
-  const sessions = (progressData || []).filter(r=>r.level===t.level && r.date >= t.start && r.date <= today);
+  const sessions = getTrainingRecords().filter(r=>r.level===t.level && r.date >= t.start && r.date <= today);
   const uniqDays = new Set(sessions.map(r=>r.date)).size;
   const weeks = Math.max(1, days/7);
   const perWeek = uniqDays / weeks;
   const tag = {Principiante:'lv-begin', Intermedio:'lv-mid', Avanzado:'lv-adv'}[t.level];
   let html = `<div class="lt-head"><div class="lt-title">📅 Tiempo en tu nivel</div><span class="guide-tag ${tag}" style="margin:0;">${t.level}</span></div>
     <div class="lt-time">${days === 0 ? 'Empiezas hoy' : fmtElapsed(days)}</div>
-    <div class="lt-sub">Desde el ${fmtDateEs(t.start)} · ${uniqDays} entrenamiento${uniqDays===1?'':'s'} registrado${uniqDays===1?'':'s'}${days>=7 ? ` (${perWeek.toFixed(1)} por semana)` : ''}</div>`;
+    <div class="lt-sub">Desde el ${fmtDateEs(t.start)} · ${uniqDays} entrenamiento${uniqDays===1?'':'s'} registrado${uniqDays===1?'':'s'}${days>=7 ? ` (${perWeek.toFixed(1)} por semana)` : ''}</div>
+    <div class="lt-sub" style="font-size:11px; margin-top:3px;">${remoteHistoryData ? '☁ Calculado con tu historial de Google Sheets' : getWebhookUrl() ? (levelTrackSheetsFailed ? '⚠ No se pudo leer Google Sheets; usando los registros de este celular' : '☁ Cargando tu historial de Google Sheets…') : '📱 Con los registros de este celular (conecta Google Sheets en Mi progreso para respaldarlo)'}</div>`;
   if(!rule){
     html += `<div class="lt-msg">Estás en el nivel más alto. Cambia la rutina (ejercicios, rangos de reps) cada 8-12 semanas para seguir progresando.${days>=56 ? ` Ya llevas ${fmtElapsed(days)}: buen momento para variar.` : ''}</div>`;
   } else {
