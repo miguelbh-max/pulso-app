@@ -197,6 +197,25 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
 }
 .routine-menu-item .rm-desc{font-size:12.5px; color:var(--muted); line-height:1.4;}
 .routine-menu-item .rm-arrow{font-size:20px; color:var(--muted); flex:0 0 auto;}
+.ds-badge{display:inline-block; margin-left:6px; font-size:10px; font-weight:700; color:var(--pulse); background:rgba(255,82,82,0.12); border-radius:999px; padding:2px 7px; white-space:nowrap; vertical-align:middle;}
+.lvl-track{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px; margin-bottom:6px;}
+.lvl-track.ready{border-color:rgba(0,230,140,0.45); background:rgba(0,230,140,0.06);}
+.lt-head{display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;}
+.lt-title{font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em;}
+.lt-time{font-size:20px; font-weight:700; color:var(--text); margin:6px 0 2px;}
+.lt-sub{font-size:12px; color:var(--muted); line-height:1.45;}
+.lt-bar{height:6px; background:rgba(255,255,255,0.08); border-radius:999px; overflow:hidden; margin:10px 0 4px;}
+.lt-bar > div{height:100%; background:var(--lime); border-radius:999px;}
+.lt-checks{list-style:none; display:flex; flex-direction:column; gap:7px; margin:12px 0 4px; padding:0;}
+.lt-checks li{font-size:12.5px; color:#AEB6B1; line-height:1.4; display:flex; gap:8px; align-items:flex-start;}
+.lt-checks li.ok{color:#E4E8E6;}
+.lt-checks input{accent-color:var(--lime); margin-top:2px; flex:0 0 auto;}
+.lt-msg{font-size:12.5px; line-height:1.5; border-radius:10px; padding:9px 11px; margin-top:10px; background:rgba(255,255,255,0.04); color:#AEB6B1;}
+.lvl-track.ready .lt-msg{background:rgba(0,230,140,0.12); color:#9CFFDD; font-weight:600;}
+.lt-edit{display:flex; gap:6px; margin-top:10px; flex-wrap:wrap;}
+.lt-edit select, .lt-edit input{flex:1 1 120px; min-width:0; background:var(--surface-2); color:var(--text); border:1px solid var(--line); border-radius:10px; padding:8px; font-family:'Inter',sans-serif; font-size:12.5px;}
+.lt-edit button{background:none; border:1px solid rgba(0,230,140,0.3); color:var(--lime); border-radius:10px; padding:8px 12px; font-size:12.5px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif;}
+.lt-link{background:none; border:none; color:var(--muted); font-size:11.5px; text-decoration:underline; cursor:pointer; padding:0; font-family:'Inter',sans-serif;}
 .routine-panel{display:none;}
 .routine-panel.open{display:block;}
 .routine-back{
@@ -749,6 +768,7 @@ footer b{color:#9AA6A0;}
       <div class="close-btn" id="guideCloseBtn">✕</div>
     </div>
     <div class="guide-body">
+      <div class="lvl-track" id="lvlTrackGuide" style="margin-bottom:20px;"></div>
       <div class="guide-level">
         <div class="guide-tag lv-begin">Principiante</div>
         <p>Estás aquí si estás aprendiendo la técnica de cada ejercicio. El objetivo no es el peso, es el movimiento correcto.</p>
@@ -776,7 +796,7 @@ footer b{color:#9AA6A0;}
       </div>
       <div class="guide-level">
         <div class="guide-tag lv-adv">Avanzado</div>
-        <p>Entrenamiento con cargas altas, técnicas de intensidad (dropsets, tempo, pausas) y foco en debilidades específicas.</p>
+        <p>Entrenamiento con cargas altas, técnicas de intensidad (dropsets en los ejercicios marcados 🔻 de la rutina, series al fallo) y foco en debilidades específicas.</p>
       </div>
       <div class="guide-note">💡 Estas son referencias generales, no reglas fijas. Si sientes dolor (no fatiga muscular normal) al subir de nivel, retrocede y consulta a un entrenador o profesional de la salud.</div>
     </div>
@@ -791,6 +811,7 @@ footer b{color:#9AA6A0;}
     </div>
 
     <div class="routine-menu" id="routineMenu">
+      <div class="lvl-track" id="lvlTrackRoutine"></div>
       <button class="routine-menu-item" data-target="principiante">
         <div class="rm-text">
           <span class="rm-tag lv-begin">Principiante</span>
@@ -971,16 +992,16 @@ footer b{color:#9AA6A0;}
       <button class="routine-back" data-back>‹ Volver a niveles</button>
       <div class="guide-level">
         <div class="guide-tag lv-adv">Avanzado</div>
-        <p>5 días de entrenamiento (Lunes a Viernes), mayor intensidad y técnicas de fallo, con el jueves como día fuerte de peso muerto siguiendo la progresión especial para romper el estancamiento en 130 kg.</p>
+        <p>5 días de entrenamiento (Lunes a Viernes), mayor intensidad, técnicas de fallo y dropsets, con el jueves como día fuerte de peso muerto siguiendo la progresión especial para romper el estancamiento en 130 kg.</p>
         <div class="routine-day">
           <div class="rd-title">Lunes — Empuje (pecho / hombro / tríceps)</div>
           <ul>
             <li onclick="openRoutineExercise('e1')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Bench_Press_-_Medium_Grip/0.jpg">Press de banca con barra — 4 x 6-8</li>
             <li onclick="openRoutineExercise('e27')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Arnold_Dumbbell_Press/0.jpg">Press Arnold con mancuernas — 3 x 10</li>
             <li onclick="openRoutineExercise('e53')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Shoulder_Press/0.jpg">Press militar con barra — 4 x 6-8</li>
-            <li onclick="openRoutineExercise('e12')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg">Elevaciones laterales — 3 x 12-15</li>
+            <li onclick="openRoutineExercise('e12')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg">Elevaciones laterales — 3 x 12-15 + dropset en la última serie <span class="ds-badge">🔻 Dropset</span></li>
             <li onclick="openRoutineExercise('e40')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dips_-_Triceps_Version/0.jpg">Fondos en paralelas (tríceps) — 3 x al fallo</li>
-            <li onclick="openRoutineExercise('e15')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg">Extensión de tríceps en polea — 3 x 12-15</li>
+            <li onclick="openRoutineExercise('e15')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg">Extensión de tríceps en polea — 3 x 12-15 + dropset en la última serie <span class="ds-badge">🔻 Dropset</span></li>
           </ul>
         </div>
         <div class="routine-day">
@@ -988,7 +1009,7 @@ footer b{color:#9AA6A0;}
           <ul>
             <li onclick="openRoutineExercise('e42')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/0.jpg">Hip thrust con barra — 5 x 8</li>
             <li onclick="openRoutineExercise('e6')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/0.jpg">Peso muerto rumano — 4 x 8</li>
-            <li onclick="openRoutineExercise('e43')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/0.jpg">Curl femoral sentado — 4 x 10</li>
+            <li onclick="openRoutineExercise('e43')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/0.jpg">Curl femoral sentado — 4 x 10 + dropset en la última serie <span class="ds-badge">🔻 Dropset</span></li>
             <li onclick="openRoutineExercise('e44')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg">Elevación de talones — 4 x 15</li>
             <li onclick="openRoutineExercise('e19')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hanging_Leg_Raise/0.jpg">Elevación de piernas colgado — 3 x al fallo</li>
           </ul>
@@ -998,7 +1019,7 @@ footer b{color:#9AA6A0;}
           <ul>
             <li onclick="openRoutineExercise('e37')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pullups/0.jpg">Dominadas — 4 x al fallo</li>
             <li onclick="openRoutineExercise('e32')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Two-Dumbbell_Row/0.jpg">Remo inclinado bilateral con mancuernas — 4 x 8</li>
-            <li onclick="openRoutineExercise('e28')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hammer_Curls/0.jpg">Curl martillo con mancuernas — 3 x 12</li>
+            <li onclick="openRoutineExercise('e28')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hammer_Curls/0.jpg">Curl martillo con mancuernas — 3 x 12 + dropset en la última serie <span class="ds-badge">🔻 Dropset</span></li>
             <li onclick="openRoutineExercise('e14')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Curl/0.jpg">Curl de bíceps con barra — 4 x 8-10</li>
             <li onclick="openRoutineExercise('e54')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Curl/0.jpg">Curl 21 (finalizador) — 3 x 21</li>
           </ul>
@@ -1016,10 +1037,10 @@ footer b{color:#9AA6A0;}
         <div class="routine-day">
           <div class="rd-title">Viernes — Pierna (bajo impacto) + Hombro + Abdomen</div>
           <ul>
-            <li onclick="openRoutineExercise('e8')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg">Prensa de piernas — 4 x 10</li>
+            <li onclick="openRoutineExercise('e8')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg">Prensa de piernas — 4 x 10 + dropset en la última serie <span class="ds-badge">🔻 Dropset</span></li>
             <li onclick="openRoutineExercise('e44')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg">Elevación de talones — 4 x 15</li>
             <li onclick="openRoutineExercise('e13')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/0.jpg">Face pull — 3 x 15</li>
-            <li onclick="openRoutineExercise('e31')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench/0.jpg">Pájaros (elevaciones posteriores) — 4 x 12-15</li>
+            <li onclick="openRoutineExercise('e31')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench/0.jpg">Pájaros (elevaciones posteriores) — 4 x 12-15 + dropset en la última serie <span class="ds-badge">🔻 Dropset</span></li>
             <li onclick="openRoutineExercise('e30')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Russian_Twist/0.jpg">Giro ruso con mancuerna — 4 x 15 por lado</li>
           </ul>
         </div>
@@ -1036,6 +1057,7 @@ footer b{color:#9AA6A0;}
         </div>
         <div class="cardio-note">😴 Domingo: descanso completo, sin cardio ni pesas.</div>
         <div class="cardio-note">🦵 Prehab/movilidad: círculos de tobillo, puente de glúteo y círculos de cadera son con peso corporal — no necesitan progresión de carga, el objetivo es técnica y control, no fatiga. Rotación externa de hombro es la única con peso: empieza sin mancuerna o con 1 kg, y sube a 2 kg solo cuando controles las 2 series de 12 por lado sin balancear el codo ni el torso.</div>
+        <div class="cardio-note">🔻 <b>Dropset (cómo se hace):</b> en la última serie, llega cerca del fallo con tu peso normal; sin descansar, baja el peso ~20-30% y sigue hasta el fallo; vuelve a bajar otro ~20-30% y repite una última vez (3 tramos en total). Ejemplo en elevaciones laterales: 8 kg → 6 kg → 4 kg. En polea y prensa basta con mover el pasador 2-3 placas hacia arriba. Úsalo solo en los ejercicios marcados (aislamiento y máquinas) — nunca en peso muerto, sentadilla ni press con barra pesados, donde la fatiga extrema compromete la técnica y la espalda. Si una semana te sientes muy cargado, quita los dropsets y haz solo las series normales.</div>
         <div class="routine-duration">⏱ En este nivel el trabajo es variar la rutina cada 8-12 semanas y seguir progresando cargas.</div>
         <div class="cardio-note">💪 Hombro (masa muscular): Press Arnold — inicia con el peso que ya usas en press militar mancuernas (o 1-2 kg menos, por el giro extra), sube 1-2 kg cuando completes 3x10 limpio. Press militar con barra (nuevo) — como ya dominas el patrón de empuje vertical, inicia con <span class="plate-calc">20-25 kg</span> (barra + poco peso), sube 2.5 kg cuando completes 4x6-8 limpio y sin dolor durante dos sesiones seguidas. Elevaciones laterales y Pájaros — inicia con 4-6 kg por mancuerna, sube 1 kg solo cuando controles todas las series sin balancear el torso ni usar impulso; en este nivel prioriza técnica estricta y llegar cerca del fallo en las últimas repeticiones.</div>
         <div class="cardio-note">💪 Brazo (masa muscular): Fondos en paralelas — cuando llegues cómodo a 3x12-15 al fallo, considera agregar peso (cinturón lastrado o mancuerna entre las piernas); Extensión en polea — sube 2.5-5 kg cuando completes 3x12-15 sin balancear el codo. Curl martillo — inicia con el peso que ya manejas de Intermedio +1-2 kg; Curl de barra pesado — usa más peso que el curl de aislamiento (4x8-10), sube solo si mantienes el torso fijo sin swing. Curl 21 — 3 series al final del miércoles con 60-70% del peso del curl de barra, como finalizador para bombear y marcar el bíceps.</div>
@@ -1908,6 +1930,7 @@ renderLevelChips();
 renderGrid();
 
 document.getElementById('guideBtn').addEventListener('click', ()=>{
+  renderLevelTrack();
   document.getElementById('guideOverlay').classList.add('open');
 });
 document.getElementById('guideCloseBtn').addEventListener('click', ()=>{
@@ -1941,6 +1964,7 @@ document.querySelectorAll('.routine-back').forEach(btn=>{
 });
 document.getElementById('routineBtn').addEventListener('click', ()=>{
   showRoutineMenu();
+  renderLevelTrack();
   document.getElementById('routineOverlay').classList.add('open');
   renderDeadliftPlan();
 });
@@ -2598,9 +2622,146 @@ document.getElementById('pfSave').addEventListener('click', ()=>{
   const entry = { ts: Date.now(), date, level, day, exercises };
   progressData.push(entry);
   saveProgress(progressData);
+  syncLevelTrackWithEntry(entry);
   sendToSheets(entry);
   renderProgress();
 });
+
+
+/* ---------------- TIEMPO EN EL NIVEL ACTUAL ---------------- */
+// Cuenta cuánto tiempo llevas en tu nivel (desde la fecha de inicio) y cuántas sesiones has registrado
+// en "Mi progreso" con ese nivel; con eso + 2 casillas de autoevaluación te dice cuándo ya puedes subir.
+const LEVEL_TRACK_KEY = 'pulso_level_track';
+const LEVEL_RULES = {
+  Principiante: {next:'Intermedio', minDays:28, targetDays:42, minLabel:'4 semanas', targetLabel:'6 semanas',
+    checks:['Completo 3 series de 12-15 reps con buena técnica y sin dolor articular','Controlo el peso en la bajada sin dejarlo caer']},
+  Intermedio: {next:'Avanzado', minDays:91, targetDays:182, minLabel:'3 meses', targetLabel:'6 meses',
+    checks:['Sigo subiendo peso sin perder la forma y no tengo dolor persistente','Ya controlo variantes difíciles (una mano, tempo lento) y hago dominadas y fondos con buena técnica']},
+  Avanzado: null
+};
+const MIN_SESSIONS_PER_WEEK = 2;
+function getLevelTrack(){
+  let t = null;
+  try{ t = JSON.parse(localStorage.getItem(LEVEL_TRACK_KEY)); }catch(err){}
+  if(t && t.level && t.start) return t;
+  // Sin datos guardados: lo deduce de tus registros (fecha del primer registro del nivel más reciente)
+  const recs = (progressData || []).filter(r=>r.level && r.date).sort((a,b)=>a.date.localeCompare(b.date));
+  if(!recs.length) return null;
+  const level = recs[recs.length-1].level;
+  let start = recs[recs.length-1].date;
+  for(let i=recs.length-1; i>=0 && recs[i].level===level; i--) start = recs[i].date;
+  return {level, start, checks:[]};
+}
+function setLevelTrack(t){ try{ localStorage.setItem(LEVEL_TRACK_KEY, JSON.stringify(t)); }catch(err){} }
+function daysBetween(a, b){
+  const pa = a.split('-').map(Number), pb = b.split('-').map(Number);
+  return Math.round((Date.UTC(pb[0],pb[1]-1,pb[2]) - Date.UTC(pa[0],pa[1]-1,pa[2])) / 86400000);
+}
+function fmtElapsed(days){
+  if(days < 7) return days === 1 ? '1 día' : `${days} días`;
+  if(days < 60){ const w = Math.floor(days/7), d = days%7; return `${w} semana${w>1?'s':''}` + (d ? ` y ${d} día${d>1?'s':''}` : ''); }
+  const m = Math.floor(days/30.44), d = Math.round(days - m*30.44);
+  return `${m} mes${m>1?'es':''}` + (d ? ` y ${d} día${d>1?'s':''}` : '');
+}
+function fmtDateEs(str){
+  const [y,m,d] = str.split('-').map(Number);
+  return `${d} ${['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'][m-1]} ${y}`;
+}
+function renderLevelTrack(){
+  ['lvlTrackRoutine','lvlTrackGuide'].forEach(id=>{
+    const box = document.getElementById(id);
+    if(!box) return;
+    box.innerHTML = levelTrackHtml(id);
+    box.classList.toggle('ready', !!box.querySelector('[data-lt-ready]'));
+  });
+}
+function levelTrackHtml(boxId){
+  const t = getLevelTrack();
+  const editing = window._ltEditing === boxId || !t;
+  const editForm = (lvl, start)=>`
+    <div class="lt-edit">
+      <select data-lt="level">${TRAIN_LEVELS.map(l=>`<option ${l===lvl?'selected':''}>${l}</option>`).join('')}</select>
+      <input type="date" data-lt="start" value="${start}" max="${todayStr()}">
+      <button data-lt-act="save">Guardar</button>
+    </div>`;
+  if(!t){
+    return `<div class="lt-title">📅 Tiempo en tu nivel</div>
+      <div class="lt-sub" style="margin-top:6px;">Elige tu nivel actual y la fecha en que empezaste con esa rutina. La app cuenta los meses y te avisa cuándo ya puedes subir al siguiente nivel.</div>
+      ${editForm('Intermedio', todayStr())}`;
+  }
+  const today = todayStr();
+  const days = Math.max(0, daysBetween(t.start, today));
+  const rule = LEVEL_RULES[t.level];
+  const sessions = (progressData || []).filter(r=>r.level===t.level && r.date >= t.start && r.date <= today);
+  const uniqDays = new Set(sessions.map(r=>r.date)).size;
+  const weeks = Math.max(1, days/7);
+  const perWeek = uniqDays / weeks;
+  const tag = {Principiante:'lv-begin', Intermedio:'lv-mid', Avanzado:'lv-adv'}[t.level];
+  let html = `<div class="lt-head"><div class="lt-title">📅 Tiempo en tu nivel</div><span class="guide-tag ${tag}" style="margin:0;">${t.level}</span></div>
+    <div class="lt-time">${days === 0 ? 'Empiezas hoy' : fmtElapsed(days)}</div>
+    <div class="lt-sub">Desde el ${fmtDateEs(t.start)} · ${uniqDays} entrenamiento${uniqDays===1?'':'s'} registrado${uniqDays===1?'':'s'}${days>=7 ? ` (${perWeek.toFixed(1)} por semana)` : ''}</div>`;
+  if(!rule){
+    html += `<div class="lt-msg">Estás en el nivel más alto. Cambia la rutina (ejercicios, rangos de reps) cada 8-12 semanas para seguir progresando.${days>=56 ? ` Ya llevas ${fmtElapsed(days)}: buen momento para variar.` : ''}</div>`;
+  } else {
+    const pct = Math.min(100, Math.round(days / rule.targetDays * 100));
+    const checks = t.checks || [];
+    const timeOk = days >= rule.minDays;
+    const constOk = days >= 7 && perWeek >= MIN_SESSIONS_PER_WEEK;
+    const allOk = timeOk && constOk && rule.checks.every((_,i)=>checks[i]);
+    const left = rule.minDays - days;
+    html += `<div class="lt-bar"><div style="width:${pct}%"></div></div>
+      <div class="lt-sub">Mínimo ${rule.minLabel} · ideal ${rule.targetLabel} antes de pasar a ${rule.next}</div>
+      <ul class="lt-checks">
+        <li class="${timeOk?'ok':''}">${timeOk?'✅':'⏳'} <span>Llevas al menos ${rule.minLabel} en ${t.level}${timeOk?'':` (faltan ${fmtElapsed(left)})`}</span></li>
+        <li class="${constOk?'ok':''}">${constOk?'✅':'⏳'} <span>Entrenas con constancia: ${MIN_SESSIONS_PER_WEEK}+ veces por semana${uniqDays===0?' (guarda tus entrenamientos en “Mi progreso” para medirlo)':''}</span></li>
+        ${rule.checks.map((c,i)=>`<li class="${checks[i]?'ok':''}"><input type="checkbox" data-lt-check="${i}" ${checks[i]?'checked':''}> <span>${c}</span></li>`).join('')}
+      </ul>
+      <div class="lt-msg" ${allOk?'data-lt-ready':''}>${allOk
+        ? `🎉 ¡Ya puedes pasar a ${rule.next}! Cuando empieces, cambia tu nivel aquí abajo para reiniciar el contador.`
+        : timeOk && constOk
+          ? `Ya cumples el tiempo y la constancia. Cuando marques las casillas de arriba, estás listo para ${rule.next}.`
+          : `Sigue con ${t.level}: aún no es momento de pasar a ${rule.next}.`}</div>`;
+  }
+  html += editing ? editForm(t.level, t.start)
+    : `<div style="margin-top:10px;"><button class="lt-link" data-lt-act="edit">Cambiar nivel o fecha de inicio</button></div>`;
+  return html;
+}
+function bindLevelTrack(id){
+  const box = document.getElementById(id);
+  if(!box) return;
+  box.addEventListener('click', ev=>{
+    const act = ev.target.closest('[data-lt-act]')?.dataset.ltAct;
+    if(act === 'edit'){ window._ltEditing = id; renderLevelTrack(); }
+    if(act === 'save'){
+      const level = box.querySelector('[data-lt="level"]').value;
+      const start = box.querySelector('[data-lt="start"]').value || todayStr();
+      const prev = getLevelTrack();
+      setLevelTrack({level, start, checks: prev && prev.level===level ? (prev.checks||[]) : []});
+      window._ltEditing = null;
+      renderLevelTrack();
+    }
+  });
+  box.addEventListener('change', ev=>{
+    const i = ev.target.dataset.ltCheck;
+    if(i == null) return;
+    const t = getLevelTrack();
+    t.checks = t.checks || [];
+    t.checks[i] = ev.target.checked;
+    setLevelTrack(t);
+    renderLevelTrack();
+  });
+}
+bindLevelTrack('lvlTrackRoutine');
+bindLevelTrack('lvlTrackGuide');
+// Si guardas un entrenamiento con un nivel distinto al que llevas, el contador se reinicia en ese nivel.
+function syncLevelTrackWithEntry(entry){
+  const t = getLevelTrack();
+  if(!t || (t.level !== entry.level && entry.date >= t.start)){
+    setLevelTrack({level: entry.level, start: entry.date, checks: []});
+  } else if(t.level === entry.level && entry.date < t.start){
+    t.start = entry.date; setLevelTrack(t);
+  }
+}
 
 /* ---------------- ALIMENTACIÓN — plan dinámico según peso/estatura/edad ---------------- */
 const DIET_KEY = 'pulso_diet_profile';
