@@ -2562,7 +2562,7 @@ function renderProgress(){
     byDate[date].forEach(p=>{
       const exRows = (p.exercises||[]).map(ex=>{
         const pesoTxt = fmtPeso(ex.peso);
-        return `<div style="display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);padding:1px 0;"><span>${ex.nombre}</span><span>${pesoTxt}</span></div>`;
+        return `<div style="display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);padding:1px 0;"><span>${ex.nombre}</span><span style="white-space:nowrap; padding-left:10px;">${pesoTxt}</span></div>`;
       }).join('') || '<div class="pl-detail">Sin ejercicios registrados</div>';
       html += `<div class="plog-item">
         <div style="flex:1"><div class="pl-name">${p.level} · ${p.day}</div>${exRows}</div>
@@ -2589,6 +2589,7 @@ document.getElementById('progressBtn').addEventListener('click', ()=>{
   fillHistFilter();
   const dateInput = document.getElementById('pfDate');
   if(!dateInput.value) dateInput.value = todayStr();
+  syncDayToDate();
   renderProgress();
   renderWebhookStatus();
   renderPfPreview();
@@ -2607,7 +2608,19 @@ document.getElementById('clearHistBtn').addEventListener('click', ()=>{
   try{ localStorage.removeItem(WEIGHT_PROG_KEY); }catch(err){}
   renderProgress();
 });
-document.getElementById('pfLevel').addEventListener('change', ()=>{ fillDaySelect(); renderPfPreview(); });
+// Día de la semana (Lunes-Viernes) que corresponde a una fecha AAAA-MM-DD, o null si es fin de semana
+function weekdayForDate(dateStr){
+  const d = new Date(dateStr+'T00:00:00');
+  return isNaN(d) ? null : (WEEKDAYS[d.getDay()-1] || null);
+}
+// Selecciona en "Día" el que corresponde a la fecha elegida, para no registrar un martes como lunes
+function syncDayToDate(){
+  const date = document.getElementById('pfDate').value || todayStr();
+  const wd = weekdayForDate(date);
+  if(wd) document.getElementById('pfDay').value = wd;
+}
+document.getElementById('pfDate').addEventListener('change', ()=>{ syncDayToDate(); renderPfPreview(); });
+document.getElementById('pfLevel').addEventListener('change', ()=>{ fillDaySelect(); syncDayToDate(); renderPfPreview(); });
 document.getElementById('pfDay').addEventListener('change', renderPfPreview);
 document.getElementById('pfSaveWebhook').addEventListener('click', ()=>{
   const url = document.getElementById('pfWebhook').value.trim();
@@ -2626,6 +2639,11 @@ document.getElementById('pfSave').addEventListener('click', ()=>{
   const day = document.getElementById('pfDay').value;
   const date = document.getElementById('pfDate').value || todayStr();
   if(!level || !day) return;
+  const fechaTxt = new Date(date+'T00:00:00').toLocaleDateString('es-MX', {weekday:'long', day:'numeric', month:'long'});
+  const dup = progressData.find(p=>p.date === date && p.level === level && p.day === day);
+  if(dup && !confirm(`Ya guardaste ${level} · ${day} el ${fechaTxt}. ¿Guardarlo otra vez? (se duplicará también en Google Sheets)`)) return;
+  const wd = weekdayForDate(date);
+  if(!dup && wd && wd !== day && !confirm(`El ${fechaTxt} es ${wd}, pero elegiste la rutina del ${day}. ¿Guardar de todos modos?`)) return;
   const exercises = getExercisesForDay(level, day).map(ex=>({
     id: ex.id, nombre: ex.nombre, peso: getRecordWeight(ex.id)
   }));
