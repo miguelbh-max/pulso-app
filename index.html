@@ -197,6 +197,7 @@ main{padding:14px 20px 40px; max-width:640px; margin:0 auto;}
 }
 .routine-menu-item .rm-desc{font-size:12.5px; color:var(--muted); line-height:1.4;}
 .routine-menu-item .rm-arrow{font-size:20px; color:var(--muted); flex:0 0 auto;}
+.ds-tip{border-color:rgba(255,82,82,0.35) !important; background:rgba(255,82,82,0.07) !important; margin-bottom:10px; line-height:1.55;}
 .ds-badge{display:inline-block; margin-left:6px; font-size:10px; font-weight:700; color:var(--pulse); background:rgba(255,82,82,0.12); border-radius:999px; padding:2px 7px; white-space:nowrap; vertical-align:middle;}
 .lvl-track{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px; margin-bottom:6px;}
 .lvl-track.ready{border-color:rgba(0,230,140,0.45); background:rgba(0,230,140,0.06);}
@@ -993,22 +994,15 @@ footer b{color:#9AA6A0;}
       <div class="guide-level">
         <div class="guide-tag lv-adv">Avanzado</div>
         <p>5 días de entrenamiento (Lunes a Viernes), mayor intensidad, técnicas de fallo y dropsets, con el jueves como día fuerte de peso muerto siguiendo la progresión especial de peso muerto.</p>
-        <div class="cardio-note" style="margin-bottom:16px;">🔻 <b>¿Qué es un dropset?</b> Solo se hace en la <b>última serie</b> de los ejercicios marcados con 🔻 Dropset. Las demás series son normales.<br>
-<b>1.</b> Haz la última serie con tu peso normal hasta que casi no puedas más.<br>
-<b>2.</b> <b>Sin descansar</b>, baja el peso un poco (unos 2 kg en mancuernas) y haz todas las repeticiones que puedas.<br>
-<b>3.</b> <b>Sin descansar</b>, vuelve a bajar el peso y haz todas las que puedas. Ahí termina el ejercicio.<br>
-<b>Ejemplo — elevaciones laterales:</b> 8 kg hasta casi el fallo → 6 kg → 4 kg, todo seguido.<br>
-<b>En polea o máquina</b> (tríceps en polea, prensa, curl femoral): solo mueve el pasador 2-3 placas hacia arriba en cada bajada.<br>
-Nunca en peso muerto, sentadilla ni press pesados con barra. Si una semana estás muy cansado, sáltate los dropsets.</div>
         <div class="routine-day">
           <div class="rd-title">Lunes — Empuje (pecho / hombro / tríceps)</div>
           <ul>
             <li onclick="openRoutineExercise('e1')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Bench_Press_-_Medium_Grip/0.jpg">Press de banca con barra — 4 x 6-8</li>
             <li onclick="openRoutineExercise('e27')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Arnold_Dumbbell_Press/0.jpg">Press Arnold con mancuernas — 3 x 10</li>
             <li onclick="openRoutineExercise('e53')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Shoulder_Press/0.jpg">Press militar con barra — 4 x 6-8</li>
-            <li onclick="openRoutineExercise('e12')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg">Elevaciones laterales — 3 x 12-15 + dropset en la última serie <span class="ds-badge">🔻 Dropset</span></li>
+            <li onclick="openRoutineExercise('e12', true)"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg">Elevaciones laterales — 3 x 12-15 + dropset en la última serie <span class="ds-badge">🔻 Dropset</span></li>
             <li onclick="openRoutineExercise('e40')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dips_-_Triceps_Version/0.jpg">Fondos en paralelas (tríceps) — 3 x al fallo</li>
-            <li onclick="openRoutineExercise('e15')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg">Extensión de tríceps en polea — 3 x 12-15 + dropset en la última serie <span class="ds-badge">🔻 Dropset</span></li>
+            <li onclick="openRoutineExercise('e15', true)"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg">Extensión de tríceps en polea — 3 x 12-15 + dropset en la última serie <span class="ds-badge">🔻 Dropset</span></li>
           </ul>
         </div>
         <div class="routine-day">
@@ -1016,7 +1010,7 @@ Nunca en peso muerto, sentadilla ni press pesados con barra. Si una semana está
           <ul>
             <li onclick="openRoutineExercise('e42')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/0.jpg">Hip thrust con barra — 5 x 8</li>
             <li onclick="openRoutineExercise('e6')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/0.jpg">Peso muerto rumano — 4 x 8</li>
-            <li onclick="openRoutineExercise('e43')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/0.jpg">Curl femoral sentado — 4 x 10 + dropset en la última serie <span class="ds-badge">🔻 Dropset</span></li>
+            <li onclick="openRoutineExercise('e43', true)"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/0.jpg">Curl femoral sentado — 4 x 10 + dropset en la última serie <span class="ds-badge">🔻 Dropset</span></li>
             <li onclick="openRoutineExercise('e44')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg">Elevación de talones — 4 x 15</li>
             <li onclick="openRoutineExercise('e19')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hanging_Leg_Raise/0.jpg">Elevación de piernas colgado — 3 x al fallo</li>
           </ul>
@@ -1026,7 +1020,7 @@ Nunca en peso muerto, sentadilla ni press pesados con barra. Si una semana está
           <ul>
             <li onclick="openRoutineExercise('e37')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pullups/0.jpg">Dominadas — 4 x al fallo</li>
             <li onclick="openRoutineExercise('e32')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Two-Dumbbell_Row/0.jpg">Remo inclinado bilateral con mancuernas — 4 x 8</li>
-            <li onclick="openRoutineExercise('e28')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hammer_Curls/0.jpg">Curl martillo con mancuernas — 3 x 12 + dropset en la última serie <span class="ds-badge">🔻 Dropset</span></li>
+            <li onclick="openRoutineExercise('e28', true)"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hammer_Curls/0.jpg">Curl martillo con mancuernas — 3 x 12 + dropset en la última serie <span class="ds-badge">🔻 Dropset</span></li>
             <li onclick="openRoutineExercise('e14')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Curl/0.jpg">Curl de bíceps con barra — 4 x 8-10</li>
             <li onclick="openRoutineExercise('e54')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Curl/0.jpg">Curl 21 (finalizador) — 3 x 21</li>
           </ul>
@@ -1044,10 +1038,10 @@ Nunca en peso muerto, sentadilla ni press pesados con barra. Si una semana está
         <div class="routine-day">
           <div class="rd-title">Viernes — Pierna (bajo impacto) + Hombro + Abdomen</div>
           <ul>
-            <li onclick="openRoutineExercise('e8')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg">Prensa de piernas — 4 x 10 + dropset en la última serie <span class="ds-badge">🔻 Dropset</span></li>
+            <li onclick="openRoutineExercise('e8', true)"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg">Prensa de piernas — 4 x 10 + dropset en la última serie <span class="ds-badge">🔻 Dropset</span></li>
             <li onclick="openRoutineExercise('e44')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg">Elevación de talones — 4 x 15</li>
             <li onclick="openRoutineExercise('e13')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/0.jpg">Face pull — 3 x 15</li>
-            <li onclick="openRoutineExercise('e31')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench/0.jpg">Pájaros (elevaciones posteriores) — 4 x 12-15 + dropset en la última serie <span class="ds-badge">🔻 Dropset</span></li>
+            <li onclick="openRoutineExercise('e31', true)"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench/0.jpg">Pájaros (elevaciones posteriores) — 4 x 12-15 + dropset en la última serie <span class="ds-badge">🔻 Dropset</span></li>
             <li onclick="openRoutineExercise('e30')"><img class="rd-thumb" src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Russian_Twist/0.jpg">Giro ruso con mancuerna — 4 x 15 por lado</li>
           </ul>
         </div>
@@ -1923,8 +1917,26 @@ document.getElementById('lightboxCloseBtn').addEventListener('click', closeLight
 document.getElementById('photoLightbox').addEventListener('click', (ev)=>{
   if(ev.target.id==='photoLightbox') closeLightbox();
 });
-function openRoutineExercise(id){
+// Explicación del dropset (se muestra dentro de la ficha cuando el ejercicio viene marcado 🔻 Dropset en la rutina)
+function dropsetHtml(e){
+  const stack = typeof usesStack === 'function' && usesStack(e);
+  const ejemplo = stack
+    ? 'Ejemplo: placa 8 hasta casi el fallo → placa 6 → placa 4, todo seguido (solo mueve el pasador 2-3 placas hacia arriba).'
+    : 'Ejemplo: 8 kg hasta casi el fallo → 6 kg → 4 kg, todo seguido.';
+  return `<div class="tip ds-tip"><b>🔻 Dropset en la última serie</b><br>
+    Las demás series son normales. Solo en la <b>última</b>:<br>
+    <b>1.</b> Haz las repeticiones con tu peso normal hasta que casi no puedas más.<br>
+    <b>2.</b> <b>Sin descansar</b>, baja el peso un poco${stack ? ' (sube el pasador 2-3 placas)' : ' (unos 2 kg)'} y haz todas las repeticiones que puedas.<br>
+    <b>3.</b> <b>Sin descansar</b>, vuelve a bajar el peso y haz todas las que puedas. Ahí termina el ejercicio.<br>
+    ${ejemplo}<br>
+    Si una semana estás muy cansado, sáltate el dropset y haz solo las series normales.</div>`;
+}
+function openRoutineExercise(id, dropset){
   openDetail(id);
+  if(!dropset) return;
+  const e = EX.find(x=>x.id===id);
+  const tip = document.querySelector('#sheet .tip');
+  if(e && tip) tip.insertAdjacentHTML('beforebegin', dropsetHtml(e));
 }
 document.getElementById('overlay').addEventListener('click', (ev)=>{
   if(ev.target.id==='overlay') closeDetail();
@@ -2487,7 +2499,7 @@ function getExercisesForDay(level, day){
   if(!targetDiv) return [];
   const list = [];
   targetDiv.querySelectorAll('li[onclick]').forEach(li=>{
-    const m = (li.getAttribute('onclick')||'').match(/openRoutineExercise\('(e\d+)'\)/);
+    const m = (li.getAttribute('onclick')||'').match(/openRoutineExercise\('(e\d+)'/);
     if(!m) return;
     const ex = EX.find(x=>x.id===m[1]);
     if(!ex) return;
