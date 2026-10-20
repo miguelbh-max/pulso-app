@@ -39,6 +39,13 @@ body{
 }
 .display{font-family:'Inter',sans-serif; font-weight:800; letter-spacing:-0.02em;}
 
+/* ---------- Indicador sin conexión ---------- */
+.net-badge{display:none; position:absolute; top:14px; right:16px; font-size:11px; font-weight:600;
+  padding:4px 9px; border-radius:999px; background:rgba(255,82,82,0.15); color:var(--pulse);
+  border:1px solid rgba(255,82,82,0.35);}
+.net-badge.show{display:inline-block;}
+.net-badge.sync{background:rgba(0,230,140,0.12); color:var(--lime); border-color:rgba(0,230,140,0.35);}
+
 /* ---------- Header ---------- */
 header{
   position:sticky; top:0; z-index:20;
@@ -721,6 +728,7 @@ footer b{color:#9AA6A0;}
 <body>
 
 <header>
+  <span class="net-badge" id="netBadge"></span>
   <div class="brand">
     <div class="dot"></div>
     <h1 class="display">PULSO<span>.</span></h1>
@@ -2350,6 +2358,62 @@ const WEBHOOK_KEY = 'pulso_webhook_url';
 function getWebhookUrl(){ try{ return localStorage.getItem(WEBHOOK_KEY) || ''; }catch(e){ return ''; } }
 function setWebhookUrl(url){ try{ localStorage.setItem(WEBHOOK_KEY, url); }catch(e){} }
 
+/* ---------------- Modo sin conexión: cola de envíos pendientes a Sheets ---------------- */
+const QUEUE_KEY = 'pulso_pending_queue';
+const HIST_CACHE_KEY = 'pulso_hist_cache';
+function getQueue(){ try{ return JSON.parse(localStorage.getItem(QUEUE_KEY)) || []; }catch(e){ return []; } }
+function setQueue(q){ try{ localStorage.setItem(QUEUE_KEY, JSON.stringify(q)); }catch(e){} updateNetBadge(); }
+function enqueuePayload(payload){ const q = getQueue(); q.push(payload); setQueue(q); }
+// Envía a Make; si no hay señal (o falla la red), lo guarda en la cola y regresa 'queued'
+function postToWebhook(payload){
+  const url = getWebhookUrl();
+  if(!url) return Promise.resolve('nourl');
+  if(!navigator.onLine){ enqueuePayload(payload); return Promise.resolve('queued'); }
+  return fetch(url, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)})
+    .then(()=>{ flushQueue(); return 'sent'; })
+    .catch(()=>{ enqueuePayload(payload); return 'queued'; });
+}
+let flushing = false;
+// Manda en orden lo pendiente; se detiene en el primero que falle y lo reintenta después
+async function flushQueue(){
+  const url = getWebhookUrl();
+  if(flushing || !url || !navigator.onLine || !getQueue().length) return;
+  flushing = true; updateNetBadge();
+  let sent = 0;
+  try{
+    while(getQueue().length){
+      const q = getQueue();
+      try{
+        await fetch(url, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(q[0])});
+      }catch(e){ break; }
+      setQueue(getQueue().slice(1)); sent++;
+    }
+  } finally { flushing = false; updateNetBadge(); }
+  if(sent){
+    const st = document.getElementById('webhookStatus');
+    if(st) st.textContent = '✓ ' + sent + (sent===1 ? ' registro pendiente enviado' : ' registros pendientes enviados') + ' a Google Sheets';
+  }
+}
+function updateNetBadge(){
+  const b = document.getElementById('netBadge');
+  if(!b) return;
+  const n = getQueue().length;
+  b.classList.remove('show','sync');
+  if(!navigator.onLine){
+    b.textContent = '📴 Sin conexión' + (n ? ' · ' + n + ' pendiente' + (n>1?'s':'') : '');
+    b.classList.add('show');
+  } else if(n){
+    b.textContent = '⟳ Enviando ' + n + ' pendiente' + (n>1?'s':'');
+    b.classList.add('show','sync');
+  }
+}
+window.addEventListener('online', ()=>{ updateNetBadge(); flushQueue(); });
+window.addEventListener('offline', updateNetBadge);
+// Copia local del último historial descargado de Sheets
+function saveHistCache(data){ try{ localStorage.setItem(HIST_CACHE_KEY, JSON.stringify({date: todayStr(), data})); }catch(e){} }
+function loadHistCache(){ try{ return JSON.parse(localStorage.getItem(HIST_CACHE_KEY)); }catch(e){ return null; } }
+function fmtCacheDate(str){ const p = (str||'').split('-'); return p.length===3 ? p[2]+'/'+p[1]+'/'+p[0] : str; }
+
 /* ---------------- Historial remoto (lee de Google Sheets vía Make, misma URL de sincronización) ---------------- */
 let remoteHistoryData = null;
 function todayStr(){ return localDateStr(new Date()); }
@@ -2390,12 +2454,22 @@ function loadRemoteHistory(){
     body: JSON.stringify({accion: 'historial'})
   }).then(r=>r.json()).then(data=>{
     remoteHistoryData = Array.isArray(data) ? data : [];
+    saveHistCache(remoteHistoryData);
     renderLevelTrack();
     st.textContent = '✓ ' + remoteHistoryData.length + ' registros cargados';
     histCurrentDate = new Date(todayStr()+'T00:00:00');
     renderHistDay();
   }).catch(()=>{
-    st.textContent = '⚠ No se pudo cargar el historial (revisa tu conexión).';
+    const c = loadHistCache();
+    if(c && Array.isArray(c.data)){
+      remoteHistoryData = c.data;
+      renderLevelTrack();
+      st.textContent = '📴 Sin conexión · mostrando copia del ' + fmtCacheDate(c.date) + ' (' + c.data.length + ' registros)';
+      histCurrentDate = new Date(todayStr()+'T00:00:00');
+      renderHistDay();
+    } else {
+      st.textContent = '⚠ No se pudo cargar el historial (revisa tu conexión).';
+    }
   });
 }
 
@@ -2485,20 +2559,15 @@ document.getElementById('histNext').addEventListener('click', ()=>histShiftDay(1
 function sendToSheets(entry){
   const url = getWebhookUrl();
   if(!url) return;
-  fetch(url, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({
-      fecha: entry.date,
-      nivel: entry.level, dia: entry.day,
-      ejercicios: entry.exercises // array de {id, nombre, peso}
-    })
-  }).then(()=>{
+  postToWebhook({
+    fecha: entry.date,
+    nivel: entry.level, dia: entry.day,
+    ejercicios: entry.exercises // array de {id, nombre, peso}
+  }).then(res=>{
     const st = document.getElementById('webhookStatus');
-    if(st) st.textContent = '✓ Último registro enviado a Google Sheets';
-  }).catch(()=>{
-    const st = document.getElementById('webhookStatus');
-    if(st) st.textContent = '⚠ No se pudo enviar a Sheets (revisa tu conexión o la URL).';
+    if(!st) return;
+    if(res === 'sent') st.textContent = '✓ Último registro enviado a Google Sheets';
+    else if(res === 'queued') st.textContent = '📴 Guardado sin conexión · se enviará a Sheets al volver el internet';
   });
 }
 
@@ -2773,7 +2842,11 @@ function ensureRemoteHistoryForLevel(){
   }).then(r=>r.json()).then(data=>{
     if(!remoteHistoryData) remoteHistoryData = Array.isArray(data) ? data : [];
     renderLevelTrack();
-  }).catch(()=>{ levelTrackSheetsAsked = false; levelTrackSheetsFailed = true; renderLevelTrack(); });
+  }).catch(()=>{
+    const c = loadHistCache();
+    if(c && Array.isArray(c.data) && !remoteHistoryData){ remoteHistoryData = c.data; renderLevelTrack(); return; }
+    levelTrackSheetsAsked = false; levelTrackSheetsFailed = true; renderLevelTrack();
+  });
 }
 function setLevelTrack(t){ try{ localStorage.setItem(LEVEL_TRACK_KEY, JSON.stringify(t)); }catch(err){} }
 function daysBetween(a, b){
@@ -3261,14 +3334,10 @@ function sendWeightToSheets(date, weight){
     return;
   }
   // Sin "nivel": el escenario de Make lo enruta a la pestaña "Peso corporal" (independiente del registro de entrenamiento).
-  fetch(url, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ fecha: date, peso: weight })
-  }).then(()=>{
-    if(st) st.textContent = '✓ Peso enviado a tu Google Sheet (pestaña Peso corporal)';
-  }).catch(()=>{
-    if(st) st.textContent = '⚠ No se pudo enviar a Sheets (revisa tu conexión o la URL en Mi Progreso).';
+  postToWebhook({ fecha: date, peso: weight }).then(res=>{
+    if(!st) return;
+    if(res === 'sent') st.textContent = '✓ Peso enviado a tu Google Sheet (pestaña Peso corporal)';
+    else if(res === 'queued') st.textContent = '📴 Peso guardado sin conexión · se enviará al volver el internet';
   });
 }
 
@@ -3336,6 +3405,14 @@ document.querySelectorAll('img.rd-thumb').forEach(img=>{
     }
   });
 });
+</script>
+<script>
+/* ---------------- Modo sin conexión: service worker + envío de pendientes ---------------- */
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); });
+}
+updateNetBadge();
+flushQueue();
 </script>
 </body>
 </html>
