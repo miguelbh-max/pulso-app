@@ -1,7 +1,7 @@
 /* PULSO — service worker para usar la app sin conexión.
    Si cambias el index.html, sube también este archivo cambiando VERSION (p. ej. v2)
    para forzar que el teléfono descargue la versión nueva al instante. */
-const VERSION = 'pulso-v1';
+const VERSION = 'pulso-v2';
 const APP_CACHE = VERSION + '-app';
 const IMG_CACHE = 'pulso-img';     // imágenes: no cambian, se conservan entre versiones
 const FONT_CACHE = 'pulso-fonts';

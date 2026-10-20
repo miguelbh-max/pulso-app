@@ -11,7 +11,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="PULSO">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Fuente sin bloquear: la app se muestra al instante con la letra del sistema y cambia a Inter cuando carga -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"></noscript>
 <style>
 :root{
   --bg:#0A0B0A;
@@ -2359,6 +2361,12 @@ function getWebhookUrl(){ try{ return localStorage.getItem(WEBHOOK_KEY) || ''; }
 function setWebhookUrl(url){ try{ localStorage.setItem(WEBHOOK_KEY, url); }catch(e){} }
 
 /* ---------------- Modo sin conexión: cola de envíos pendientes a Sheets ---------------- */
+// fetch con límite de tiempo: con señal débil no se queda esperando (10 s y se da por fallido)
+function fetchT(url, opts, ms){
+  const ctrl = new AbortController();
+  const t = setTimeout(()=>ctrl.abort(), ms || 10000);
+  return fetch(url, Object.assign({}, opts, {signal: ctrl.signal})).finally(()=>clearTimeout(t));
+}
 const QUEUE_KEY = 'pulso_pending_queue';
 const HIST_CACHE_KEY = 'pulso_hist_cache';
 function getQueue(){ try{ return JSON.parse(localStorage.getItem(QUEUE_KEY)) || []; }catch(e){ return []; } }
@@ -2369,7 +2377,7 @@ function postToWebhook(payload){
   const url = getWebhookUrl();
   if(!url) return Promise.resolve('nourl');
   if(!navigator.onLine){ enqueuePayload(payload); return Promise.resolve('queued'); }
-  return fetch(url, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)})
+  return fetchT(url, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)})
     .then(()=>{ flushQueue(); return 'sent'; })
     .catch(()=>{ enqueuePayload(payload); return 'queued'; });
 }
@@ -2384,7 +2392,7 @@ async function flushQueue(){
     while(getQueue().length){
       const q = getQueue();
       try{
-        await fetch(url, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(q[0])});
+        await fetchT(url, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(q[0])});
       }catch(e){ break; }
       setQueue(getQueue().slice(1)); sent++;
     }
@@ -2448,7 +2456,7 @@ function loadRemoteHistory(){
   if(!url) return;
   const st = document.getElementById('histWebhookStatus');
   st.textContent = 'Cargando…';
-  fetch(url, {
+  fetchT(url, {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify({accion: 'historial'})
@@ -2835,7 +2843,7 @@ function ensureRemoteHistoryForLevel(){
   const url = getWebhookUrl();
   if(!url || remoteHistoryData || levelTrackSheetsAsked) return;
   levelTrackSheetsAsked = true;
-  fetch(url, {
+  fetchT(url, {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify({accion: 'historial'})
